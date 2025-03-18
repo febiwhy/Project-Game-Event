@@ -1,0 +1,53 @@
+/* Tambahkan CSS ini ke file CSS Anda atau dalam tag <style> di blade */
+#pendaftaran-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+#pendaftaran-table th,
+#pendaftaran-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#pendaftaran-table th {
+    background-color: #070438; /* Warna hijau untuk header */
+    color: white; /* Warna teks putih untuk kontras */
+    font-weight: bold;
+}
+
+#pendaftaran-table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Warna latar belakang untuk baris genap */
+}
+
+#pendaftaran-table tr:hover {
+    background-color: #ddd; /* Warna latar belakang saat hover */
+}
+
+#pendaftaran-table td {
+    color: #333; /* Warna teks gelap untuk kontras */
+}
+
+/* Tombol pagination */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 5px 10px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #090e57;
+    color: white;
+    border: 1px solid #0d2385;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #45a049;
+    color: white;
+    border: 1px solid #45a049;
+}
