@@ -186,10 +186,10 @@
 							<i class="mi-games fa-sm mr-2"></i>Event</a>
 						<a href="{{route('article')}}" class="dropdown-item">
 							<i class="mi-web fa-sm mr-2"></i>Artikel</a>
+									<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Kontak </a>
 							<div class="dropdown-submenu">
 								<a href="#" class="dropdown-item dropdown-toggle"><i class="icon-headphones fa-sm mr-2"></i> Hubungi Kami </a>
 								<div class="dropdown-menu">
-									<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Kontak </a>
 								</div>
 							</div>
 						<a href="#" class="dropdown-item disabled">
