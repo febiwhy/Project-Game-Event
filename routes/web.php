@@ -82,11 +82,11 @@ Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.
 Route::middleware('auth')->group(function () {
     Route::resource('event-community', GameEventFollowerController::class);
 
+    Route::get('/article', [EventController::class, 'article'])->name('article');
 });
 
 Route::get('/', [UserController::class, 'index'])->name('landing');
 Route::get('/export-pdf', [UserController::class, 'exportpdf'])->name('export.pdf');
-Route::get('/article', [EventController::class, 'article'])->name('article');
 Route::get('/turnament', [EventController::class, 'turnament'])->name('turnament');
 
 //SMTP Email
