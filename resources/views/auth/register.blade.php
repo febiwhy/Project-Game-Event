@@ -12,7 +12,7 @@
             <div class="text-center mb-4">
                 <h2 class="fw-bold">Daftarkan Akun Anda!</h2>
             </div>
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register.post') }}">
                 @csrf
                 <div class="mb-3">
                     <input type="text" name="name" class="form-control" placeholder="Name" value="{{ old('name') }}" required>

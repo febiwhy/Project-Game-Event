@@ -47,7 +47,7 @@ use App\Http\Controllers\Email\TurnamentReportMailController;
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('auth-login', [LoginController::class, 'login'])->name('auth.login');
 Route::get('register', [LoginController::class, 'register'])->name('register');
-Route::post('register-login', [LoginController::class, 'registerlogin'])->name('register.login');
+Route::post('register-post', [LoginController::class, 'registerpost'])->name('register.post');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {

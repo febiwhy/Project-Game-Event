@@ -41,23 +41,41 @@ class LoginController extends Controller
         return view('auth.register');
     }
 
-    public function registerlogin(Request $request)
+    // public function registerpost(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required',
+    //         'email' => 'required|email|unique:users',
+    //         'password' => 'required|min:6',
+    //     ]);
+
+    //     $data = $request->all();
+    //     $user = User::create([
+    //         'name' => $data['name'],
+    //         'email' => $data['email'],
+    //         'password' => bcrypt($data['password'])
+    //     ]);
+    //     $user->assignRole('user');
+
+    //     return redirect(route(''))->withSuccess('Anda telah masuk');
+    // }
+
+    public function registerpost(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|confirmed',
         ]);
 
-        $data = $request->all();
         $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password'])
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
         ]);
         $user->assignRole('user');
 
-        return redirect(route('/'))->withSuccess('Anda telah masuk');
+        return redirect()->route('login')->withSuccess('Akun berhasil dibuat. Silakan login.');
     }
 
     public function landing()
