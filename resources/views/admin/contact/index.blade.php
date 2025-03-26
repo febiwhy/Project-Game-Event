@@ -16,17 +16,31 @@
 	<link href="{{asset('assets/css/components.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<!-- /global stylesheets -->
-
+	
 	<!-- Core JS files -->
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_ui.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/main/bootstrap.bundle.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/plugins/velocity/velocity.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/plugins/velocity/velocity.ui.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_examples.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_ui.js')}}"></script>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbF9O9Ks9_-QNWHi2SFxLqLUBOwrMyzXk"></script>
+	<script src="{{asset('global_assets/js/demo_maps/google/drawings/circles.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_maps/google/drawings/polylines.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_maps/google/drawings/polygons.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_maps/google/drawings/rectangles.js')}}"></script>
 	<!-- /core JS files -->
 
 	<!-- Theme JS files -->
@@ -43,11 +57,12 @@
 	<!-- Main navbar role admin -->
 	@if (optional(auth()->user())->hasAnyRole(['admin']))
 	<div class="navbar navbar-expand-md navbar-light navbar-static">
-		<div class="navbar-brand">
-			<a href="index.html" class="d-inline-block">
-				<img src="{{asset('global_assets/images/logo_light.png')}}" alt="">
-			</a>
-		</div>
+		<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney </span>
+				</a>
+			</div>
 
 		<div class="d-md-none">
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
@@ -206,45 +221,59 @@
 	
 	{{-- Main navbar role user --}}
 		@if (optional(auth()->user())->hasAnyRole(['user']))
-		<div class="navbar navbar-dark navbar-expand-xl">
-		<div class="navbar-brand">
-			<a href="#" class="d-inline-block">
-				<img src="{{asset('global_assets/images/logo_light.png')}}" alt="">
-			</a>
-		</div>
+		<div class="navbar navbar-expand-md navbar-light navbar-static">
+			<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney</span>
+				</a>
+			</div>
 
-		<div class="d-xl-none">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
-				<i class="icon-grid3"></i>
-			</button>
-		</div>
 
-		<div class="navbar-collapse collapse" id="navbar-demo1-mobile">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link">Home</a></li>
-				 @if (optional(auth()->user())->hasAnyRole(['admin']))
-					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
-				@endif
-			</ul>
+			<div class="d-md-none">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
+					<i class="icon-tree5"></i>
+				</button>
+			</div>
 
-			<span class="navbar-text ml-xl-3">
-				<span class="badge bg-success">Online</span>
-			</span>
+			<div class="collapse navbar-collapse" id="navbarmobile">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link">Home</a></li>
+					@if (optional(auth()->user())->hasAnyRole(['admin']))
+						<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
+					@endif
+					<li class="nav-item dropdown ">
+						<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-paragraph-justify3"></i></a>
+						<div class="dropdown-menu dropdown-menu-right ">
+							<a href="#" class="dropdown-item">
+								<i class="mi-games fa-sm mr-2"></i>Event</a>
+							<a href="{{route('article')}}" class="dropdown-item"><i class="mi-web fa-sm mr-2"></i>Artikel</a>
+								<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Hubungi Kami </a>
+							<a href="#" class="dropdown-item disabled" id="spinner-light">
+								<i class="icon-spinner spinner mr-2"></i>Akan Datang</a>
+						</div>
+					</li>
+				</ul>
 
-			<ul class="navbar-nav ml-xl-auto">
-				<li class="nav-item">
-					<a href="#" class="navbar-nav-link">
-						<i class="icon-bell2"></i>
-						<span class="d-xl-none ml-2">Notifications</span>
-						<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a href="#" class="navbar-nav-link">
-						<i class="icon-bubbles4"></i>
-						<span class="d-xl-none ml-2">Messages</span>
-					</a>
-				</li>
+				<span class="navbar-text ml-xl-3">
+					<span class="badge bg-success">Online</span>
+				</span>
+
+				<ul class="navbar-nav ml-xl-auto">
+					<li class="nav-item">
+						<a href="#" class="navbar-nav-link">
+							<i class="icon-bell2"></i>
+							<span class="d-xl-none ml-2">Notifications</span>
+							<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="navbar-nav-link">
+							<i class="icon-bubbles4"></i>
+							<span class="d-xl-none ml-2">Messages</span>
+						</a>
+					</li>
+
 				<li class="nav-item dropdown dropdown-user">
 					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
 						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
@@ -268,9 +297,10 @@
 						@endif
 					</div>
 				</li>
-			</ul>
+
+				</ul>
+			</div>
 		</div>
-	</div>
 	@endif
 	{{-- /Main Navbar role user --}}
 
@@ -308,9 +338,15 @@
 							</div>
 
 							<div class="media-body">
-								<div class="media-title font-weight-semibold">Victoria Baker</div>
+								<div class="media-title font-weight-semibold">
+									@if (auth()->check())
+										{{ auth()->user()->name }}
+									@else
+										Guest
+									@endif
+								</div>
 								<div class="font-size-xs opacity-50">
-									<i class="icon-pin font-size-sm"></i> &nbsp;Santa Ana, CA
+									<i class="icon-pin font-size-sm"></i> &nbsp;Aktif
 								</div>
 							</div>
 
@@ -337,15 +373,32 @@
 									<span class="d-block font-weight-normal opacity-50"></span>
 								</span>
 							</a>
+						<p></p>
+							<hr>
 						</li>
 						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>User Page</span></a>
+							<a href="#" class="nav-link"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
+							<ul class="nav nav-group-sub" data-submenu-title="Sidebars">
+								<li class="nav-item nav-item-submenu">
+									<a href="#" class="nav-link"> Admin </a>
+									<ul class="nav nav-group-sub">
+										<li class="nav-item"><a href="{{route('roles.create')}}" class="nav-link active"><i class="icon-plus22 mr-3"></i>Tambah Role</a></li>
+									</ul>
+								</li>
+								<li class="nav-item">
+									<a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
 
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
-								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnament </a></li>
-								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link active"> Komunitas </a></li>
-								<li class="nav-item"><a href="../../../../layout_6/LTR/dark/full/index.html" class="nav-link disabled">Coming soon <span class="badge bg-transparent align-self-center ml-auto">Coming soon</span></a></li>
+								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
+								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
+								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
+								<li class="nav-item"><a href="" class="nav-link disabled">Coming soon <span class="badge bg-transparent align-self-center ml-auto">Coming soon</span></a></li>
 							</ul>
 						</li>
 					</ul>
@@ -367,16 +420,15 @@
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
-						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Single Navbar</span> - Top Static</h4>
+						<h4> 
+							<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
+							<span class="font-weight-semibold">Halaman</span> - Kontak
+						</h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 
 					<div class="header-elements d-none mb-3 mb-md-0">
 						<div class="d-flex justify-content-center">
-	                        @if (optional(auth()->user())->hasAnyRole(['admin']))
-                                <a href="{{ route('contact.show', $contact->id) }}" class="btn btn-link btn-float text-default">
-                                    <i class="icon-eye4 icon-1.5x"></i><span>Show Contact</span></a>
-                            @endif
                                 <a href="#" class="btn btn-link btn-float text-default"><i class="icon-bars-alt"></i><span>Statistics</span></a>
                                 <a href="#" class="btn btn-link btn-float text-default"><i class="icon-calculator"></i> <span>Invoices</span></a>
                                 <a href="#" class="btn btn-link btn-float text-default"><i class="icon-calendar5"></i> <span>Schedule</span></a>
@@ -392,24 +444,6 @@
 			    <!-- /info alert -->
 
 
-				<!-- Navbar component -->
-				<div class="card">
-					<div class="card-header header-elements-inline">
-						<h5 class="card-title">Navbar component</h5>
-						<div class="header-elements">
-							<div class="list-icons">
-		                		<a class="list-icons-item" data-action="collapse"></a>
-		                		<a class="list-icons-item" data-action="reload"></a>
-		                		<a class="list-icons-item" data-action="remove"></a>
-		                	</div>
-	                	</div>
-					</div>
-
-					<div class="card-body">
-						<p class="mb-3">Navbar is a navigation component, usually displayed on top of the page and includes brand logo, navigation, notifications, user menu, language switcher and other components. By default, navbar has <code>top static</code> position and is a direct child of <code>&lt;body></code> container. Navbar toggler appears next to the brand logo on small screens and can be easily adjusted with <code>display</code> utility classes. You can also control responsive collapsing breakpoint directly in the markup. Navbar component is responsive by default and requires <code>.navbar</code> and <code>.navbar-expand{-sm|-md|-lg|-xl}</code> classes.</p>
-
-				<!-- /navbar component -->
-
 				<div class="card" >
 					<div class="card-header header-elements-inline">
 						<h2 class="card-title" data-transition="bounceUpIn"></h2>
@@ -421,11 +455,10 @@
 							</div>
 						</div>
 					</div>
-                    <div class="card shadow-sm p-4" id="map-container">
-						<div id="map-container">
-							<img src="{{ asset($contact->foto ?? '-') }}" id="map-image"
-							alt="Map Image" height="125px" width="100px">
-						</div>
+                    <div class="card shadow-sm p-4">
+						<div class="map-container" id="map_drawing_rectangle" style="height: 500px; width: 100%;"></div>
+						<p></p>
+						<hr>
                     <div class="contact-info">
                         <p><i class="icon-location4 mr-3 icon-2x"></i>{{ $contact->location}}</p> 
                         
@@ -433,6 +466,13 @@
                         <p><i class="icon-mail-read mr-3 icon-2x"></i> {{ $contact->email }}</p>
                 
                     </div>
+						@if (optional(auth()->user())->hasAnyRole(['admin']))
+						<div class="card-footer mt-3">
+							<a href="{{ route('contact.show', $contact->id) }}" class="btn btn-secondary btn-sm"><i class="icon-file-eye mr-3"></i>
+								Detail Data
+							</a>
+						</div>
+						@endif
                     </div>
 				</div>
 
@@ -502,54 +542,98 @@
 
 				<!-- /navbar classes -->
 
-
-				<!-- Body classes -->
-				<div class="card">
-					<div class="card-header header-elements-inline">
-						<h5 class="card-title">Body classes</h5>
-						<div class="header-elements">
-							<div class="list-icons">
-		                		<a class="list-icons-item" data-action="collapse"></a>
-		                		<a class="list-icons-item" data-action="reload"></a>
-		                		<a class="list-icons-item" data-action="remove"></a>
-		                	</div>
-	                	</div>
-					</div>
-                    
-				</div>
-				<!-- /body classes -->
-
 			</div>
 			<!-- /content area -->
 
 
-			<!-- Footer -->
-			<div class="navbar navbar-expand-lg navbar-light">
-				<div class="text-center d-lg-none w-100">
-					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
-						<i class="icon-unfold mr-2"></i>
-						Footer
-					</button>
-				</div>
+			{{-- Footer User --}}
+				@if (optional(auth()->user())->hasAnyRole(['user']))
+					<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
+						<div class="navbar-collapse collapse">
+							<span class="navbar-text">
+								&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
+							</span>
+							<ul class="navbar-nav ml-xl-auto">
+								<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Help Center</a></li>
+								<li class="nav-item"><a href="#" class="navbar-nav-link">Policy</a></li>
+							</ul>
+						</div>
+					</div>
+				@endif
+			{{-- Footer User --}}
+			
+			<!-- Footer admin-->
+				@if (optional(auth()->user())->hasAnyRole(['admin']))
+					<div class="navbar navbar-expand-lg navbar-light">
+						<div class="text-center d-lg-none w-100">
+							<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
+								<i class="icon-unfold mr-2"></i>
+								Footer
+							</button>
+						</div>
 
-				<div class="navbar-collapse collapse" id="navbar-footer">
-					<span class="navbar-text">
-						&copy; 2015 - 2018. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
-					</span>
+						<div class="navbar-collapse collapse" id="navbar-footer">
+							<span class="navbar-text">
+								&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
+							</span>
 
-					<ul class="navbar-nav ml-lg-auto">
-						<li class="nav-item"><a href="https://kopyov.ticksy.com/" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
-						<li class="nav-item"><a href="http://demo.interface.club/limitless/docs/" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
-						<li class="nav-item"><a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
-					</ul>
-				</div>
-			</div>
-			<!-- /footer -->
+							<ul class="navbar-nav ml-lg-auto">
+								<li class="nav-item"><a href="https://kopyov.ticksy.com/" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
+								<li class="nav-item"><a href="http://demo.interface.club/limitless/docs/" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
+								<li class="nav-item"><a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
+							</ul>
+						</div>
+					</div>
+				@endif
+			<!-- /footer admin -->
 
 		</div>
 		<!-- /main content -->
 
 	</div>
+
+	<script>
+		// Inisialisasi Peta
+		function initMap() {
+			// Tentukan titik koordinat awal (contoh: Jakarta)
+			const lokasiAwal = { lat: -6.200000, lng: 106.816666 };
+
+			// Buat peta di div dengan id 'map_drawing_rectangle'
+			const map = new google.maps.Map(document.getElementById("map_drawing_rectangle"), {
+				zoom: 12,
+				center: lokasiAwal,
+			});
+
+			// Tambahkan marker di lokasi awal
+			const marker = new google.maps.Marker({
+				position: lokasiAwal,
+				map: map,
+				title: "Ini Lokasi Awal!"
+			});
+
+			// Contoh titik tambahan
+			const lokasiTambahan = [
+				{ lat: -6.210, lng: 106.820 },
+				{ lat: -6.190, lng: 106.830 }
+			];
+
+			// Loop untuk tambah titik marker lain
+			lokasiTambahan.forEach((lokasi) => {
+				new google.maps.Marker({
+					position: lokasi,
+					map: map,
+					title: "Titik Tambahan"
+				});
+			});
+		}
+
+		// Load Google Maps API dan panggil fungsi initMap
+		window.onload = function() {
+			initMap();
+		};
+
+	</script>
+
 	<!-- /page content -->
 
 </body>

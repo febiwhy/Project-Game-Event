@@ -3,20 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\GameEvent;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 use App\Http\Exports\UserExport;
+use Spatie\Permission\Models\Role;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $data = Pendaftaran::with('gameEvent')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('game_event', function ($row) {
+                    return $row->gameEvent->name;
+                })
+                ->addColumn('action', function ($row) {
+                    return '<div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item dropdown-toggle caret-0" data-toggle="dropdown">
+                                        <i class="icon-menu7"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="' . route('pendaftar.show', $row->id) . '" class="dropdown-item">
+                                            <i class="icon-file-stats"></i> Detail Data
+                                        </a>
+                                        <a href="' . route('pendaftaran.edit', $row->id) . '" class="dropdown-item">
+                                            <i class="icon-file-text2"></i> Edit Data
+                                        </a>
+                                        <a href="javascript:void(0);" class="dropdown-item" onclick="confirmDelete(' . $row->id . ')">
+                                            <i class="icon-file-minus"></i> Hapus Data
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>';
+                })
+                ->rawColumns(['game_event', 'action'])
+                ->make(true);
+        }
+
+        $totalgameEvent = GameEvent::count();
         $users = User::all();
         $data = Pendaftaran::all();
         $user = auth()->user();
-        return view('admin.index', compact('data', 'user', 'users'));
+        return view('admin.index', compact('data', 'user', 'users', 'totalgameEvent'));
     }
 
     public function users()
@@ -24,53 +59,11 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-    public function datatables(Request $request)
-    {
-        if ($request->ajax()) {
-            $columns = ['id', 'name', 'email', 'created_at', 'updated_at']; 
-
-            // Ambil request DataTables
-            $limit  = $request->input('length'); // Jumlah data per halaman
-            $start  = $request->input('start'); // Offset mulai data
-            $order  = $columns[$request->input('order.0.column')]; // Kolom yang diurutkan
-            $dir    = $request->input('order.0.dir'); // Arah sorting (asc/desc)
-            $search = $request->input('search.value'); // Kata kunci pencarian
-
-            // Query dasar
-            $query = User::select(['id', 'name', 'email', 'created_at', 'updated_at']);
-
-            // Jika ada pencarian
-            if (!empty($search)) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            }
-
-            // Total data setelah filter
-            $filteredCount = $query->count();
-
-            // Sorting dan pagination
-            $users = $query->orderBy($order, $dir)
-                ->offset($start)
-                ->limit($limit)
-                ->get();
-
-            // Total data asli (tanpa filter)
-            $totalCount = User::count();
-
-            // Return response JSON sesuai format DataTables
-            return response()->json([
-                'draw'            => intval($request->input('draw')),
-                'recordsTotal'    => $totalCount,
-                'recordsFiltered' => $filteredCount,
-                'data'            => $users
-            ]);
-        }
-    }
-
+    
     public function getpdf(Request $request)
     {
         $users = User::all();
-
+        
         $data = [
             'title' => 'Daftar Pengguna',
             'date' => date('d-m-Y'),
@@ -80,12 +73,14 @@ class AdminController extends Controller
         $pdf = FacadePdf::loadView('pdf.penggunaPDF', $data);
         return $pdf->download('Daftar Pengguna.pdf');
     }
-
+    
     public function export()
     {
         return Excel::download(new UserExport, 'user.xlsx');
     }
-
-
+    
 }
+
+
+
 

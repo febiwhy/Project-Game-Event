@@ -7,8 +7,9 @@ use App\Models\GameEvent;
 use Illuminate\Http\Request;
 use App\Models\GameEventFollower;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\GameEventFollowerRequest;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\Admin\GameEventFollowerRequest;
 
 class GameEventFollowerController extends Controller
 {
@@ -17,11 +18,47 @@ class GameEventFollowerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $data = GameEventFollower::with(['gameEvent', 'owner'])->get();
+
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('game_event', function ($row) {
+                    return $row->gameEvent->name ?? '-';
+                })
+                ->addColumn('owner', function ($row) {
+                    return $row->owner->name ?? '-';
+                })
+
+                ->addColumn('action', function ($row) {
+                    return '<div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item dropdown-toggle caret-0" data-toggle="dropdown">
+                                        <i class="icon-menu7"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="' . route('event-community.show', $row->id) . '" class="dropdown-item">
+                                            <i class="icon-file-stats"></i> Detail Data
+                                        </a>
+                                        <a href="' . route('event-community.edit', $row->id) . '" class="dropdown-item">
+                                            <i class="icon-file-text2"></i> Edit Data
+                                        </a>
+                                        <a href="javascript:void(0);" class="dropdown-item" onclick="confirmDelete(' . $row->id . ')">
+                                            <i class="icon-file-minus"></i> Hapus Data
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>';
+                })
+                ->rawColumns(['action', 'owner', 'game_event'])
+                ->make(true);
+        }
+
         $event_communitys = GameEventFollower::with(['gameEvent', 'owner'])->get();
         return view('admin.event-community.index', compact('event_communitys'));
-        
     }
 
     /**
@@ -108,7 +145,7 @@ class GameEventFollowerController extends Controller
 
         $event_community->update($data);
 
-        return redirect()->route('event-community.show', $id)->with('success', "Data Berhasil Diperbarui");
+        return redirect()->route('event-community.index', $id)->with('success', "Data Berhasil Diperbarui");
     }
 
     public function destroy($id)
@@ -117,5 +154,4 @@ class GameEventFollowerController extends Controller
         $event_community->delete();
         return redirect()->route('event-community.index')->with('success', "Data Berhasil Di Hapus");
     }
-
 }

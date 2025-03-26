@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Mail\AdminContactMail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
+use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\Admin\ContactModelRequest;
 
 class ContactController extends Controller
@@ -16,8 +17,36 @@ class ContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $data = ContactModel::select(['id', 'location', 'foto', 'telepon', 'email']);
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->editColumn('foto', function ($row) {
+                    return '<img src="' . asset($row->foto) . '" alt="Thumbnail" width="50" height="50">';
+                })
+                ->addColumn('action', function ($row) {
+                    return '<div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item dropdown-toggle caret-0" data-toggle="dropdown">
+                                        <i class="icon-menu7"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="' . route('contact.edit', $row->id) . '" class="dropdown-item">
+                                            <i class="icon-file-text2"></i> Edit Data
+                                        </a>
+                                        <a href="javascript:void(0);" class="dropdown-item" onclick="confirmDelete(' . $row->id . ')">
+                                            <i class="icon-file-minus"></i> Hapus Data
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>';
+                })
+                ->rawColumns(['action', 'foto'])
+                ->make(true);
+        }
         $contact = ContactModel::first();      
         return view('admin.contact.index', compact('contact'));
     }

@@ -7,6 +7,7 @@ use App\Models\GameEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\Admin\EventGameRequest;
 use App\Http\Requests\Admin\GameEventRequest;
 
@@ -17,9 +18,41 @@ class EventGameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $game_events = GameEvent::get();
+        if ($request->ajax()) {
+            $data = GameEvent::select(['id', 'name', 'thumbnail', 'description']);
+            
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->editColumn('thumbnail', function ($row) {
+                    return '<img src="' . asset($row->thumbnail) . '" alt="Thumbnail" width="50" height="50">';
+                })
+                ->addColumn('action', function ($row) {
+                return '<div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item dropdown-toggle caret-0" data-toggle="dropdown">
+                                        <i class="icon-menu7"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="' . route('game-event.show', $row->id) . '" class="dropdown-item">
+                                            <i class="icon-file-stats"></i> Detail Data
+                                        </a>
+                                        <a href="' . route('game-event.edit', $row->id) . '" class="dropdown-item">
+                                            <i class="icon-file-text2"></i> Edit Data
+                                        </a>
+                                        <a href="javascript:void(0);" class="dropdown-item" onclick="confirmDelete(' . $row->id . ')">
+                                            <i class="icon-file-minus"></i> Hapus Data
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>';
+            })
+                ->rawColumns(['action', 'thumbnail'])
+                ->make(true);
+        }
+        $game_events = GameEvent::all();
         return view('admin.game-event.index', compact('game_events'));
     }
 

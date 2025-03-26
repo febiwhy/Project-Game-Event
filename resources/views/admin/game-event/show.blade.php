@@ -39,11 +39,12 @@
 	<!-- Main navbar role admin -->
 	@if (optional(auth()->user())->hasAnyRole(['admin']))
 	<div class="navbar navbar-expand-md navbar-light navbar-static">
-		<div class="navbar-brand">
-			<a href="index.html" class="d-inline-block">
-				<img src="{{asset('global_assets/images/logo_light.png')}}" alt="">
-			</a>
-		</div>
+		<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney </span>
+				</a>
+			</div>
 
 		<div class="d-md-none">
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
@@ -175,17 +176,25 @@
 
 				<li class="nav-item dropdown dropdown-user">
 					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-						<img src="../../../../global_assets/images/placeholders/placeholder.jpg" class="rounded-circle mr-2" height="34" alt="">
-						<span>Victoria</span>
+						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
+						<span class="navbar-text">
+							@if (auth()->check())
+								Halo, {{ auth()->user()->name }}
+							@else
+								Guest
+							@endif
+						</span>
 					</a>
-
 					<div class="dropdown-menu dropdown-menu-right">
-						<a href="#" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
-						<a href="#" class="dropdown-item"><i class="icon-coins"></i> My balance</a>
-						<a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages <span class="badge badge-pill bg-blue ml-auto">58</span></a>
-						<div class="dropdown-divider"></div>
-						<a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
-						<a href="{{route('logout')}}" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
+						@if (auth()->check())
+							<a href="{{ route('logout') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Logout
+							</a>
+						@else
+							<a href="{{ route('login') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Login
+							</a>
+						@endif
 					</div>
 				</li>
 			</ul>
@@ -195,82 +204,87 @@
 	<!-- /main navbar -->
 	
 	{{-- Main navbar role user --}}
-		@if (optional(auth()->user())->hasAnyRole(['user']))
-		<div class="navbar navbar-dark navbar-expand-xl">
-		<div class="navbar-brand">
-			<a href="#" class="d-inline-block">
-				<img src="{{asset('global_assets/images/logo_light.png')}}" alt="">
-			</a>
-		</div>
+	@if (optional(auth()->user())->hasAnyRole(['user']))
+		<div class="navbar navbar-expand-md navbar-light navbar-static">
+			<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney</span>
+				</a>
+			</div>
 
-		<div class="d-xl-none">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
-				<i class="icon-grid3"></i>
-			</button>
-		</div>
 
-		<div class="navbar-collapse collapse" id="navbar-demo1-mobile">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a href="" class="navbar-nav-link">Home</a></li>
-				 @if (optional(auth()->user())->hasAnyRole(['admin']))
-					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
-				@endif
+			<div class="d-md-none">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
+					<i class="icon-tree5"></i>
+				</button>
+			</div>
 
-				<li class="nav-item dropdown">
-					<a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+			<div class="collapse navbar-collapse" id="navbarmobile">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link">Home</a></li>
+					@if (optional(auth()->user())->hasAnyRole(['admin']))
+						<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
+					@endif
+					<li class="nav-item dropdown ">
+						<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-paragraph-justify3"></i></a>
+						<div class="dropdown-menu dropdown-menu-right ">
+							<a href="#" class="dropdown-item">
+								<i class="mi-games fa-sm mr-2"></i>Event</a>
+							<a href="{{route('article')}}" class="dropdown-item"><i class="mi-web fa-sm mr-2"></i>Artikel</a>
+								<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Hubungi Kami </a>
+							<a href="#" class="dropdown-item disabled" id="spinner-light">
+								<i class="icon-spinner spinner mr-2"></i>Akan Datang</a>
+						</div>
+					</li>
+				</ul>
+
+				<span class="navbar-text ml-xl-3">
+					<span class="badge bg-success">Online</span>
+				</span>
+
+				<ul class="navbar-nav ml-xl-auto">
+					<li class="nav-item">
+						<a href="#" class="navbar-nav-link">
+							<i class="icon-bell2"></i>
+							<span class="d-xl-none ml-2">Notifications</span>
+							<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="navbar-nav-link">
+							<i class="icon-bubbles4"></i>
+							<span class="d-xl-none ml-2">Messages</span>
+						</a>
+					</li>
+
+				<li class="nav-item dropdown dropdown-user">
+					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
+						<span class="navbar-text">
+							@if (auth()->check())
+								Halo, {{ auth()->user()->name }}
+							@else
+								Guest
+							@endif
+						</span>
+					</a>
 					<div class="dropdown-menu dropdown-menu-right">
-						<a href="{{route('login')}}" class="dropdown-item">Login</a>
-						<a href="#" class="dropdown-item">Event</a>
-						<a href="{{route('article')}}" class="dropdown-item">Artikel</a>
-						<a href="#" class="dropdown-item">Lainnya</a>
+						@if (auth()->check())
+							<a href="{{ route('logout') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Logout
+							</a>
+						@else
+							<a href="{{ route('login') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Login
+							</a>
+						@endif
 					</div>
 				</li>
-			</ul>
 
-			<span class="navbar-text ml-xl-3">
-				<span class="badge bg-success">Online</span>
-			</span>
-
-			<ul class="navbar-nav ml-xl-auto">
-				<li class="nav-item">
-					<a href="#" class="navbar-nav-link">
-						<i class="icon-bell2"></i>
-						<span class="d-xl-none ml-2">Notifications</span>
-						<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a href="#" class="navbar-nav-link">
-						<i class="icon-bubbles4"></i>
-						<span class="d-xl-none ml-2">Messages</span>
-					</a>
-				</li>
-						<li class="nav-item dropdown dropdown-user">
-							<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-								<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
-								<span class="navbar-text">
-									@if (auth()->check())
-										Halo, {{ auth()->user()->name }}
-									@else
-										Guest
-									@endif
-								</span>
-							</a>
-							<div class="dropdown-menu dropdown-menu-right">
-								@if (auth()->check())
-									<a href="{{ route('logout') }}" class="dropdown-item">
-										<i class="icon-switch2"></i> Logout
-									</a>
-								@else
-									<a href="{{ route('login') }}" class="dropdown-item">
-										<i class="icon-switch2"></i> Login
-									</a>
-								@endif
-							</div>
-				</li>
-			</ul>
+				</ul>
+			</div>
 		</div>
-	</div>
 	@endif
 	{{-- /Main Navbar role user --}}
 
@@ -337,16 +351,11 @@
 									<span class="d-block font-weight-normal opacity-50"></span>
 								</span>
 							</a>
+							<p></p>
+							<hr>
 						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>User Page</span></a>
-
-							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
-								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link active"> Game Turnament </a></li>
-								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link "> Komunitas </a></li>
-								<li class="nav-item"><a href="../../../../layout_6/LTR/dark/full/index.html" class="nav-link disabled">Coming soon <span class="badge bg-transparent align-self-center ml-auto">Coming soon</span></a></li>
-							</ul>
+						<li class="nav-item">
+							<a href="{{route('game-event.index')}}" class="nav-link"><i class="icon-enter5 mr-3 mr-3"></i> <span>Kembali</span></a>
 						</li>
 						<!-- /main -->
 					</ul>
@@ -368,7 +377,7 @@
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
-						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Single Navbar</span> - Top Static</h4>
+						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Halaman</span> - Detail Game Turnament</h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 
@@ -390,35 +399,29 @@
 				<!-- Info alert -->
 				<div class="alert alert-info bg-light text-default alert-styled-left alert-arrow-left alert-dismissible">
 					<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-					<h6 class="alert-heading font-weight-semibold mb-1">Static top navbar</h6>
-					By default, top navbar element is positioned according to the normal flow of the document: immediate children of the <code>&lt;body></code> container and <strong>before</strong> <code>.page-content</code> container.
+					<h3 class="alert-heading font-weight-semibold mb-1">
+						@if (auth()->check())
+							Selamat Datang , {{ auth()->user()->name }}
+						@else
+							Guest
+						@endif
+					</h3>
+					<hr>
+					<ul>
+						<h4>	
+							Pengajuan Membuat Game Event <br> Pengajuan Membuat Komunitas bisa ke form
+							<span style="color: rgb(255, 255, 255); font-weight: bold;"> <a href="{{route('contact.index')}}">Hubungi Kami</a>!</span>
+						</h4>
+					</ul>
+					
 			    </div>
 			    <!-- /info alert -->
-
-
-				<!-- Navbar component -->
-				<div class="card">
-					<div class="card-header header-elements-inline">
-						<h5 class="card-title">Navbar component</h5>
-						<div class="header-elements">
-							<div class="list-icons">
-		                		<a class="list-icons-item" data-action="collapse"></a>
-		                		<a class="list-icons-item" data-action="reload"></a>
-		                		<a class="list-icons-item" data-action="remove"></a>
-		                	</div>
-	                	</div>
-					</div>
-
-					<div class="card-body">
-						<p class="mb-3">Navbar is a navigation component, usually displayed on top of the page and includes brand logo, navigation, notifications, user menu, language switcher and other components. By default, navbar has <code>top static</code> position and is a direct child of <code>&lt;body></code> container. Navbar toggler appears next to the brand logo on small screens and can be easily adjusted with <code>display</code> utility classes. You can also control responsive collapsing breakpoint directly in the markup. Navbar component is responsive by default and requires <code>.navbar</code> and <code>.navbar-expand{-sm|-md|-lg|-xl}</code> classes.</p>
-
-				<!-- /navbar component -->
 
 
 				<!-- Navbar classes -->
 				<div class="card" >
 					<div class="card-header header-elements-inline">
-						<h2 class="card-title">Detail Game Event </h2>
+						<h2 class="card-title"></h2>
 						<div class="header-elements">
 							<div class="list-icons">
 								<a class="list-icons-item" data-action="collapse"></a>
@@ -428,24 +431,33 @@
 						</div>
 					</div>
 
-				<div class="container mt-3" style="display: flex; gap: 10px;">
+					{{-- <div class="card-body">
+						<ul class="nav nav-tabs nav-tabs-highlight">
+							<li class="nav-item"><a href="#right-icon-tab1" class="nav-link active" data-toggle="tab">Detail Game Turnament {{ $game_event->name ?? 'Nama tidak tersedia' }} </a></li>
+							<li class="nav-item dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Aksi </a>
+								<div class="dropdown-menu dropdown-menu-right">
+									<div>
+										<form action="{{ route('request.community') }}" method="POST">
+											@csrf
+											<a class="dropdown-item">Ajukan Pembuatan Komunitas</a>
+										</form>
+									</div>
+									<div>
+										<form action="{{ route('request.game') }}" method="POST">
+											@csrf
+											<a class="dropdown-item">Ajukan Pembuatan Game</a>
+										</form>
+									</div>
+								</div>
+							</li>
+						</ul>
 
-						<form action="{{ route('request.community') }}" method="POST">
-							@csrf
-							<button type="submit" class="btn btn-light">Ajukan Pembuatan Komunitas</button>
-						</form>
-						<form action="{{ route('request.game') }}" method="POST">
-							@csrf
-							<button type="submit" class="btn btn-light">Ajukan Pembuatan Game</button>
-						</form>
-				</div>
+					</div> --}}
 
 					
 						<div class="container mt-4">
-							<div class="card">
-								<div class="card-header">
-									<h3>{{ $game_event->name ?? 'Nama tidak tersedia' }}</h3>
-								</div>
+							<div class="card" id="right-icon-tab1">
 								<div class="card-body">
 									<table class="table table-bordered">
 										<tr>
@@ -494,15 +506,16 @@
 									<p></p>
 									<!-- Tombol Kembali Berdasarkan Peran -->
 									@if (optional(auth()->user())->hasAnyRole(['admin']))
-										<a href="{{ route('game-event.index') }}" class="btn btn-secondary">Kembali ke Event</a>
+										<a href="{{ route('game-event.index') }}" class="btn btn-secondary">Kembali</a>
 									@endif
 
 									<a href="{{ route('pendaftaran', $game_event->id ?? 0) }}" class="btn btn-primary">Daftar <i class="icon-paperplane ml-2"></i></a>
 									
 									@if (optional(auth()->user())->hasAnyRole(['user']))
-									<a href="{{ route('landing') }}" class="btn btn-secondary">Kembali ke Event</a>
+									<a href="{{ route('landing') }}" class="btn btn-secondary">Kembali</a>
 									@endif
-										
+								
+								
 								</div>
 							</div>
 						</div>
@@ -526,11 +539,113 @@
 				</div>
 				<!-- /body classes -->
 
+				{{-- <tr>
+									<td>Horizontal form</td>
+									<td> <button type="button" class="btn btn-light" data-toggle="modal" data-target="#modal_form_horizontal">Launch <i class="icon-play3 ml-2"></i></button></td>
+									<td>Modal with horizontal form layout. It does also support responsive grid, but in this case it will look best in wider modals</td>
+								</tr>
+				<!-- Horizontal form modal -->
+				<div id="modal_form_horizontal" class="modal fade" tabindex="-1">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Horizontal form</h5>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+
+							<form action="#" class="form-horizontal">
+								<div class="modal-body">
+									<div class="form-group row">
+										<label class="col-form-label col-sm-3">First name</label>
+										<div class="col-sm-9">
+											<input type="text" placeholder="Eugene" class="form-control">
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-form-label col-sm-3">Last name</label>
+										<div class="col-sm-9">
+											<input type="text" placeholder="Kopyov" class="form-control">
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-form-label col-sm-3">Email</label>
+										<div class="col-sm-9">
+											<input type="text" placeholder="eugene@kopyov.com" class="form-control">
+											<span class="form-text text-muted">name@domain.com</span>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-form-label col-sm-3">Phone #</label>
+										<div class="col-sm-9">
+											<input type="text" placeholder="+99-99-9999-9999" data-mask="+99-99-9999-9999" class="form-control">
+											<span class="form-text text-muted">+99-99-9999-9999</span>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-form-label col-sm-3">Address line 1</label>
+										<div class="col-sm-9">
+											<input type="text" placeholder="Ring street 12, building D, flat #67" class="form-control">
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-form-label col-sm-3">City</label>
+										<div class="col-sm-9">
+											<input type="text" placeholder="Munich" class="form-control">
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-form-label col-sm-3">State/Province</label>
+										<div class="col-sm-9">
+											<input type="text" placeholder="Bayern" class="form-control">
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-form-label col-sm-3">ZIP code</label>
+										<div class="col-sm-9">
+											<input type="text" placeholder="1031" class="form-control">
+										</div>
+									</div>
+								</div>
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+									<button type="submit" class="btn bg-primary">Submit form</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- /horizontal form modal --> --}}
+
 			</div>
 			<!-- /content area -->
 
-
-			<!-- Footer -->
+			{{-- Footer User --}}
+		@if (optional(auth()->user())->hasAnyRole(['user']))
+			<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
+				<div class="navbar-collapse collapse">
+					<span class="navbar-text">
+						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
+					</span>
+					<ul class="navbar-nav ml-xl-auto">
+						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Help Center</a></li>
+						<li class="nav-item"><a href="#" class="navbar-nav-link">Policy</a></li>
+					</ul>
+				</div>
+			</div>
+		@endif
+			{{-- Footer User --}}
+			
+			<!-- Footer admin-->
+			
+		@if (optional(auth()->user())->hasAnyRole(['admin']))
 			<div class="navbar navbar-expand-lg navbar-light">
 				<div class="text-center d-lg-none w-100">
 					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
@@ -541,7 +656,7 @@
 
 				<div class="navbar-collapse collapse" id="navbar-footer">
 					<span class="navbar-text">
-						&copy; 2015 - 2018. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
+						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
 					</span>
 
 					<ul class="navbar-nav ml-lg-auto">
@@ -551,7 +666,8 @@
 					</ul>
 				</div>
 			</div>
-			<!-- /footer -->
+		@endif
+			<!-- /footer admin -->
 
 		</div>
 		<!-- /main content -->

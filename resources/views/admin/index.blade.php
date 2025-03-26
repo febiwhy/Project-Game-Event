@@ -17,7 +17,6 @@
 	<link href="{{asset('assets/css/layout.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/components.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
-	
 
 	<!-- /global stylesheets -->
 
@@ -32,22 +31,38 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-
 	<script src="{{asset('global_assets/js/plugins/notifications/bootbox.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/plugins/forms/selects/select2.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/demo_pages/components_modals.js')}}"></script>
 	<script src="{{asset('global_assets/js/plugins/ui/prism.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/demo_pages/animations_css3.js')}}"></script>
 	<script src="{{asset('assets/js/app.js')}}"></script>
+
+	<script src="{{asset('global_assets/js/plugins/visualization/d3/d3.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/visualization/d3/d3_tooltip.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/forms/styling/switchery.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/ui/moment/moment.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/pickers/daterangepicker.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/dashboard.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/sparklines.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/lines.js')}}"></script>	
+	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/areas.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/donuts.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/bars.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/progress.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/heatmaps.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/pies.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/bullets.js')}}"></script>
 	<!-- /theme JS files -->
 
 	</head>
 	<body>
 	<!-- Main navbar -->
 		<div class="navbar navbar-expand-md navbar-light navbar-static">
-			<div class="navbar-brand">
-				<a class="d-inline-block">
-					<img src="{{asset('global_assets/images/logo_light.png')}}" alt="">
+			<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney </span>
 				</a>
 			</div>
 
@@ -237,8 +252,15 @@
 							</div>
 
 							<div class="media-body">
-								<div class="media-title font-weight-semibold">Admin</div>
+								<div class="media-title font-weight-semibold">
+									@if (auth()->check())
+										{{ auth()->user()->name }}
+									@else
+										Guest
+									@endif
+								</div>
 								<div class="font-size-xs opacity-50">
+									<i class="icon-pin font-size-sm"></i> &nbsp;Aktif 
 								</div>
 							</div>
 
@@ -258,16 +280,32 @@
 						<!-- Main -->
 						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
 						<li class="nav-item">
-							<a class="nav-link">
+							<a class="nav-link active">
 								<i class="icon-home4"></i>
 								<span>
 									Dashboard Admin
 									<span class="d-block font-weight-normal opacity-50"></span>
 								</span>
 							</a>
+							<p></p>
+							<hr>
 						</li>
 						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>User Page</span></a>
+							<a href="#" class="nav-link"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
+							<ul class="nav nav-group-sub" data-submenu-title="Sidebars">
+								<li class="nav-item nav-item-submenu">
+									<a href="#" class="nav-link"> Admin </a>
+									<ul class="nav nav-group-sub">
+										<li class="nav-item"><a href="{{route('roles.create')}}" class="nav-link active"><i class="icon-plus22 mr-3"></i>Tambah Role</a></li>
+									</ul>
+								</li>
+								<li class="nav-item">
+									<a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
 
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
@@ -286,6 +324,8 @@
 			<!-- /sidebar content -->
 			
 		</div>
+
+		
 		<!-- /main sidebar -->
 
 
@@ -296,7 +336,10 @@
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
-						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Single Navbar</span> - Top Static</h4>
+						<h4> 
+							<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
+							<span class="font-weight-semibold">Home</span> - Dashboard
+						</h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 
@@ -318,35 +361,80 @@
 				<!-- Info alert -->
 				<div class="alert alert-info bg-light text-default alert-styled-left alert-arrow-left alert-dismissible">
 					<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-					<h6 class="alert-heading font-weight-semibold mb-1">Static top navbar</h6>
-					By default, top navbar element is positioned according to the normal flow of the document: immediate children of the <code>&lt;body></code> container and <strong>before</strong> <code>.page-content</code> container.
+					<h6 class="alert-heading font-weight-semibold mb-1"> 
+						@if (auth()->check())
+							Selamat Datang , {{ auth()->user()->name }}
+						@else
+							Guest
+						@endif
+					</h6>
 			    </div>
 			    <!-- /info alert -->
 
 
-				<!-- Navbar component -->
+				<!-- Navbar classes -->
 				<div class="card">
 					<div class="card-header header-elements-inline">
-						<h5 class="card-title">Navbar component</h5>
+						<h6 class="card-title">Traffic sources</h6>
 						<div class="header-elements">
-							<div class="list-icons">
-		                		<a class="list-icons-item" data-action="collapse"></a>
-		                		<a class="list-icons-item" data-action="reload"></a>
-		                		<a class="list-icons-item" data-action="remove"></a>
-		                	</div>
-	                	</div>
+							<div class="form-check form-check-right form-check-switchery form-check-switchery-sm">
+								<label class="form-check-label">
+									Live update:
+									<input type="checkbox" class="form-input-switchery" checked data-fouc>
+								</label>
+							</div>
+						</div>
 					</div>
 
-					<div class="card-body">
-						<p class="mb-3">Navbar is a navigation component, usually displayed on top of the page and includes brand logo, navigation, notifications, user menu, language switcher and other components. By default, navbar has <code>top static</code> position and is a direct child of <code>&lt;body></code> container. Navbar toggler appears next to the brand logo on small screens and can be easily adjusted with <code>display</code> utility classes. You can also control responsive collapsing breakpoint directly in the markup. Navbar component is responsive by default and requires <code>.navbar</code> and <code>.navbar-expand{-sm|-md|-lg|-xl}</code> classes.</p>
+					<div class="card-body py-0">
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="d-flex align-items-center justify-content-center mb-2">
+									<a class="btn bg-transparent border-success-300 text-success-300 rounded-round border-2 btn-icon mr-3">
+										<i class="icon-plus3"></i>
+									</a>
+									<div>
+										<div class="font-weight-semibold">Total Game Turnament</div>
+										<span class="text-muted"><span class="badge badge-mark border-success mr-2"></span>{{ $totalgameEvent }}</span>
+									</div>
+								</div>
+								<div class="w-75 mx-auto mb-3" id="new-visitors"></div>
+							</div>
 
-				<!-- /navbar component -->
+							<div class="col-sm-4">
+								<div class="d-flex align-items-center justify-content-center mb-2">
+									<a href="#" class="btn bg-transparent border-orange-300 text-orange-300 rounded-round border-2 btn-icon mr-3">
+										<i class="icon-watch"></i>
+									</a>
+									<div>
+										<div class="font-weight-semibold">Jam</div>
+										<span class="text-muted" id="realTimeClock"> 00:00:00 </span>
+									</div>
+								</div>
+								<div class="w-75 mx-auto mb-3" id="new-sessions"></div>
+							</div>
 
+							<div class="col-sm-4">
+								<div class="d-flex align-items-center justify-content-center mb-2">
+									<a href="#" class="btn bg-transparent border-blue-300 text-blue-300 rounded-round border-2 btn-icon mr-3">
+										<i class="icon-accessibility"></i>
+									</a>
+									<div>
+										<div class="font-weight-semibold">Total online</div>
+										<span class="text-muted"><span class="badge badge-mark border-success mr-2"></span> 5,378 avg</span>
+									</div>
+								</div>
+								<div class="w-75 mx-auto mb-3" id="total-online"></div>
+							</div>
+						</div>
+					</div>
 
-				<!-- Navbar classes -->
+					<div class="chart position-relative" id="traffic-sources"></div>
+				</div>
+
 				<div class="card" >
 					<div class="card-header header-elements-inline">
-						<h2 class="card-title">Daftar Peserta </h2>
+						<h2 class="card-title"></h2>
 						<div class="header-elements">
 							<div class="list-icons">
 								<a class="list-icons-item" data-action="collapse"></a>
@@ -355,10 +443,10 @@
 							</div>
 						</div>
 					</div>
-						<div class="table-responsive">
+						<div class="table-responsive" id="right-icon-tab1">
 							<div class="container p-4">
-								<table class="table table-dark table-striped table-hover text-center align-middle">
-									<thead>
+								<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="pendaftaran-table">
+									<thead style="background-color: #4a4e69; color: #fff;">
 										<tr>
 											<th>No</th>
 											<th>Nama</th>
@@ -371,35 +459,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										@php $no = 1; @endphp
-										@if ($data)
-											@foreach ($data as $row)
-												<tr>
-													<td>{{ $no++ }}</td>
-													<td>{{ $row->nama }}</td>
-													<td>{{ $row->email }}</td>
-													<td>{{ $row->id_number }}</td>
-													<td>0{{ $row->whatsapp }}</td>
-													<td>{{ $row->alamat }}</td>
-													<td>{{ $row->status }}</td>
-													<td>
-														<div class="d-flex justify-content-center gap-2">
-															<a href="{{ route('pendaftar.show', $row->id) }}" class="btn btn-primary btn-sm me-2">
-																<i class="fas fa-eye"></i>
-															</a>
-															<a href="{{ route('pendaftaran.edit', $row->id) }}" class="btn btn-success btn-sm me-2" id="bootbox_custom">
-																<i class="fas fa-edit"></i>
-															</a>
-															<a href="javascript:void(0);" 
-																class="btn btn-danger btn-sm" 
-																onclick="confirmDelete('{{ $row->id }}')">
-																<i class="fas fa-trash"></i>
-															</a>
-														</div>
-													</td>
-												</tr>
-											@endforeach
-										@endif
+										<!-- Data akan diisi oleh DataTables -->
 									</tbody>
 								</table>
 							</div>
@@ -407,60 +467,21 @@
 				</div>
 
 				<!-- /navbar classes -->
-
-				<div class="card" >
-					<div class="card-header header-elements-inline">
-						<h2 class="card-title"> </h2>
-						<div class="header-elements">
-							<div class="list-icons">
-								<a class="list-icons-item" data-action="collapse"></a>
-								<a class="list-icons-item" data-action="reload"></a>
-								<a class="list-icons-item" data-action="remove"></a>
-							</div>
-						</div>
-					</div>
-
-				</div>
-				
-				<!-- Body classes -->
+				{{-- <!-- Body classes -->
 					<div class="card">
 						<div class="card-header header-elements-inline">
-							<h5 class="card-title">Daftar Akun</h5>
+							<h5 class="card-title"></h5>
 							<div class="header-elements">
 								<div class="list-icons">
 									<a class="list-icons-item" data-action="collapse"></a>
-									<div class="list-icons">
-										<div class="dropdown">
-											<a href="#" class="list-icons-item" data-toggle="dropdown">
-												<i class="icon-menu9"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-right">
-												<a href="{{ route('download.pdf') }}" class="dropdown-item"><i class="icon-file-pdf"></i> Export to .pdf</a>
-												<a href="{{ route('export.excel') }}" class="dropdown-item"><i class="icon-file-excel"></i> Export to .excel</a>
-											</div>
-										</div>
-									</div>
 									<a class="list-icons-item" data-action="reload"></a>
 									<a class="list-icons-item" data-action="remove"></a>
 								</div>
 							</div>
 						</div>
-						<div class="container p-4">
-							<table id="userTable" class="table table-striped table-light">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>Nama</th>
-										<th>Email</th>
-										<th>Tanggal Dibuat</th>
-										<th>Tanggal Update</th>
-									</tr>
-								</thead>
-							</table>
-						</div>
                     
 				</div>
-				<!-- /body classes -->
+				<!-- /body classes --> --}}
 
 			</div>
 			<!-- /content area -->
@@ -477,7 +498,7 @@
 
 				<div class="navbar-collapse collapse" id="navbar-footer">
 					<span class="navbar-text">
-						&copy; 2015 - 2018. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
+						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
 					</span>
 
 					<ul class="navbar-nav ml-lg-auto">
@@ -495,29 +516,73 @@
 	</div>
 	<!-- /page content -->
 
-		<script>
-				$(document).ready(function () {
-					$('#userTable').DataTable({
-						processing: true,
-						serverSide: true,
-						ajax: {
-							url: "{{ route('users.data') }}",
-							type: "GET"
-						},
-						columns: [
-							{ data: 'id', name: 'id' },
-							{ data: 'name', name: 'name' },
-							{ data: 'email', name: 'email' },
-							{ data: 'created_at', name: 'created_at' },
-							{ data: 'updated_at', name: 'updated_at' }
-						],
-						order: [[0, "asc"]] // Default sorting berdasarkan ID
-					});
-				});
-		</script>
-
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script>
+			$(document).ready(function() {
+				$('#pendaftaran-table').DataTable({
+					processing: true,
+					serverSide: true,
+					ajax: "{{ route('admin.index') }}",
+					columns: [
+						{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
+						{ data: 'nama', name: 'nama' },
+						{ data: 'email', name: 'email' },
+						{ data: 'id_number', name: 'id_number' },
+						{ data: 'alamat', name: 'alamat' },
+						{ data: 'status', name: 'status' },
+						{ data: 'game_event', name: 'game_event' },
+						{ data: 'action', name: 'action', orderable: false, searchable: false }
+					],
+					language: {
+						paginate: {
+							previous: 'Sebelumnya',
+							next: 'Selanjutnya'
+						},
+						search: 'Cari:',
+						lengthMenu: 'Tampilkan _MENU_ entri',
+						info: 'Menampilkan _START_ hingga _END_ dari _TOTAL_ entri',
+						infoEmpty: 'Menampilkan 0 hingga 0 dari 0 entri',
+						infoFiltered: '(disaring dari _MAX_ total entri)'
+					},
+					dom: '<"top"lBf>rt<"bottom"ip>',
+					buttons: [
+						{
+							text: 'Download PDF',
+							className: 'btn btn-danger',
+							action: function () {
+								window.location.href = "{{ route('export.pdf') }}";
+							}
+						}
+					],
+					initComplete: function() {
+						$('.dataTables_filter input').css({
+							'background-color': '#3e414d',
+							'color': '#ffffff',
+							'border': '1px solid #555'
+						});
+
+						$('.dataTables_length select').css({
+							'background-color': '#3e414d',
+							'color': '#ffffff',
+							'border': '1px solid #555'
+						});
+
+						$('.dt-buttons').css({ 'margin-left': '10px' });
+
+						$('#pendaftaran-table tbody tr').css({
+							'background-color': '#3e414d',
+							'color': '#ffffff'
+						});
+
+						$('#pendaftaran-table thead').css({
+							'background-color': '#4a4e69',
+							'color': '#ffffff'
+						});
+					}
+				});
+			});
+
+			// Fungsi Konfirmasi Hapus
 			function confirmDelete(id) {
 				Swal.fire({
 					title: "Yakin ingin menghapus?",
@@ -529,11 +594,36 @@
 					confirmButtonText: "Ya, hapus!",
 					cancelButtonText: "Batal"
 				}).then((result) => {
-					if (result.isConfirmed) {
-						window.location.href = "/pendaftaran/delete/" + id;
-					}
-				});
-			}
+				 if (result.isConfirmed) {
+					$.ajax({
+						url: "/pendaftaran/" + id,
+						type: "DELETE",
+						data: { _token: "{{ csrf_token() }}" },
+						success: function() {
+							Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
+							$('#pendaftaran-table').DataTable().ajax.reload();
+						},
+						error: function() {
+							Swal.fire("Error!", "Terjadi kesalahan, data gagal dihapus.", "error");
+						}
+					});
+				}
+			});
+		}
 		</script>
+
+		<script>
+			function updateClock() {
+				const now = new Date();
+				const hours = String(now.getHours()).padStart(2, '0');
+				const minutes = String(now.getMinutes()).padStart(2, '0');
+				const seconds = String(now.getSeconds()).padStart(2, '0');
+				document.getElementById('realTimeClock').textContent = `${hours}:${minutes}:${seconds}`;
+			}
+
+			setInterval(updateClock, 1000);
+			updateClock();
+		</script>
+
 </body>
 </html>

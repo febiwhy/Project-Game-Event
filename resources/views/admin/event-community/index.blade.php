@@ -17,16 +17,22 @@
 	<link href="{{asset('assets/css/components.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 
 	<!-- /global stylesheets -->
 
 	<!-- Core JS files -->
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
+	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 	<script src="{{asset('global_assets/js/main/bootstrap.bundle.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 	<!-- /core JS files -->
 
 	<!-- Theme JS files -->
@@ -39,13 +45,14 @@
 
 <body>
 
-	<!-- Main navbar role admin-->
+	<!-- Main navbar role dmin-->
 	<div class="navbar navbar-expand-md navbar-light navbar-static">
-		<div class="navbar-brand">
-			<a href="index.html" class="d-inline-block">
-				<img src="{{asset('global_assets/images/logo_light.png')}}" alt="">
-			</a>
-		</div>
+		<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney </span>
+				</a>
+			</div>
 
 		<div class="d-md-none">
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
@@ -200,6 +207,9 @@
 			</ul>
 		</div>
 	</div>
+	{{-- /Main Navbar Role Admin --}}
+
+
 
 	<!-- /main navbar -->
 
@@ -235,9 +245,15 @@
 							</div>
 
 							<div class="media-body">
-								<div class="media-title font-weight-semibold">Victoria Baker</div>
+								<div class="media-title font-weight-semibold">
+									@if (auth()->check())
+										{{ auth()->user()->name }}
+									@else
+										Guest
+									@endif
+								</div>
 								<div class="font-size-xs opacity-50">
-									<i class="icon-pin font-size-sm"></i> &nbsp;Santa Ana, CA
+									<i class="icon-pin font-size-sm"></i> &nbsp;Aktif 
 								</div>
 							</div>
 
@@ -264,15 +280,32 @@
 									<span class="d-block font-weight-normal opacity-50"></span>
 								</span>
 							</a>
+						<p></p>
+							<hr>
 						</li>
 						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>User Page</span></a>
+							<a href="#" class="nav-link"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
+							<ul class="nav nav-group-sub" data-submenu-title="Sidebars">
+								<li class="nav-item nav-item-submenu">
+									<a href="#" class="nav-link"> Admin </a>
+									<ul class="nav nav-group-sub">
+										<li class="nav-item"><a href="{{route('roles.create')}}" class="nav-link active"><i class="icon-plus22 mr-3"></i>Tambah Role</a></li>
+									</ul>
+								</li>
+								<li class="nav-item">
+									<a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
 
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
-								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnament </a></li>
-								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link active"> Komunitas </a></li>
-								<li class="nav-item"><a href="../../../../layout_6/LTR/dark/full/index.html" class="nav-link disabled">Coming soon <span class="badge bg-transparent align-self-center ml-auto">Coming soon</span></a></li>
+								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
+								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
+								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
+								<li class="nav-item"><a href="" class="nav-link disabled">Coming soon <span class="badge bg-transparent align-self-center ml-auto">Coming soon</span></a></li>
 							</ul>
 						</li>
 						<!-- /main -->
@@ -294,7 +327,8 @@
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
-						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Single Navbar</span> - Top Static</h4>
+						<h4><img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
+							<span class="font-weight-semibold">Halaman</span> - Event Komunitas</h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 
@@ -316,31 +350,15 @@
 				<!-- Info alert -->
 				<div class="alert alert-info bg-light text-default alert-styled-left alert-arrow-left alert-dismissible">
 					<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-					<h6 class="alert-heading font-weight-semibold mb-1">Static top navbar</h6>
-					By default, top navbar element is positioned according to the normal flow of the document: immediate children of the <code>&lt;body></code> container and <strong>before</strong> <code>.page-content</code> container.
+					<h6 class="alert-heading font-weight-semibold mb-1">
+						@if (auth()->check())
+							Selamat Datang , {{ auth()->user()->name }}
+						@else
+							Guest
+						@endif
+					</h6>
 			    </div>
 			    <!-- /info alert -->
-
-
-				<!-- Navbar component -->
-				<div class="card">
-					<div class="card-header header-elements-inline">
-						<h5 class="card-title">Navbar component</h5>
-						<div class="header-elements">
-							<div class="list-icons">
-		                		<a class="list-icons-item" data-action="collapse"></a>
-		                		<a class="list-icons-item" data-action="reload"></a>
-		                		<a class="list-icons-item" data-action="remove"></a>
-		                	</div>
-	                	</div>
-					</div>
-
-					<div class="card-body">
-						<p class="mb-3">Navbar is a navigation component, usually displayed on top of the page and includes brand logo, navigation, notifications, user menu, language switcher and other components. By default, navbar has <code>top static</code> position and is a direct child of <code>&lt;body></code> container. Navbar toggler appears next to the brand logo on small screens and can be easily adjusted with <code>display</code> utility classes. You can also control responsive collapsing breakpoint directly in the markup. Navbar component is responsive by default and requires <code>.navbar</code> and <code>.navbar-expand{-sm|-md|-lg|-xl}</code> classes.</p>
-
-				<!-- /navbar component -->
-
-
 				<!-- Navbar classes -->
 				<div class="card" >
 					<div class="card-header header-elements-inline">
@@ -355,14 +373,14 @@
 					</div>
 
 				<div class="container mr-4">
-					<a href="{{ route('event-community.create') }}" class="btn btn-purple btn-sm fw-bold mb-3" 
-						style="background-color: #6d28d9; color: white;">
-						Tambah Data
-					</a>
 					<div class="table-responsive">
 						<div class="container p-4">
-						<table class="table table-dark table-striped table-hover">
-							<thead>
+						<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="komunitas-table">
+							<thead style="background-color: #4a4e69; color: #fff;">
+								<a href="{{ route('event-community.create') }}" class="btn btn-purple btn-sm fw-bold mb-3" 
+										style="background-color: #3f1485; color: white;"><i class="icon-plus22 mr-3"></i>
+										Tambah Komunitas
+									</a>
 								<tr>
                                     <th>No</th>
                                     <th>Nama Komunitas</th>
@@ -372,53 +390,7 @@
 								</tr>
 							</thead>
 							<tbody>
-									@foreach($event_communitys as $community)
-										<tr>
-											<td>{{ $loop->iteration }}</td>
-                                            <td>{{ $community->name_community }}</td>
-                                            <td>{{ $community->gameEvent->name ?? '-' }}</td>
-                                            <td>{{ $community->owner->name ?? '-' }}</td>
-											<td class="text-center">
-												<div class="d-flex justify-content-center">
-													<!-- Tombol Show -->
-													<a href="{{ route('event-community.show', $community->id) }}" class="btn btn-primary btn-sm me-2">
-														<i class="fas fa-eye"></i>
-													</a>
-
-													<!-- Tombol Edit -->
-													<a href="{{ route('event-community.edit', $community->id) }}" class="btn btn-success btn-sm me-2">
-														<i class="fas fa-edit"></i>
-													</a>
-
-													<!-- Tombol Hapus -->
-													<form action="{{ route('event-community.destroy', $community->id) }}" method="POST" id="delete-form-{{ $community->id }}">
-														@csrf
-														@method('DELETE')
-														{{-- <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus Bidang ini?')">
-															<i class="fas fa-trash"></i>
-														</button> --}}
-														<a href="javascript:void(0);" 
-															class="btn btn-danger btn-sm" 
-															onclick="confirmDelete('{{ $community->id }}')">
-															<i class="fas fa-trash"></i>
-														</a>
-													</form>
-
-													<!-- Dropdown Menu -->
-													<div class="dropdown ms-2">
-														<a href="#" class="list-icons-item" data-toggle="dropdown">
-															<i class="icon-menu9"></i>
-														</a>
-														<div class="dropdown-menu dropdown-menu-right">
-															<a href="#" class="dropdown-item"><i class="icon-file-pdf"></i> Export to .pdf</a>
-															<a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
-															<a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
-														</div>
-													</div>
-												</div>
-											</td>
-										</tr>
-									@endforeach
+								{{-- di isi t --}}
 							</tbody>
 						</table>
 					</div>
@@ -426,55 +398,57 @@
 				</div>
 
 				</div>
-				<!-- Body classes -->
-				<div class="card">
-					<div class="card-header header-elements-inline">
-						<h5 class="card-title">Body classes</h5>
-						<div class="header-elements">
-							<div class="list-icons">
-								<a class="list-icons-item" data-action="collapse"></a>
-								<a class="list-icons-item" data-action="reload"></a>
-								<a class="list-icons-item" data-action="remove"></a>
-							</div>
-						</div>
-					</div>	
-				</div>
-				<!-- /body classes -->
 			</div>
 			<!-- /content area -->
 
 
-			<!-- Footer -->
-			<div class="navbar navbar-expand-lg navbar-light">
-				<div class="text-center d-lg-none w-100">
-					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
-						<i class="icon-unfold mr-2"></i>
-						Footer
-					</button>
-				</div>
+			{{-- Footer User --}}
+				@if (optional(auth()->user())->hasAnyRole(['user']))
+					<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
+						<div class="navbar-collapse collapse">
+							<span class="navbar-text">
+								&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
+							</span>
+							<ul class="navbar-nav ml-xl-auto">
+								<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Help Center</a></li>
+								<li class="nav-item"><a href="#" class="navbar-nav-link">Policy</a></li>
+							</ul>
+						</div>
+					</div>
+				@endif
+			{{-- Footer User --}}
+			
+			<!-- Footer admin-->
+				@if (optional(auth()->user())->hasAnyRole(['admin']))
+					<div class="navbar navbar-expand-lg navbar-light">
+						<div class="text-center d-lg-none w-100">
+							<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
+								<i class="icon-unfold mr-2"></i>
+								Footer
+							</button>
+						</div>
 
-				<div class="navbar-collapse collapse" id="navbar-footer">
-					<span class="navbar-text">
-						&copy; 2015 - 2018. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
-					</span>
+						<div class="navbar-collapse collapse" id="navbar-footer">
+							<span class="navbar-text">
+								&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
+							</span>
 
-					<ul class="navbar-nav ml-lg-auto">
-						<li class="nav-item"><a href="https://kopyov.ticksy.com/" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
-						<li class="nav-item"><a href="http://demo.interface.club/limitless/docs/" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
-						<li class="nav-item"><a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
-					</ul>
-				</div>
-			</div>
-			<!-- /footer -->
+							<ul class="navbar-nav ml-lg-auto">
+								<li class="nav-item"><a href="https://kopyov.ticksy.com/" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
+								<li class="nav-item"><a href="http://demo.interface.club/limitless/docs/" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
+								<li class="nav-item"><a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
+							</ul>
+						</div>
+					</div>
+				@endif
+			<!-- /footer admin -->
 
 		</div>
 		<!-- /main content -->
 
 	</div>
 	<!-- /page content -->
-	@else
-	<p>Anda tidak memiliki izin untuk mengakses halaman ini.</p>
-	@endif
+
 
 	<script>
     $(document).ready(function() {
@@ -510,27 +484,104 @@
     });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function confirmDelete(id) {
-        Swal.fire({
-            title: "Yakin ingin menghapus?",
-            text: "Data yang dihapus tidak bisa dikembalikan!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Ya, hapus!",
-            cancelButtonText: "Batal"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // window.location.href = "/event-community.destroy" + id;
-				document.getElementById('delete-form-' + id).submit();
-            }
-        });
-    }
-</script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			$(document).ready(function() {
+				$('#komunitas-table').DataTable({
+					processing: true,
+					serverSide: true,
+					ajax: "{{ route('event-community.index') }}",
+					columns: [
+						{ data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+						{ data: 'name_community', name: 'name_community' },
+						{ data: 'game_event', name: 'game_event' },
+						{ data: 'owner', name: 'owner' },
+						{ data: 'action', name: 'action', orderable: false, searchable: false }
+					],
+					language: {
+						paginate: {
+							previous: 'Sebelumnya',
+							next: 'Selanjutnya'
+						},
+						search: 'Cari:',
+						lengthMenu: 'Tampilkan _MENU_ entri',
+						info: 'Menampilkan _START_ hingga _END_ dari _TOTAL_ entri',
+						infoEmpty: 'Menampilkan 0 hingga 0 dari 0 entri',
+						infoFiltered: '(disaring dari _MAX_ total entri)'
+					},
+					dom: '<"top"lBf>rt<"bottom"ip>',
+					buttons: [
+						{
+							text: 'Download PDF',
+							className: 'btn btn-danger',
+							action: function () {
+								window.location.href = "{{ route('export.pdf') }}";
+							}
+						}
+					],
+					initComplete: function() {
+						$('.dataTables_filter input').css({
+							'background-color': '#3e414d',
+							'color': '#ffffff',
+							'border': '1px solid #555'
+						});
 
+						$('.dataTables_length select').css({
+							'background-color': '#3e414d',
+							'color': '#ffffff',
+							'border': '1px solid #555'
+						});
+
+						$('.dt-buttons').css({ 'margin-left': '10px' });
+
+						$('#komunitas-table tbody tr').css({
+							'background-color': '#3e414d',
+							'color': '#ffffff'
+						});
+
+						$('#komunitas-table thead').css({
+							'background-color': '#4a4e69',
+							'color': '#ffffff'
+						});
+					}
+				});
+			});
+
+			// Fungsi Konfirmasi Hapus
+			function confirmDelete(id) {
+				Swal.fire({
+					title: "Yakin ingin menghapus?",
+					text: "Data yang dihapus tidak bisa dikembalikan!",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#d33",
+					cancelButtonColor: "#3085d6",
+					confirmButtonText: "Ya, hapus!",
+					cancelButtonText: "Batal"
+				}).then((result) => {
+				 if (result.isConfirmed) {
+					$.ajax({
+						url: "/event-community/" + id,
+						type: "DELETE",
+						data: { _token: "{{ csrf_token() }}" },
+						success: function() {
+							Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
+							$('#komunitas-table').DataTable().ajax.reload();
+						},
+						error: function() {
+							Swal.fire("Error!", "Terjadi kesalahan, data gagal dihapus.", "error");
+						}
+					});
+				}
+			});
+		}
+		</script>
+
+
+
+	@else
+	<p>Anda tidak memiliki izin untuk mengakses halaman ini.</p>
+	@endif
 
 </body>
 </html>

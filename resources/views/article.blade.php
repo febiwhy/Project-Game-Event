@@ -102,56 +102,60 @@
 <body >
 
 	<!-- Main navbar -->
-	<div class="navbar navbar-dark navbar-expand-xl">
-		<div class="navbar-brand">
-			<a href="#" class="d-inline-block">
-				<img src="{{asset('global_assets/images/logo_light.png')}}" alt="">
-			</a>
-		</div>
+	{{-- Main navbar role user --}}
+		<div class="navbar navbar-expand-md navbar-light navbar-static">
+			<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney</span>
+				</a>
+			</div>
 
-		<div class="d-xl-none">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
-				<i class="icon-grid3"></i>
-			</button>
-		</div>
 
-		<div class="navbar-collapse collapse" id="navbar-demo1-mobile">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link">Home</a></li>
+			<div class="d-md-none">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
+					<i class="icon-tree5"></i>
+				</button>
+			</div>
 
-				<li class="nav-item dropdown ">
-					<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-paragraph-justify3"></i></a>
-					<div class="dropdown-menu dropdown-menu-right ">
-						<a href="#" class="dropdown-item">
-							<i class="mi-games fa-sm mr-2"></i>Event</a>
-						<a href="{{route('article')}}" class="dropdown-item">
-							<i class="mi-web fa-sm mr-2"></i>Artikel</a>
-						<a href="{{route('contact.index')}}" class="dropdown-item">
-							<i class="icon-android"></i> Hubungi Kami </a>
-						<a href="#" class="dropdown-item disabled">
-							<i class="icon-alarm fa-sm mr-2 "></i>Akan Datang</a>
-					</div>
-				</li>
-			</ul>
+			<div class="collapse navbar-collapse" id="navbarmobile">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link">Home</a></li>
+					@if (optional(auth()->user())->hasAnyRole(['admin']))
+						<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
+					@endif
+					<li class="nav-item dropdown ">
+						<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-paragraph-justify3"></i></a>
+						<div class="dropdown-menu dropdown-menu-right ">
+							<a href="#" class="dropdown-item">
+								<i class="mi-games fa-sm mr-2"></i>Event</a>
+							<a href="{{route('article')}}" class="dropdown-item"><i class="mi-web fa-sm mr-2"></i>Artikel</a>
+								<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Hubungi Kami </a>
+							<a href="#" class="dropdown-item disabled" id="spinner-light">
+								<i class="icon-spinner spinner mr-2"></i>Akan Datang</a>
+						</div>
+					</li>
+				</ul>
 
-			<span class="navbar-text ml-xl-3">
-				<span class="badge bg-success">Online</span>
-			</span>
+				<span class="navbar-text ml-xl-3">
+					<span class="badge bg-success">Online</span>
+				</span>
 
-			<ul class="navbar-nav ml-xl-auto">
-				<li class="nav-item">
-					<a href="#" class="navbar-nav-link">
-						<i class="icon-bell2"></i>
-						<span class="d-xl-none ml-2">Notifications</span>
-						<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a href="#" class="navbar-nav-link">
-						<i class="icon-bubbles4"></i>
-						<span class="d-xl-none ml-2">Messages</span>
-					</a>
-				</li>
+				<ul class="navbar-nav ml-xl-auto">
+					<li class="nav-item">
+						<a href="#" class="navbar-nav-link">
+							<i class="icon-bell2"></i>
+							<span class="d-xl-none ml-2">Notifications</span>
+							<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="navbar-nav-link">
+							<i class="icon-bubbles4"></i>
+							<span class="d-xl-none ml-2">Messages</span>
+						</a>
+					</li>
+
 				<li class="nav-item dropdown dropdown-user">
 					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
 						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
@@ -175,9 +179,11 @@
 						@endif
 					</div>
 				</li>
-			</ul>
+
+				</ul>
+			</div>
 		</div>
-	</div>
+	{{-- /Main Navbar role user --}}
 	<!-- /main navbar -->
 
 	<!-- Page content -->
@@ -266,10 +272,10 @@
 			<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
 				<div class="navbar-collapse collapse">
 					<span class="navbar-text">
-						&copy; 2015 - 2025. <a href="#">Event Game</a>
+						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
 					</span>
 					<ul class="navbar-nav ml-xl-auto">
-						<li class="nav-item"><a href="#" class="navbar-nav-link">Help Center</a></li>
+						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Help Center</a></li>
 						<li class="nav-item"><a href="#" class="navbar-nav-link">Policy</a></li>
 					</ul>
 				</div>

@@ -41,25 +41,6 @@ class LoginController extends Controller
         return view('auth.register');
     }
 
-    // public function registerpost(Request $request)
-    // {
-    //     $request->validate([
-    //         'name' => 'required',
-    //         'email' => 'required|email|unique:users',
-    //         'password' => 'required|min:6',
-    //     ]);
-
-    //     $data = $request->all();
-    //     $user = User::create([
-    //         'name' => $data['name'],
-    //         'email' => $data['email'],
-    //         'password' => bcrypt($data['password'])
-    //     ]);
-    //     $user->assignRole('user');
-
-    //     return redirect(route(''))->withSuccess('Anda telah masuk');
-    // }
-
     public function registerpost(Request $request)
     {
         $request->validate([
@@ -92,6 +73,6 @@ class LoginController extends Controller
         Session::flush();
         Auth::logout();
 
-        return Redirect(url('/'));
+        return Redirect(url('/landing'));
     }
 }

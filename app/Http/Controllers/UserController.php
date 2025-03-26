@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Barryvdh\DomPDF\PDF;
 use App\Models\GameEvent;
 use App\Models\Pendaftaran;
@@ -38,54 +39,18 @@ class UserController extends Controller
         return $pdf->download('data_pendaftaran.pdf');
     }
 
-    // public function datatable(Request $request)
+    // public function admin(Request $request)
     // {
-    //     if ($request->ajax()) {
-    //         $columns = ['nama', 'email', 'id_number', 'alamat', 'status', 'game_event_name'];
-
-    //         $limit  = $request->input('length');
-    //         $start  = $request->input('start');
-    //         $order  = $columns[$request->input('order.0.column')];
-    //         $dir    = $request->input('order.0.dir');
-    //         $search = $request->input('search.value');
-
-    //         $query = Pendaftaran::with('gameEvent');
-
-    //         if (!empty($search)) {
-    //             $query->where(function ($q) use ($search) {
-    //                 $q->where('pendaftran.name', 'like', "%{$search}%")                    
-    //                 ->orWhere('pendaftran.email', 'like', "%{$search}%")                    
-    //                 ->orWhere('pendaftran.id_number', 'like', "%{$search}%")                    
-    //                 ->orWhere('pendaftran.alamat', 'like', "%{$search}%")                    
-    //                 ->orWhere('pendaftran.status', 'like', "%{$search}%")                    
-    //                 ->orWhereHas('gameEvent', function ($q) use ($search) {
-    //                     $q->where('name', 'like', "%{$search}%");
-    //                 });
-    //             });
-    //         }
-
-    //         $filtercount = $query->count();
-
-    //         $pendaftaran = $query->orderBy($order, $dir)
-    //             ->offset($start)
-    //             ->limit($limit)
-    //             ->get()
-    //             ->map(function ($item, $index) use ($start) {
-    //                 $item->no = $start + $index + 1;
-    //                 $item->game_event_name = $item->gameEvent->name ?? '-';
-    //                 return $item;
-    //             });
-
-    //         $totalCount = Pendaftaran::count();
-
-    //         return response()->json([
-    //             'draw'              => intval($request->input('draw')),
-    //             'recordsTotal'      => $totalCount,
-    //             'recordsFiltered'   => $filtercount,
-    //             'data'              => $pendaftaran
-    //         ]);
-    //     }
+       
+    //     $admin = User::role('admin')->get();
+    //     return view('admin.index', compact('admin'));
     // }
+    // public function user(Request $request)
+    // {
+    //     $users = User::role('user')->get();
+    //     return view('admin.user.index', compact('users'));
+    // }
+
 }
 
 

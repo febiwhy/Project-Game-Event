@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
@@ -30,8 +31,7 @@ use App\Http\Controllers\Email\TurnamentReportMailController;
 // Route::get('/', function () {
     //     return view('w');
     // });
-    
-    // Route::get('/landing', [EventController::class, 'landing'])->name('landing');
+
     
     // pendaftaran
     Route::get('/pendaftar/{id}', [PendaftaranController::class, 'pendaftaran'])->where('id', '[0-9]+')->name('pendaftaran');
@@ -51,6 +51,12 @@ Route::post('register-post', [LoginController::class, 'registerpost'])->name('re
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+
+    Route::resource('account',AccountController::class);
+
+    Route::get('/roles/create', [AccountController::class, 'createRole'])->name('roles.create');
+    Route::post('/roles/store', [AccountController::class, 'storeRole'])->name('roles.store');
+
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     // Export PDF
     Route::get('/download-pdf', [AdminController::class, 'getpdf'])->name('download.pdf');    
@@ -66,6 +72,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/pendaftaran/update/{id}', [EventController::class, 'updatedata'])->name('pendaftaran.update');
     
     // delete data
+    Route::get('/pendaftaran/delete/{id}', [EventController::class, 'delete'])->name('pendaftarandelete');
     Route::get('/pendaftaran/delete/{id}', [EventController::class, 'delete'])->name('pendaftarandelete');
 });
 
@@ -85,7 +92,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/article', [EventController::class, 'article'])->name('article');
 });
 
-Route::get('/', [UserController::class, 'index'])->name('landing');
+Route::get('/landing', [UserController::class, 'index'])->name('landing');
 Route::get('/export-pdf', [UserController::class, 'exportpdf'])->name('export.pdf');
 Route::get('/turnament', [EventController::class, 'turnament'])->name('turnament');
 

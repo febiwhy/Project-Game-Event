@@ -18,6 +18,8 @@
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="{{asset('assets/css/game_event.css')}}">
 	<link rel="stylesheet" href="{{ asset('assets/css/datatables.css') }}">
+	
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
 	<!-- /global stylesheets -->
 
@@ -33,6 +35,19 @@
 	<script src="{{asset('assets/js/app.js')}}"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+	<script src="{{asset('global_assets/js/plugins/loaders/progressbar.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/components_progress.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/media/fancybox.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/content_cards_content.js')}}"></script>
+
 	<!-- /theme JS files -->
 
 	<style>
@@ -159,12 +174,12 @@
 
 	<!-- Main navbar -->
 	<div class="navbar navbar-expand-md navbar-light navbar-static">
-		<div class="navbar-brand">
-			<a href="#" class="d-inline-block">
-				<img src="{{asset('global_assets/images/logo_light.png')}}" alt="">
+		<div class="navbar-brand" style="display: flex; align-items: center;">
+			<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+				<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+				<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney</span>
 			</a>
 		</div>
-
 
 
 		<div class="d-md-none">
@@ -175,7 +190,7 @@
 
 		<div class="collapse navbar-collapse" id="navbarmobile">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a href="" class="navbar-nav-link">Home</a></li>
+				<li class="nav-item"><a href="" class="navbar-nav-link active">Home</a></li>
 				 @if (optional(auth()->user())->hasAnyRole(['admin']))
 					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
 				@endif
@@ -184,11 +199,10 @@
 					<div class="dropdown-menu dropdown-menu-right ">
 						<a href="#" class="dropdown-item">
 							<i class="mi-games fa-sm mr-2"></i>Event</a>
-						<a href="{{route('article')}}" class="dropdown-item">
-							<i class="mi-web fa-sm mr-2"></i>Artikel</a>
+						<a href="{{route('article')}}" class="dropdown-item"><i class="mi-web fa-sm mr-2"></i>Artikel</a>
 							<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Hubungi Kami </a>
-						<a href="#" class="dropdown-item disabled">
-							<i class="icon-alarm fa-sm mr-2 "></i>Akan Datang</a>
+						<a href="#" class="dropdown-item disabled" id="spinner-light">
+							<i class="icon-spinner spinner mr-2"></i>Akan Datang</a>
 					</div>
 				</li>
 			</ul>
@@ -251,7 +265,9 @@
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
-						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Event Game</span></h4>
+						<h4>
+						<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 15px; width: auto; display: inline-block; vertical-align: middle;">
+							<span class="font-weight-semibold"></span></h4>
 					</div>
 				</div>
 			</div>
@@ -311,7 +327,69 @@
 					</div>
 				</div>
 				
-				<div class="container my-4 p-4">
+					<!-- Multiple titles -->
+					<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+						@foreach($event_communitys as $community)
+						<div class="col mb-3">
+							<div class="card h-100 shadow" style="background-color: #1e293b; color: #e2e8f0; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">
+								<div class="card-header d-flex justify-content-between align-items-center" style="background-color: #334155; border-bottom: 1px solid #475569;">
+									<span><i class="icon-user-check mr-2"></i> <a >	{{ $community->owner?->name ?? 'Tidak ada' }} </a></span>
+									<span class="text-muted"> {{ $community->created_at?->format('d M Y') ?? 'Tidak tersedia' }} </span>
+								</div>
+								
+								<div class="card-img-actions">
+									@if ($community->gameEvent)
+									<div class="text-center">
+										<img src="{{ asset($community->gameEvent->thumbnail) }}" alt="" height="250px" width="250px">
+									</div>
+									@endif
+									{{-- <img class="img-fluid" src="{{asset('global_assets/images/placeholders/placeholder.jpg')}}" alt=""> --}}
+									<div class="card-img-actions-overlay">
+										@if ($community->gameEvent)
+										<a href="{{ asset($community->gameEvent->thumbnail) }}" class="btn btn-outline bg-white text-white border-white border-2" data-popup="lightbox">
+											Preview
+										</a>
+										@endif
+										<a href="{{ route('event-community.show', $community->id) }}" class="btn btn-outline bg-white text-white border-white border-2 ml-2">
+											Details
+										</a>
+									</div>
+								</div>
+								<div class="card-footer d-flex justify-content-between border-top-0 pb-0">
+									<span class="text-muted likes-count" data-id="{{ $community->id }}"> 0 Suka</span>
+									<ul class="list-inline list-inline-condensed mb-0">
+										<li class="list-inline-item">
+											<a class="text-indigo-400"><i class="icon-thumbs-up2 like-btn" data-id="{{ $community->id }}" style="cursor: pointer; color: #6c757d;"></i></a>
+										</li>
+										<li class="list-inline-item ml-3">
+											<a class="text-muted"><i class="icon-flag4"></i></a>
+										</li>
+									</ul>
+								</div>
+								
+								<div class="card-body">
+									<h6 class="card-title font-weight-semibold"> {{ $community->name_community }} </h6>
+									<p class="card-text">{{ $community->description ?? 'Tidak ada deskripsi' }}</p>
+								</div>
+
+								<div class="card-footer border-light d-flex justify-content-between">
+									<span class="text-muted"></span>
+									<span>
+										<i class="icon-star-full2 font-size-base text-warning"></i>
+										<i class="icon-star-full2 font-size-base text-warning"></i>
+										<i class="icon-star-full2 font-size-base text-warning"></i>
+										<i class="icon-star-full2 font-size-base text-warning"></i>
+										<i class="icon-star-full2 font-size-base text-warning"></i>
+										<span class="text-muted ml-2"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						@endforeach
+					</div>
+					<!-- /multiple titles -->
+
+				{{-- <div class="container my-4 p-4">
 					<div class="row g-3">
 						<div class="d-flex flex-wrap gap-3">
 						@foreach($event_communitys as $community)
@@ -339,7 +417,7 @@
 						@endforeach
 					</div>
 					</div>
-				</div>
+				</div> --}}
 			</div>
 			
 
@@ -348,7 +426,6 @@
 					<h2 class="card-title">Data Peserta </h2>
 						<div class="header-elements">
 							<div class="list-icons">
-								<a href="{{ route('export.pdf') }}"><i class="fas icon-file-pdf text-white"></i></a>
 								<a class="list-icons-item" data-action="collapse"></a>
 								<a class="list-icons-item" data-action="reload"></a>
 								<a class="list-icons-item" data-action="remove"></a>
@@ -357,8 +434,8 @@
 					</div>
 
 				<div class="container p-4">
-						<table class="display" id="pendaftaran-table">
-							<thead>
+						<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="pendaftaran-table">
+							<thead style="background-color: #4a4e69; color: #fff;">
 								<tr>
 									<th>No</th>
 									<th>Nama</th>
@@ -380,10 +457,10 @@
 			<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
 				<div class="navbar-collapse collapse">
 					<span class="navbar-text">
-						&copy; 2015 - 2025. <a href="#">Event Game</a>
+						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
 					</span>
 					<ul class="navbar-nav ml-xl-auto">
-						<li class="nav-item"><a href="#" class="navbar-nav-link">Help Center</a></li>
+						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Help Center</a></li>
 						<li class="nav-item"><a href="#" class="navbar-nav-link">Policy</a></li>
 					</ul>
 				</div>
@@ -398,32 +475,32 @@
 
 			<script>
 				document.addEventListener("DOMContentLoaded", function () {
-					const followButtons = document.querySelectorAll(".follow-btn");
+					const likeButtons = document.querySelectorAll(".like-btn");
 
-					followButtons.forEach(button => {
+					likeButtons.forEach(button => {
 						button.addEventListener("click", function () {
 							const id = this.getAttribute("data-id");
-							const followersCount = document.querySelector(`.followers-count[data-id='${id}']`);
+							const likesCount = document.querySelector(`.likes-count[data-id='${id}']`);
 
-							let followers = parseInt(followersCount.innerText);
+							let likes = parseInt(likesCount.innerText);
 
-							if (this.classList.contains("btn-primary")) {
-								followers++;
-								this.innerText = "DIIKUTI";
-								this.classList.remove("btn-primary");
-								this.classList.add("btn-secondary");
+							if (this.classList.contains("liked")) {
+								// Kalau sudah like, jadi unlike
+								likes--;
+								this.classList.remove("liked");
+								this.style.color = "#6c757d"; // Warna netral
 							} else {
-								followers--;
-								this.innerText = "IKUTI";
-								this.classList.remove("btn-secondary");
-								this.classList.add("btn-primary");
+								// Kalau belum like, jadi like
+								likes++;
+								this.classList.add("liked");
+								this.style.color = "#4caf50"; // Warna hijau saat like
 							}
 
-							followersCount.innerText = followers;
+							// Update tampilan jumlah like
+							likesCount.innerText = likes;
 						});
 					});
 				});
-
 			</script>
 
 			<script>
@@ -451,9 +528,50 @@
 							info: 'Menampilkan _START_ hingga _END_ dari _TOTAL_ entri',
 							infoEmpty: 'Menampilkan 0 hingga 0 dari 0 entri',
 							infoFiltered: '(disaring dari _MAX_ total entri)'
+						},
+							dom: '<"top"lBf>rt<"bottom"ip>',
+        					buttons: [
+								{  text: 'Download PDF',
+									className: 'btn btn-danger',
+									action: function (e, dt, node, config) {
+										window.location.href = "{{ route('export.pdf') }}";
+									}
+								}
+							],
+						initComplete: function() {
+							// Styling input pencarian
+							$('.dataTables_filter input').css({
+								'background-color': '#3e414d',
+								'color': '#ffffff',
+								'border': '1px solid #555'
+							});
+
+							// Styling dropdown jumlah entri
+							$('.dataTables_length select').css({
+								'background-color': '#3e414d',
+								'color': '#ffffff',
+								'border': '1px solid #555'
+							});
+
+							$('.dt-buttons').css({
+								'margin-left': '10px' // Geser tombol PDF ke kanan
+							});
+
+							// Styling tabel (baris dan teks)
+							$('#pendaftaran-table tbody tr').css({
+								'background-color': '#3e414d',
+								'color': '#ffffff'
+							});
+
+							// Styling header tabel
+							$('#pendaftaran-table thead').css({
+								'background-color': '#4a4e69',
+								'color': '#ffffff'
+							});
 						}
 					});
 				});
+
 			</script>
 	</body>
 </html>

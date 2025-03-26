@@ -1,92 +1,543 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ isset($gameEvent) ? 'Edit Game Event' : 'Tambah Game Event' }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-        @if (optional(auth()->user())->hasAnyRole(['admin']))
-</head>
-<body class="bg-dark text-white">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Dashboard Admin</title>
 
-<div class="container mt-5">
-    <div class="card bg-secondary text-white shadow-lg p-4">
+	<!-- Global stylesheets -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="{{asset('global_assets/css/icons/icomoon/styles.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('global_assets/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('assets/css/bootstrap_limitless.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('assets/css/layout.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('assets/css/components.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
+	
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+	<!-- /global stylesheets -->
 
-        <form action="{{ isset($game_event) ? route('game-event.update', $game_event->id) : route('game-event.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @if (isset($game_event))
-                @method('PUT')
-            @endif
+	<!-- Core JS files -->
+	<script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/main/bootstrap.bundle.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/velocity/velocity.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/velocity/velocity.ui.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_examples.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_ui.js')}}"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+	<script src="{{asset('global_assets/js/plugins/notifications/bootbox.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/forms/selects/select2.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/components_modals.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/ui/prism.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/animations_css3.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/form_layouts.js')}}"></script>
+	<script src="{{asset('assets/js/app.js')}}"></script>
+	<!-- /theme JS files -->
+
+	</head>
+	<body>
+	<!-- Main navbar -->
+	@if (optional(auth()->user())->hasAnyRole(['admin']))
+		<div class="navbar navbar-expand-md navbar-light navbar-static">
+			<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney </span>
+				</a>
+			</div>
+
+			<div class="d-md-none">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+					<i class="icon-tree5"></i>
+				</button>
+				<button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+					<i class="icon-paragraph-justify3"></i>
+				</button>
+			</div>
+
+			<div class="collapse navbar-collapse" id="navbar-mobile">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
+							<i class="icon-paragraph-justify3"></i>
+						</a>
+					</li>
+				</ul>
+
+				<span class="badge bg-success my-3 my-md-0 ml-md-3 mr-md-auto">Online</span>
+
+				<ul class="navbar-nav">
+					<li class="nav-item dropdown">
+						<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
+							<i class="icon-bubbles4"></i>
+							<span class="d-md-none ml-2">Messages</span>
+							<span class="badge badge-pill bg-warning-400 ml-auto ml-md-0">2</span>
+						</a>
+						
+						<div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
+							<div class="dropdown-content-header">
+								<span class="font-weight-semibold">Messages</span>
+								<a href="#" class="text-default"><i class="icon-compose"></i></a>
+							</div>
+
+							<div class="dropdown-content-body dropdown-scrollable">
+								<ul class="media-list">
+									<li class="media">
+										<div class="mr-3 position-relative">
+											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
+										</div>
+
+										<div class="media-body">
+											<div class="media-title">
+												<a href="#">
+													<span class="font-weight-semibold text-white">James Alexander</span>
+													<span class="text-muted float-right font-size-sm">04:58</span>
+												</a>
+											</div>
+
+											<span class="text-muted">who knows, maybe that would be the best thing for me...</span>
+										</div>
+									</li>
+
+									<li class="media">
+										<div class="mr-3 position-relative">
+											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
+										</div>
+
+										<div class="media-body">
+											<div class="media-title">
+												<a href="#">
+													<span class="font-weight-semibold text-white">Margo Baker</span>
+													<span class="text-muted float-right font-size-sm">12:16</span>
+												</a>
+											</div>
+
+											<span class="text-muted">That was something he was unable to do because...</span>
+										</div>
+									</li>
+
+									<li class="media">
+										<div class="mr-3">
+											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
+										</div>
+										<div class="media-body">
+											<div class="media-title">
+												<a href="#">
+													<span class="font-weight-semibold text-white">Jeremy Victorino</span>
+													<span class="text-muted float-right font-size-sm">22:48</span>
+												</a>
+											</div>
+
+											<span class="text-muted">But that would be extremely strained and suspicious...</span>
+										</div>
+									</li>
+
+									<li class="media">
+										<div class="mr-3">
+											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
+										</div>
+										<div class="media-body">
+											<div class="media-title">
+												<a href="#">
+													<span class="font-weight-semibold text-white">Beatrix Diaz</span>
+													<span class="text-muted float-right font-size-sm">Tue</span>
+												</a>
+											</div>
+
+											<span class="text-muted">What a strenuous career it is that I've chosen...</span>
+										</div>
+									</li>
+
+									<li class="media">
+										<div class="mr-3">
+											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
+										</div>
+										<div class="media-body">
+											<div class="media-title">
+												<a href="#">
+													<span class="font-weight-semibold text-white">Richard Vango</span>
+													<span class="text-muted float-right font-size-sm">Mon</span>
+												</a>
+											</div>
+											
+											<span class="text-muted">Other travelling salesmen live a life of luxury...</span>
+										</div>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropdown-content-footer justify-content-center p-0">
+								<a href="#" class="text-muted w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
+							</div>
+						</div>
+					</li>
+						<li class="nav-item dropdown dropdown-user">
+							<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+								<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
+								<span class="navbar-text">
+									@if (auth()->check())
+										Halo, {{ auth()->user()->name }}
+									@else
+										Guest
+									@endif
+								</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right">
+								@if (auth()->check())
+									<a href="{{ route('logout') }}" class="dropdown-item">
+										<i class="icon-switch2"></i> Logout
+									</a>
+								@else
+									<a href="{{ route('login') }}" class="dropdown-item">
+										<i class="icon-switch2"></i> Login
+									</a>
+								@endif
+							</div>
+						</li>
+				</ul>
+			</div>
+		</div>
+	@endif
+	<!-- /main navbar -->
+
+	{{-- Main Navbar Role User --}}
+	@if (optional(auth()->user())->hasAnyRole(['user']))
+		<div class="navbar navbar-expand-md navbar-light navbar-static">
+			<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney</span>
+				</a>
+			</div>
 
 
-            <!-- Pilih Event -->
-            <div class="mb-3">
-                <label for="user_id" class="form-label">Pilih User</label>
-                <select name="user_id" id="user_id" class="form-control" required>
-                    @foreach($users as $user)
-                        <option value="{{ $user->id }}" 
-                            {{ (isset($game_event) && $game_event->user_id == $user->id) ? 'selected' : '' }}>
-                            {{ $user->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+			<div class="d-md-none">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
+					<i class="icon-tree5"></i>
+				</button>
+			</div>
 
-            <!-- Nama Event -->
-            <div class="mb-3">
-                <label for="name" class="form-label">Nama Event</label>
-                <input type="text" class="form-control" name="name" id="name" value="{{ $game_event->name ?? '' }}" required>
-            </div>
+			<div class="collapse navbar-collapse" id="navbarmobile">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a href="" class="navbar-nav-link">Home</a></li>
+					@if (optional(auth()->user())->hasAnyRole(['admin']))
+						<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
+					@endif
+					<li class="nav-item dropdown ">
+						<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-paragraph-justify3"></i></a>
+						<div class="dropdown-menu dropdown-menu-right ">
+							<a href="#" class="dropdown-item">
+								<i class="mi-games fa-sm mr-2"></i>Event</a>
+							<a href="{{route('article')}}" class="dropdown-item">
+								<i class="mi-web fa-sm mr-2"></i>Artikel</a>
+								<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Hubungi Kami </a>
+							<a href="#" class="dropdown-item disabled">
+								<i class="icon-alarm fa-sm mr-2 "></i>Akan Datang</a>
+						</div>
+					</li>
+				</ul>
 
-            <!-- Nama Penyelenggara -->
-            <div class="mb-3">
-                <label for="organizer" class="form-label">Nama Penyelenggara</label>
-                <input type="text" class="form-control" name="organizer" id="organizer" value="{{ $game_event->organizer ?? '' }}" required>
-            </div>
+				<span class="navbar-text ml-xl-3">
+					<span class="badge bg-success">Online</span>
+				</span>
+
+				<ul class="navbar-nav ml-xl-auto">
+					<li class="nav-item">
+						<a href="#" class="navbar-nav-link">
+							<i class="icon-bell2"></i>
+							<span class="d-xl-none ml-2">Notifications</span>
+							<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="navbar-nav-link">
+							<i class="icon-bubbles4"></i>
+							<span class="d-xl-none ml-2">Messages</span>
+						</a>
+					</li>
+
+				<li class="nav-item dropdown dropdown-user">
+					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
+						<span class="navbar-text">
+							@if (auth()->check())
+								Halo, {{ auth()->user()->name }}
+							@else
+								Guest
+							@endif
+						</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right">
+						@if (auth()->check())
+							<a href="{{ route('logout') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Logout
+							</a>
+						@else
+							<a href="{{ route('login') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Login
+							</a>
+						@endif
+					</div>
+				</li>
+
+				</ul>
+			</div>
+		</div>
+	@endif
+	{{-- Main Navbar Role User --}}
 
 
-            <!-- Batas slot -->
-            <div class="mb-3">
-                <label for="slot_limit">Batas Slot</label>
-                <input type="number" class="form-control" name="slot_limit" id="slot_limit" value="{{ $game_event->slot_limit ?? 0 }}" required>
-            </div>
+	<!-- Page content -->
+	<div class="page-content">
 
-            <!-- Gambar -->
-            <div class="mb-3">
-                <label for="thumbnail">Gambar</label>
-                <input type="file" class="form-control" name="thumbnail" id="thumbnail"  {{ isset($game_event) ? '' : 'required' }} required>
-            </div>
+		<!-- Main sidebar -->
+		<div class="sidebar sidebar-light sidebar-main sidebar-expand-md">
 
-            <!-- Deskripsi -->
-            <div class="mb-3">
-                <label for="description" class="form-label">Deskripsi</label>
-                <textarea class="form-control" name="description"  id="description" rows="5" >{{ $game_event->description ?? '' }}</textarea>
-            </div>
+			<!-- Sidebar mobile toggler -->
+			<div class="sidebar-mobile-toggler text-center">
+				<a href="#" class="sidebar-mobile-main-toggle">
+					<i class="icon-arrow-left8"></i>
+				</a>
+				Navigation
+				<a href="#" class="sidebar-mobile-expand">
+					<i class="icon-screen-full"></i>
+					<i class="icon-screen-normal"></i>
+				</a>
+			</div>
+			<!-- /sidebar mobile toggler -->
 
-            {{-- Slot Terisi --}}
-            <div class="mb-4">
-                <input type="hidden" name="slot_filled" id="slot_filled" value="{{ $game_event->slot_filled ?? 0 }}">
-            </div>
 
-            <!-- Tombol Submit -->
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
-        </form>
-    </div>
-</div>
+			<!-- Sidebar content -->
+			<div class="sidebar-content">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-@endif
+				<!-- User menu -->
+				<div class="sidebar-user">
+					<div class="card-body">
+						<div class="media">
+							<div class="mr-3">
+								<a href="#"><img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="38" height="38" class="rounded-circle" alt=""></a>
+							</div>
+
+							<div class="media-body">
+								<div class="media-title font-weight-semibold">Admin</div>
+								<div class="font-size-xs opacity-50">
+								</div>
+							</div>
+
+							<div class="ml-3 align-self-center">
+								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /user menu -->
+
+
+				<!-- Main navigation -->
+				<div class="card card-sidebar-mobile">
+					<ul class="nav nav-sidebar" data-nav-type="accordion">
+
+						<!-- Main -->
+						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
+						<li class="nav-item">
+							<a href="{{route('admin.index')}}" class="nav-link">
+								<i class="icon-home4"></i>
+								<span>
+									Dashboard Admin
+									<span class="d-block font-weight-normal opacity-50"></span>
+								</span>
+							</a>
+						<p></p>
+							<hr>
+						</li>
+						<li class="nav-item">
+							<a href="{{route('game-event.index')}}" class="nav-link"><i class="icon-enter5 mr-3 mr-3"></i> <span>Kembali</span></a>
+						</li>
+						<!-- /main -->
+					</ul>
+				</div>
+				<!-- /main navigation -->
+
+			</div>
+			<!-- /sidebar content -->
+			
+		</div>
+
+		
+		<!-- /main sidebar -->
+
+
+		<!-- Main content -->
+		<div class="content-wrapper">
+
+			<!-- Page header -->
+			<div class="page-header border-bottom-0">
+				<div class="page-header-content header-elements-md-inline">
+					<div class="page-title d-flex">
+						<h4> <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> <span class="font-weight-semibold">Halaman</span> {{ isset($gameEvent) ? 'Edit Game Event' : 'Tambah Game Event' }}</h4>
+						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+					</div>
+
+					<div class="header-elements d-none mb-3 mb-md-0">
+						<div class="d-flex justify-content-center">
+							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-bars-alt"></i><span>Statistics</span></a>
+							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calculator"></i> <span>Invoices</span></a>
+							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calendar5"></i> <span>Schedule</span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /page header -->
+
+
+			<!-- Content area -->
+			<div class="content pt-0">
+
+				<!-- Info alert -->
+				<div class="alert alert-info bg-light text-default alert-styled-left alert-arrow-left alert-dismissible">
+					<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+					<h6 class="alert-heading font-weight-semibold mb-1"> 
+						@if (auth()->check())
+							Selamat Datang , {{ auth()->user()->name }}
+						@else
+							Guest
+						@endif</h6>
+			    </div>
+			    <!-- /info alert -->
+
+						<div class="card fade-in">
+							<div class="card-header header-elements-inline">
+								<h2 class="card-title"> {{ isset($gameEvent) ? 'Edit Game Event' : 'Tambah Game Event' }} </h2>
+									<div class="header-elements">
+										<div class="list-icons">
+											<a class="list-icons-item" data-action="collapse"></a>
+											<a class="list-icons-item" data-action="reload"></a>
+											<a class="list-icons-item" data-action="remove"></a>
+										</div>
+									</div>
+								</div>
+								
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-10 offset-md-1">
+											@if ($errors->any())
+											<div class="alert alert-danger">
+												<ul>
+													@foreach ($errors->all() as $error)
+													<li>{{ $error }}</li>
+													@endforeach
+												</ul>
+											</div>
+											@endif
+
+											<!-- Notifikasi Sukses -->
+											@if (session('success'))
+											<div class="alert alert-success">{{ session('success') }}</div>
+											@endif
+
+										<form action="{{ isset($game_event) ? route('game-event.update', $game_event->id) : route('game-event.store') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            @if (isset($game_event))
+                                                @method('PUT')
+                                            @endif
+
+                                            <input type="hidden" name="slot_filled" id="slot_filled" value="{{ $game_event->slot_filled ?? 0 }}">
+
+												<div class="form-group">
+													<label for="user_id">Pilih User :</label>
+														<select name="user_id" id="user_id" class="form-control">
+															 @foreach($users as $user)
+                                                                <option value="{{ $user->id }}" 
+                                                                    {{ (isset($game_event) && $game_event->user_id == $user->id) ? 'selected' : '' }}>
+                                                                    {{ $user->name }}
+                                                                </option>
+                                                            @endforeach
+														</select>
+												</div>
+
+												<div class="form-group">
+													<label for="name">Nama Event :</label>
+													<input type="text" class="form-control" name="name" id="name" value="{{ $game_event->name ?? '' }}" placeholder="Massukan Nama Event" required>
+												</div>
+
+												<div class="form-group">
+													<label for="organizer">Nama Penyelenggara :</label>
+													<input type="text" class="form-control" name="organizer" id="organizer" value="{{ $game_event->organizer ?? '' }}" placeholder="Massukan Penyelenggaranya" required>
+												</div>
+
+												<div class="form-group">
+													<label for="slot_limit">Batas Slots :</label>
+													<input type="number" class="form-control" name="slot_limit" id="slot_limit" value="{{ $game_event->slot_limit ?? 0 }}" placeholder="Batas Maksimal slots" required>
+												</div>
+
+                                                <div class="form-group">
+													<label for="thumbnail">Unggah thumbnail :</label>
+													<input type="file" name="thumbnail" class="form-control" name="thumbnail" {{ isset($game_event) ? '' : 'required' }} accept=".jpg,.jpeg,.png" required>
+													<span class="form-text text-muted">Format yang DI Terima: jpeg, png, jpg. Max file size 2Mb</span>
+														@error('foto')
+														<small class="text-warning">Harap unggah ulang foto jika terjadi kesalahan</small>
+														@enderror
+												</div>
+												
+												<div class="form-group">
+													<label for="description">Deskripsi :</label>
+													<textarea rows="5" cols="5" class="form-control" name="description" id="description" placeholder="Massukan description"></textarea>
+												</div>
+
+												<div class="text-right">
+                                                    @if (optional(auth()->user())->hasAnyRole(['admin']))
+													<a href="{{ route('game-event.index') }}" class="btn btn-secondary">Kembali</a>
+													@endif
+													
+													@if (optional(auth()->user())->hasAnyRole(['user']))
+													<a href="{{ route('landing') }}" class="btn btn-secondary">Kembali</a>
+													@endif
+													<button type="submit" class="btn btn-primary"> Daftarkan <i class="icon-paperplane ml-2"></i></button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+						</div>
+			</div>
+			<!-- /content area -->
+
+
+			<!-- Footer -->
+			<div class="navbar navbar-expand-lg navbar-light">
+				<div class="text-center d-lg-none w-100">
+					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
+						<i class="icon-unfold mr-2"></i>
+						Footer
+					</button>
+				</div>
+
+				<div class="navbar-collapse collapse" id="navbar-footer">
+					<span class="navbar-text">
+						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
+					</span>
+
+					<ul class="navbar-nav ml-lg-auto">
+						<li class="nav-item"><a href="https://kopyov.ticksy.com/" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
+						<li class="nav-item"><a href="http://demo.interface.club/limitless/docs/" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
+						<li class="nav-item"><a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- /footer -->
+
+		</div>
+		<!-- /main content -->
+
+	</div>
+	<!-- /page content -->
 </body>
 </html>

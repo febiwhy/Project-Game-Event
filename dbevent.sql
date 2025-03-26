@@ -17,14 +17,14 @@
 -- Dumping structure for table dbevent.contact_models
 CREATE TABLE IF NOT EXISTS `contact_models` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `foto` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `location` text COLLATE utf8mb4_unicode_ci,
+  `foto` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `location` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `telepon` bigint NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table dbevent.contact_models: ~2 rows (approximately)
 INSERT INTO `contact_models` (`id`, `foto`, `location`, `telepon`, `email`, `created_at`, `updated_at`) VALUES
@@ -93,7 +93,7 @@ INSERT INTO `game_event_followers` (`id`, `name_community`, `game_event_id`, `ow
 	(21, 'asdasd', 7, 2, 'ergergrgeg', 'wgergerg', '2025-02-19 06:16:37', '2025-03-12 05:13:13', 1, '"2"'),
 	(25, 'Digimon', 2, 1, 'Game', 'dewfewfewf', '2025-03-02 22:23:40', '2025-03-06 23:25:42', 1, '["1"]'),
 	(26, 'Digimon', 4, 2, 'Game', 'fjdsjhierhf', '2025-03-02 22:26:41', '2025-03-02 22:26:41', 1, '["1","2"]'),
-	(34, 'pokemon', 6, 1, 'mobile', 'uiguigyy', '2025-03-12 05:16:10', '2025-03-12 05:16:10', 1, '"1,2"');
+	(34, 'pokemon', 7, 1, 'mobile', 'uiguigyy', '2025-03-12 05:16:10', '2025-03-24 21:55:48', 1, '"1,2,3"');
 
 -- Dumping structure for table dbevent.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
@@ -146,10 +146,11 @@ CREATE TABLE IF NOT EXISTS `model_has_roles` (
   CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table dbevent.model_has_roles: ~2 rows (approximately)
+-- Dumping data for table dbevent.model_has_roles: ~3 rows (approximately)
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 	(3, 'App\\Models\\User', 1),
-	(4, 'App\\Models\\User', 2);
+	(4, 'App\\Models\\User', 2),
+	(5, 'App\\Models\\User', 3);
 
 -- Dumping structure for table dbevent.password_resets
 CREATE TABLE IF NOT EXISTS `password_resets` (
@@ -208,12 +209,13 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table dbevent.roles: ~2 rows (approximately)
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
 	(3, 'admin', 'web', '2025-02-11 09:55:22', '2025-02-11 09:55:22'),
-	(4, 'user', 'web', '2025-02-11 09:55:22', '2025-02-11 09:55:22');
+	(4, 'user', 'web', '2025-02-11 09:55:22', '2025-02-11 09:55:22'),
+	(5, 'editor', 'web', '2025-03-25 00:47:40', '2025-03-25 00:47:40');
 
 -- Dumping structure for table dbevent.role_has_permissions
 CREATE TABLE IF NOT EXISTS `role_has_permissions` (
@@ -239,12 +241,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table dbevent.users: ~2 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin', 'admin@gmail.com', NULL, '$2y$10$xkTe6tT8xCI25Lc6d2AMpOgmG9kBVD8m.tG8vBj/pwKJavNejeAeG', NULL, '2025-02-11 09:57:25', '2025-02-11 09:57:25'),
-	(2, 'User', 'user@gmail.com', NULL, '$2y$10$j.K0LX/NE2MI5o7O8QzdduBcVZkge99DFQExULAk04wiZy/VSlamy', NULL, '2025-02-11 09:57:25', '2025-02-11 09:57:25');
+	(2, 'User', 'user@gmail.com', NULL, '$2y$10$j.K0LX/NE2MI5o7O8QzdduBcVZkge99DFQExULAk04wiZy/VSlamy', NULL, '2025-02-11 09:57:25', '2025-02-11 09:57:25'),
+	(3, 'joko', 'wwerrr@gmail.com', NULL, '$2y$10$PGLT4lV1OQr4bqtRQuNCZewZBq1mfsZl7H.1vhn77sLvYp9UgXuKe', NULL, '2025-03-24 21:16:56', '2025-03-24 21:16:56');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
