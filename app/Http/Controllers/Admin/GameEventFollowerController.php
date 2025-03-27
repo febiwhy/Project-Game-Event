@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\Admin\GameEventFollowerRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GameEventFollowerController extends Controller
 {
@@ -90,9 +91,13 @@ class GameEventFollowerController extends Controller
             $data['member'] = implode(',', $data['member']);
         }
 
-        GameEventFollower::create($data);
-
-        return redirect()->route('event-community.index')->with('success', "Data Berhasil Disimpan");
+        $communities = GameEventFollower::create($data);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil disimpan!',
+            'id' => $communities->id
+        ]);
+        // return redirect()->route('event-community.index')->with('success', "Data Berhasil Disimpan");
     }
 
     public function show($id)
@@ -150,8 +155,27 @@ class GameEventFollowerController extends Controller
 
     public function destroy($id)
     {
-        $event_community = GameEventFollower::findOrFail($id);
-        $event_community->delete();
-        return redirect()->route('event-community.index')->with('success', "Data Berhasil Di Hapus");
+        try {
+            $event_community = GameEventFollower::findOrFail($id);
+            $event_community->delete();
+
+        return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus!'
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+                'error' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan! Data gagal dihapus.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+        // return redirect()->route('event-community.index')->with('success', "Data Berhasil Di Hapus");
     }
 }

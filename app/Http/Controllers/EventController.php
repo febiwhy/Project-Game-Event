@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GameEvent;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EventController extends Controller
 {
@@ -111,9 +112,30 @@ class EventController extends Controller
 
     public function delete($id)
     {
-        $data = Pendaftaran::find($id);
-        $data->delete();
-        return redirect()->route('admin.index')->with('success', 'Data Berhasil di Hapus');
+        try {
+            $contact = Pendaftaran::findOrFail($id);
+            $contact->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus!'
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+                'error' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan! Data gagal dihapus.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+        // $data = Pendaftaran::find($id);
+        // $data->delete();
+        // return redirect()->route('admin.index')->with('success', 'Data Berhasil di Hapus');
     }
 
 

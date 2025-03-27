@@ -35,7 +35,17 @@ class PendaftaranController extends Controller
 
         $pendaftar_event = GameEvent::findOrFail($request->event_pendaftaran_id);
 
+        // if ($pendaftar_event->slot_filled >= $pendaftar_event->slot_limit) {
+        //     return redirect()->back()->with('error', 'Slot Sudah Penuh!');
+        // }
+
         if ($pendaftar_event->slot_filled >= $pendaftar_event->slot_limit) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Slot sudah penuh!'
+                ], 400);
+            }
             return redirect()->back()->with('error', 'Slot Sudah Penuh!');
         }
 
@@ -46,7 +56,7 @@ class PendaftaranController extends Controller
         }
 
         // Simpan data ke database
-        Pendaftaran::create([
+       $pendaftaran = Pendaftaran::create([
             'event_pendaftaran_id' => $request->event_pendaftaran_id,
             'game_pendaftar_id' => $request->game_pendaftar_id,
             'pendaftar_id' => auth()->id(),
@@ -57,9 +67,19 @@ class PendaftaranController extends Controller
             'alamat' => $request->alamat,
             'status' => $request->status ?? 'Menunggu',
             'foto' => $foto_path,
+        ], [
+            'email' => 'Email ini sudah terdaftar. Gunakan email lain.',
         ]);
 
-        return redirect()->route('game-event.show', $pendaftar_event->id)->with('success', 'Pendaftaran berhasil!');
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Berhasil disimpan!',
+                'id' => $pendaftaran->id
+            ]);
+        }
+
+        // return redirect()->route('game-event.show', $pendaftar_event->id)->with('success', 'Pendaftaran berhasil!');
     }
 
     public function show($id)

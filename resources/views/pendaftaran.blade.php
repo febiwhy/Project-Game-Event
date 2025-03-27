@@ -72,113 +72,7 @@
 					</li>
 				</ul>
 
-				<span class="badge bg-success my-3 my-md-0 ml-md-3 mr-md-auto">Online</span>
-
-				<ul class="navbar-nav">
-					<li class="nav-item dropdown">
-						<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
-							<i class="icon-bubbles4"></i>
-							<span class="d-md-none ml-2">Messages</span>
-							<span class="badge badge-pill bg-warning-400 ml-auto ml-md-0">2</span>
-						</a>
-						
-						<div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
-							<div class="dropdown-content-header">
-								<span class="font-weight-semibold">Messages</span>
-								<a href="#" class="text-default"><i class="icon-compose"></i></a>
-							</div>
-
-							<div class="dropdown-content-body dropdown-scrollable">
-								<ul class="media-list">
-									<li class="media">
-										<div class="mr-3 position-relative">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">James Alexander</span>
-													<span class="text-muted float-right font-size-sm">04:58</span>
-												</a>
-											</div>
-
-											<span class="text-muted">who knows, maybe that would be the best thing for me...</span>
-										</div>
-									</li>
-
-									<li class="media">
-										<div class="mr-3 position-relative">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">Margo Baker</span>
-													<span class="text-muted float-right font-size-sm">12:16</span>
-												</a>
-											</div>
-
-											<span class="text-muted">That was something he was unable to do because...</span>
-										</div>
-									</li>
-
-									<li class="media">
-										<div class="mr-3">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">Jeremy Victorino</span>
-													<span class="text-muted float-right font-size-sm">22:48</span>
-												</a>
-											</div>
-
-											<span class="text-muted">But that would be extremely strained and suspicious...</span>
-										</div>
-									</li>
-
-									<li class="media">
-										<div class="mr-3">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">Beatrix Diaz</span>
-													<span class="text-muted float-right font-size-sm">Tue</span>
-												</a>
-											</div>
-
-											<span class="text-muted">What a strenuous career it is that I've chosen...</span>
-										</div>
-									</li>
-
-									<li class="media">
-										<div class="mr-3">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">Richard Vango</span>
-													<span class="text-muted float-right font-size-sm">Mon</span>
-												</a>
-											</div>
-											
-											<span class="text-muted">Other travelling salesmen live a life of luxury...</span>
-										</div>
-									</li>
-								</ul>
-							</div>
-
-							<div class="dropdown-content-footer justify-content-center p-0">
-								<a href="#" class="text-muted w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
-							</div>
-						</div>
-					</li>
+				<ul class="navbar-nav ml-xl-auto">
 						<li class="nav-item dropdown dropdown-user">
 							<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
 								<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
@@ -244,24 +138,8 @@
 					</li>
 				</ul>
 
-				<span class="navbar-text ml-xl-3">
-					<span class="badge bg-success">Online</span>
-				</span>
 
 				<ul class="navbar-nav ml-xl-auto">
-					<li class="nav-item">
-						<a href="#" class="navbar-nav-link">
-							<i class="icon-bell2"></i>
-							<span class="d-xl-none ml-2">Notifications</span>
-							<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="#" class="navbar-nav-link">
-							<i class="icon-bubbles4"></i>
-							<span class="d-xl-none ml-2">Messages</span>
-						</a>
-					</li>
 
 				<li class="nav-item dropdown dropdown-user">
 					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
@@ -348,24 +226,18 @@
 						<!-- Main -->
 						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
 						<li class="nav-item">
-							<a class="nav-link">
+							<a href="{{route('admin.index')}}" class="nav-link">
 								<i class="icon-home4"></i>
 								<span>
 									Dashboard Admin
 									<span class="d-block font-weight-normal opacity-50"></span>
 								</span>
 							</a>
+							<p></p>
+							<hr>
 						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>User Page</span></a>
-
-							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
-								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
-								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
-								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
-								<li class="nav-item"><a href="" class="nav-link disabled">Coming soon <span class="badge bg-transparent align-self-center ml-auto">Coming soon</span></a></li>
-							</ul>
+						<li class="nav-item">
+							<a href="{{route('game-event.index')}}" class="nav-link"><i class="icon-enter5 mr-3 mr-3"></i> <span>Kembali</span></a>
 						</li>
 						<!-- /main -->
 					</ul>
@@ -391,14 +263,6 @@
 					<div class="page-title d-flex">
 						<h4> <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> <span class="font-weight-semibold">Halaman Pendaftaran untuk {{ $game_event->name ?? 'Event' }}</span></h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-					</div>
-
-					<div class="header-elements d-none mb-3 mb-md-0">
-						<div class="d-flex justify-content-center">
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-bars-alt"></i><span>Statistics</span></a>
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calculator"></i> <span>Invoices</span></a>
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calendar5"></i> <span>Schedule</span></a>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -449,7 +313,7 @@
 											@if (session('success'))
 											<div class="alert alert-success">{{ session('success') }}</div>
 											@endif
-											<form action="{{ route('pendaftarandata', ['id' => $game_event->id]) }}" method="POST" enctype="multipart/form-data">
+											<form action="{{ route('pendaftarandata', ['id' => $game_event->id]) }}" method="POST" id="form-pendaftar" enctype="multipart/form-data">
 												@csrf
 
 												<input type="hidden" name="event_pendaftaran_id" value="{{ $game_event->id ?? '' }}">
@@ -462,19 +326,18 @@
 
 												<div class="form-group">
 													<label for="email">Email :</label>
-													<input type="email" class="form-control" name="email" id="email" value="{{old('email', auth()->user()->email ?? '-' )}}" placeholder="Massukan Email Anda" required>
+													<input type="email" class="form-control" name="email" id="email" value="{{old('email', auth()->user()->email ?? '-' )}}" placeholder="Massukan Email Lengkap" required>
 												</div>
 
 												<div class="form-group">
 													<label for="id_number">ID Number :</label>
-													<input type="text" class="form-control" name="id_number" id="id_number" value="{{old('id_number')}}" placeholder="Massukan ID Number Anda" required>
+													<input type="text" class="form-control" name="id_number" id="id_number" value="{{old('id_number')}}" placeholder="Massukan ID Number " required>
 												</div>
 
 												<div class="form-group">
 													<label for="whatsapp">Whatsapp :</label>
-													<input type="text" class="form-control" name="whatsapp" id="whatsapp" value="{{old('whatsapp')}}" placeholder="Eugene Kopyov" required>
+													<input type="text" class="form-control" name="whatsapp" id="whatsapp" value="{{old('whatsapp')}}" placeholder="Massukan Nomor Whatsapp" required>
 												</div>
-												
 												
 												<div class="form-group">
 													<label for="game_pendaftar_id">Game Event:</label>
@@ -503,16 +366,13 @@
 												<div class="form-group">
 													<label for="foto">Unggah Foto :</label>
 													<input type="file" name="foto" class="form-control" name="foto" accept=".jpg,.jpeg,.png" required>
-													<span class="form-text text-muted">Format yang DI Terima: jpeg, png, jpg. Max file size 2Mb</span>
+													<span class="form-text text-muted">Format yang DI Terima: jpg. Max file size 2Mb</span>
 														@error('foto')
 														<small class="text-warning">Harap unggah ulang foto jika terjadi kesalahan</small>
 														@enderror
 												</div>
 
 												<div class="text-right">
-													@if (optional(auth()->user())->hasAnyRole(['admin']))
-													<a href="{{ route('admin.index') }}" class="btn btn-secondary">Kembali</a>
-													@endif
 													
 													@if (optional(auth()->user())->hasAnyRole(['user']))
 													<a href="{{ route('landing') }}" class="btn btn-secondary">Kembali</a>
@@ -536,8 +396,7 @@
 						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
 					</span>
 					<ul class="navbar-nav ml-xl-auto">
-						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Help Center</a></li>
-						<li class="nav-item"><a href="#" class="navbar-nav-link">Policy</a></li>
+						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Pusat Bantuan</a></li>
 					</ul>
 				</div>
 			</div>
@@ -561,9 +420,9 @@
 					</span>
 
 					<ul class="navbar-nav ml-lg-auto">
-						<li class="nav-item"><a href="https://kopyov.ticksy.com/" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
-						<li class="nav-item"><a href="http://demo.interface.club/limitless/docs/" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
-						<li class="nav-item"><a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
+						<li class="nav-item"><i class="icon-lifebuoy mr-2"></i> </a></li>
+						<li class="nav-item"><i class="icon-file-text2 mr-2"></i> </a></li>
+						<li class="nav-item"><i class="icon-cart2 mr-2"></i> </span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -574,6 +433,47 @@
 		<!-- /main content -->
 
 	</div>
+
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			$(document).ready(function () {
+				$("#form-pendaftar").submit(function (e) {
+					e.preventDefault(); // Mencegah form submit default
+
+					let formData = new FormData(this); // Ambil data form
+
+					$.ajax({
+						url: "{{ route('pendaftarandata') }}", 
+						type: "POST",
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (response) {
+							if (response.success) {
+								Swal.fire({
+									title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
+									html: "<span style='color: #ffffff; font-weight: bold;'>" + response.message + "</span>",
+									iconHtml: "🎉",
+									// icon: "success",
+									confirmButtonText: "OKE"
+								}).then(() => {
+									// Reload halaman setelah klik OK
+									location.reload();
+								});
+							}
+						},
+						error: function (xhr) {
+							Swal.fire({
+								title: "<span style='color: #ff4444;'>Gagal!</span>",
+								html: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
+								icon: "error",
+								confirmButtonText: "OKE"
+							});
+						}
+					});
+				});
+			});
+		</script>
 	<!-- /page content -->
 </body>
 </html>

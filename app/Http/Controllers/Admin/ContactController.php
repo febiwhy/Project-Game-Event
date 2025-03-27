@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\Admin\ContactModelRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ContactController extends Controller
 {
@@ -74,8 +75,13 @@ class ContactController extends Controller
             $path = $request->file('foto')->store('contact', 'public');
             $data['foto'] = "/storage/" . $path;
         }
-        ContactModel::create($data);
-        return redirect()->route('contact.index')->with('success', "Data Berhasil disimpan");
+        $contact = ContactModel::create($data);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil disimpan!',
+            'id' => $contact->id
+        ]);
+        // return redirect()->route('contact.index')->with('success', "Data Berhasil disimpan");
     }
     /**
      * Display the specified resource.
@@ -133,10 +139,31 @@ class ContactController extends Controller
      */
     public function destroy($id)
     {
-        $contact = ContactModel::findOrFail($id);
-        $contact->delete();
+        try {
+            $contact = ContactModel::findOrFail($id);
+            $contact->delete();
 
-        return redirect()->route('contact.index', $id)->with('success', "data berhasil di Delete");
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus!'
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+                'error' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan! Data gagal dihapus.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+        // $contact = ContactModel::findOrFail($id);
+        // $contact->delete();
+
+        // return redirect()->route('contact.index', $id)->with('success', "data berhasil di Delete");
     }
 
     public function send(Request $request)

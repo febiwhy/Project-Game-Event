@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\Admin\EventGameRequest;
 use App\Http\Requests\Admin\GameEventRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EventGameController extends Controller
 {
@@ -87,8 +88,13 @@ class EventGameController extends Controller
         $data['slot_limit'] = $request->slot_limit ?? 0;
         $data['slot_filled'] = 0; // Awalnya 0
 
-        GameEvent::create($data);
-        return redirect()->route('game-event.index')->with('success', "Data Berhasil disimpan");
+        $game_event = GameEvent::create($data);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil disimpan!',
+            'id' => $game_event->id
+        ]);
+        // return redirect()->route('game-event.index')->with('success', "Data Berhasil disimpan");
     }
 
     /**
@@ -111,8 +117,8 @@ class EventGameController extends Controller
      */
     public function edit($id)
     {
-        $users = User::all();
         $game_event = GameEvent::findOrFail($id);
+        $users = User::all();
         // $game_event = GameEvent::with('user')->findOrFail($id);
         return view('admin.game-event.create-edit', compact('game_event', 'users'));
     }
@@ -157,10 +163,29 @@ class EventGameController extends Controller
      */
     public function destroy($id)
     {
-        $game_event = GameEvent::findOrFail($id);
-        $game_event->delete();
+        try {  
+                $game_event = GameEvent::findOrFail($id);
+                $game_event->delete();
+             
+        return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus!'
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+                'error' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan! Data gagal dihapus.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
 
-        return redirect()->route('game-event.index')->with('success', "data berhasil di hapus");
+        // return redirect()->route('game-event.index')->with('success', "data berhasil di hapus");
     }
 
     public function tambahSlot($id)

@@ -50,8 +50,9 @@ class AdminController extends Controller
         $totalgameEvent = GameEvent::count();
         $users = User::all();
         $data = Pendaftaran::all();
+        $totalusers = User::count();
         $user = auth()->user();
-        return view('admin.index', compact('data', 'user', 'users', 'totalgameEvent'));
+        return view('admin.index', compact('data', 'user', 'users', 'totalgameEvent', 'totalusers'));
     }
 
     public function users()

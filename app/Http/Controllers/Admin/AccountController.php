@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AccountController extends Controller
 {
@@ -89,10 +90,15 @@ class AccountController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil disimpan!',
+            'id' => $users->id
+        ]);
 
         $users->assignRole($request->role);
 
-        return redirect()->route('account.index')->with('success', 'User berhasil ditambahkan!');
+        // return redirect()->route('account.index')->with('success', 'User berhasil ditambahkan!');
     }
 
     /**
@@ -159,10 +165,31 @@ class AccountController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
 
-        return redirect()->route('account.index')->with('success', 'User berhasil dihapus!');
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus!'
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+                'error' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan! Data gagal dihapus.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+        // $user = User::findOrFail($id);
+        // $user->delete();
+
+        // return redirect()->route('account.index')->with('success', 'User berhasil dihapus!');
     }
 
     public function storeRole(Request $request)
@@ -171,9 +198,14 @@ class AccountController extends Controller
             'role_name' => 'required|string|unique:roles,name'
         ]);
 
-        Role::create(['name' => $request->role_name]);
+        $users = Role::create(['name' => $request->role_name]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil disimpan!',
+            'id' => $users->id
+        ]);
 
-        return redirect()->route('account.index')->with('success', 'Role baru berhasil ditambahkan!');
+        // return redirect()->route('account.index')->with('success', 'Role baru berhasil ditambahkan!');
     }
 
     public function createRole()

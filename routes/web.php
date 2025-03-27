@@ -29,9 +29,12 @@ use App\Http\Controllers\Email\TurnamentReportMailController;
 */
 
 // Route::get('/', function () {
-    //     return view('w');
-    // });
-
+//     return view('w');
+// });
+    Route::get('/', function () {
+        return redirect()->route('landing');
+    });
+    Route::get('/landing', [UserController::class, 'index'])->name('landing');
     
     // pendaftaran
     Route::get('/pendaftar/{id}', [PendaftaranController::class, 'pendaftaran'])->where('id', '[0-9]+')->name('pendaftaran');
@@ -72,8 +75,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/pendaftaran/update/{id}', [EventController::class, 'updatedata'])->name('pendaftaran.update');
     
     // delete data
-    Route::get('/pendaftaran/delete/{id}', [EventController::class, 'delete'])->name('pendaftarandelete');
-    Route::get('/pendaftaran/delete/{id}', [EventController::class, 'delete'])->name('pendaftarandelete');
+    Route::delete('/pendaftaran/delete/{id}', [EventController::class, 'delete'])->name('pendaftarandelete');
 });
 
 Route::middleware('auth')->group(function () {
@@ -92,7 +94,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/article', [EventController::class, 'article'])->name('article');
 });
 
-Route::get('/landing', [UserController::class, 'index'])->name('landing');
 Route::get('/export-pdf', [UserController::class, 'exportpdf'])->name('export.pdf');
 Route::get('/turnament', [EventController::class, 'turnament'])->name('turnament');
 

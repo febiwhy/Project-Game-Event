@@ -65,114 +65,7 @@
 
 			</ul>
 
-			<span class="badge bg-success my-3 my-md-0 ml-md-3 mr-md-auto">Online</span>
-
-			<ul class="navbar-nav">
-
-				<li class="nav-item dropdown">
-					<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
-						<i class="icon-bubbles4"></i>
-						<span class="d-md-none ml-2">Messages</span>
-						<span class="badge badge-pill bg-warning-400 ml-auto ml-md-0">2</span>
-					</a>
-					
-					<div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
-						<div class="dropdown-content-header">
-							<span class="font-weight-semibold">Messages</span>
-							<a href="#" class="text-default"><i class="icon-compose"></i></a>
-						</div>
-
-						<div class="dropdown-content-body dropdown-scrollable">
-							<ul class="media-list">
-								<li class="media">
-									<div class="mr-3 position-relative">
-										<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold text-white">James Alexander</span>
-												<span class="text-muted float-right font-size-sm">04:58</span>
-											</a>
-										</div>
-
-										<span class="text-muted">who knows, maybe that would be the best thing for me...</span>
-									</div>
-								</li>
-
-								<li class="media">
-									<div class="mr-3 position-relative">
-										<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold text-white">Margo Baker</span>
-												<span class="text-muted float-right font-size-sm">12:16</span>
-											</a>
-										</div>
-
-										<span class="text-muted">That was something he was unable to do because...</span>
-									</div>
-								</li>
-
-								<li class="media">
-									<div class="mr-3">
-										<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold text-white">Jeremy Victorino</span>
-												<span class="text-muted float-right font-size-sm">22:48</span>
-											</a>
-										</div>
-
-										<span class="text-muted">But that would be extremely strained and suspicious...</span>
-									</div>
-								</li>
-
-								<li class="media">
-									<div class="mr-3">
-										<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold text-white">Beatrix Diaz</span>
-												<span class="text-muted float-right font-size-sm">Tue</span>
-											</a>
-										</div>
-
-										<span class="text-muted">What a strenuous career it is that I've chosen...</span>
-									</div>
-								</li>
-
-								<li class="media">
-									<div class="mr-3">
-										<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold text-white">Richard Vango</span>
-												<span class="text-muted float-right font-size-sm">Mon</span>
-											</a>
-										</div>
-										
-										<span class="text-muted">Other travelling salesmen live a life of luxury...</span>
-									</div>
-								</li>
-							</ul>
-						</div>
-
-						<div class="dropdown-content-footer justify-content-center p-0">
-							<a href="#" class="text-muted w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
-						</div>
-					</div>
-				</li>
+			<ul class="navbar-nav ml-xl-auto">
 
 				<li class="nav-item dropdown dropdown-user">
 					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
@@ -317,14 +210,14 @@
 							</div>
 
 							<div class="media-body">
-								<div class="media-title font-weight-semibold">Victoria Baker</div>
+								<div class="media-title font-weight-semibold">Admin</div>
 								<div class="font-size-xs opacity-50">
-									<i class="icon-pin font-size-sm"></i> &nbsp;Santa Ana, CA
+									<i class="icon-pin font-size-sm"></i> &nbsp;
 								</div>
 							</div>
 
 							<div class="ml-3 align-self-center">
-								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
+								<a class="text-white"><i class="icon-cog3"></i></a>
 							</div>
 						</div>
 					</div>
@@ -346,16 +239,11 @@
 									<span class="d-block font-weight-normal opacity-50"></span>
 								</span>
 							</a>
+							<p></p>
+							<hr>
 						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>User Page</span></a>
-
-							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
-								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link active"> Game Turnament </a></li>
-								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link "> Komunitas </a></li>
-								<li class="nav-item"><a href="../../../../layout_6/LTR/dark/full/index.html" class="nav-link disabled">Coming soon <span class="badge bg-transparent align-self-center ml-auto">Coming soon</span></a></li>
-							</ul>
+						<li class="nav-item">
+							<a href="{{route('account.index')}}" class="nav-link"><i class="icon-enter5 mr-3 mr-3"></i> <span>Kembali</span></a>
 						</li>
 						<!-- /main -->
 					</ul>
@@ -377,17 +265,10 @@
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
-						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Halaman</span> - Detail Game Turnament</h4>
+						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Halaman</span> - Detail Daftar Akun</h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 
-					<div class="header-elements d-none mb-3 mb-md-0">
-						<div class="d-flex justify-content-center">
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-bars-alt"></i><span>Statistics</span></a>
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calculator"></i> <span>Invoices</span></a>
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calendar5"></i> <span>Schedule</span></a>
-						</div>
-					</div>
 				</div>
 			</div>
 			<!-- /page header -->
@@ -423,31 +304,6 @@
 							</div>
 						</div>
 					</div>
-
-					<div class="card-body">
-						<ul class="nav nav-tabs nav-tabs-highlight">
-							<li class="nav-item"><a href="#right-icon-tab1" class="nav-link active" data-toggle="tab">Detail Game Turnament {{ $game_event->name ?? 'Nama tidak tersedia' }} </a></li>
-							<li class="nav-item dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Aksi </a>
-								<div class="dropdown-menu dropdown-menu-right">
-									<div>
-										<form action="{{ route('request.community') }}" method="POST">
-											@csrf
-											<a class="dropdown-item">Ajukan Pembuatan Komunitas</a>
-										</form>
-									</div>
-									<div>
-										<form action="{{ route('request.game') }}" method="POST">
-											@csrf
-											<a class="dropdown-item">Ajukan Pembuatan Game</a>
-										</form>
-									</div>
-								</div>
-							</li>
-						</ul>
-
-					</div>
-
 					
 						<div class="container mt-4">
 							<div class="card" id="right-icon-tab1">
@@ -455,82 +311,32 @@
 									<table class="table table-bordered">
 										<tr>
 											<th>ID</th>
-											<td>{{ $game_event->id ?? 'Tidak tersedia' }}</td>
+											<td>{{ $users->id ?? 'Tidak tersedia' }}</td>
 										</tr>
 										<tr>
-											<th>Nama Event</th>
-											<td>{{ $game_event->name ?? 'Tidak tersedia' }}</td>
+											<th>Name</th>
+											<td>{{ $users->name ?? 'Tidak tersedia' }}</td>
 										</tr>
 										<tr>
-											<th>Thumbnail</th>
-											<td>
-												@if (!empty($game_event->thumbnail))
-												<img src="{{ asset($game_event->thumbnail) }}" alt="Thumbnail" height="100px">
-												@else
-												<span class="text-muted">Tidak ada gambar</span>
-												@endif
-											</td>
+											<th>Email</th>
+											<td>{{ $users->email ?? 'Tidak tersedia' }}</td>
 										</tr>
 										<tr>
-											<th>Owner</th>
-											<td>{{ $game_event->user?->name ?? 'Tidak ada' }}</td>
-										</tr>
-										<tr>
-											<th>Penyelenggara</th>
-											<td>{{ $game_event->organizer ?? 'Tidak ada' }}</td>
-										</tr>
-										<tr>
-											<th>Maximum Slot</th>
-											<td>{{ $game_event->slot_limit ?? 0 }}</td>
-										</tr>
-										<tr>
-											<th>Slot Terisi</th>
-											<td>{{ $game_event->slot_filled ?? 0 }} / {{ $game_event->slot_limit ?? 0 }}</td>
+											<th>Role</th>
+											<td>{{ $users->getRoleNames()->implode(', ') ?? 'Tidak tersedia' }}</td>
 										</tr>
 										<tr>
 											<th>Tanggal Dibuat</th>
-											<td>{{ $game_event->created_at?->format('d M Y') ?? 'Tidak tersedia' }}</td>
+											<td>{{ $users->created_at?->format('d M Y') ?? 'Tidak tersedia' }}</td>
 										</tr>
-										<tr>
-											<th>Deskripsi</th>
-											<td>{{ $game_event->description ?? 'Tidak ada deskripsi' }}</td>
-										</tr>
+										
 									</table>
-									<p></p>
-									<!-- Tombol Kembali Berdasarkan Peran -->
-									@if (optional(auth()->user())->hasAnyRole(['admin']))
-										<a href="{{ route('game-event.index') }}" class="btn btn-secondary">Kembali</a>
-									@endif
-
-									<a href="{{ route('pendaftaran', $game_event->id ?? 0) }}" class="btn btn-primary">Daftar <i class="icon-paperplane ml-2"></i></a>
-									
-									@if (optional(auth()->user())->hasAnyRole(['user']))
-									<a href="{{ route('landing') }}" class="btn btn-secondary">Kembali</a>
-									@endif
-								
-								
 								</div>
 							</div>
 						</div>
 
 				<!-- /navbar classes -->
 
-
-				<!-- Body classes -->
-				<div class="card">
-					<div class="card-header header-elements-inline">
-						<h5 class="card-title">Body classes</h5>
-						<div class="header-elements">
-							<div class="list-icons">
-		                		<a class="list-icons-item" data-action="collapse"></a>
-		                		<a class="list-icons-item" data-action="reload"></a>
-		                		<a class="list-icons-item" data-action="remove"></a>
-		                	</div>
-	                	</div>
-					</div>
-                    
-				</div>
-				<!-- /body classes -->
 
 				{{-- <tr>
 									<td>Horizontal form</td>
@@ -636,9 +442,9 @@
 					</span>
 
 					<ul class="navbar-nav ml-lg-auto">
-						<li class="nav-item"><a href="https://kopyov.ticksy.com/" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
-						<li class="nav-item"><a href="http://demo.interface.club/limitless/docs/" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
-						<li class="nav-item"><a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
+						<li class="nav-item"><i class="icon-lifebuoy mr-2"></i> </a></li>
+						<li class="nav-item"><i class="icon-file-text2 mr-2"></i> </a></li>
+						<li class="nav-item"><i class="icon-cart2 mr-2"></i> </span></a></li>
 					</ul>
 				</div>
 			</div>

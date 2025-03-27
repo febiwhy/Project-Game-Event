@@ -72,113 +72,7 @@
 					</li>
 				</ul>
 
-				<span class="badge bg-success my-3 my-md-0 ml-md-3 mr-md-auto">Online</span>
-
-				<ul class="navbar-nav">
-					<li class="nav-item dropdown">
-						<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
-							<i class="icon-bubbles4"></i>
-							<span class="d-md-none ml-2">Messages</span>
-							<span class="badge badge-pill bg-warning-400 ml-auto ml-md-0">2</span>
-						</a>
-						
-						<div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
-							<div class="dropdown-content-header">
-								<span class="font-weight-semibold">Messages</span>
-								<a href="#" class="text-default"><i class="icon-compose"></i></a>
-							</div>
-
-							<div class="dropdown-content-body dropdown-scrollable">
-								<ul class="media-list">
-									<li class="media">
-										<div class="mr-3 position-relative">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">James Alexander</span>
-													<span class="text-muted float-right font-size-sm">04:58</span>
-												</a>
-											</div>
-
-											<span class="text-muted">who knows, maybe that would be the best thing for me...</span>
-										</div>
-									</li>
-
-									<li class="media">
-										<div class="mr-3 position-relative">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">Margo Baker</span>
-													<span class="text-muted float-right font-size-sm">12:16</span>
-												</a>
-											</div>
-
-											<span class="text-muted">That was something he was unable to do because...</span>
-										</div>
-									</li>
-
-									<li class="media">
-										<div class="mr-3">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">Jeremy Victorino</span>
-													<span class="text-muted float-right font-size-sm">22:48</span>
-												</a>
-											</div>
-
-											<span class="text-muted">But that would be extremely strained and suspicious...</span>
-										</div>
-									</li>
-
-									<li class="media">
-										<div class="mr-3">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">Beatrix Diaz</span>
-													<span class="text-muted float-right font-size-sm">Tue</span>
-												</a>
-											</div>
-
-											<span class="text-muted">What a strenuous career it is that I've chosen...</span>
-										</div>
-									</li>
-
-									<li class="media">
-										<div class="mr-3">
-											<img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="36" height="36" class="rounded-circle" alt="">
-										</div>
-										<div class="media-body">
-											<div class="media-title">
-												<a href="#">
-													<span class="font-weight-semibold text-white">Richard Vango</span>
-													<span class="text-muted float-right font-size-sm">Mon</span>
-												</a>
-											</div>
-											
-											<span class="text-muted">Other travelling salesmen live a life of luxury...</span>
-										</div>
-									</li>
-								</ul>
-							</div>
-
-							<div class="dropdown-content-footer justify-content-center p-0">
-								<a href="#" class="text-muted w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
-							</div>
-						</div>
-					</li>
+				<ul class="navbar-nav ml-xl-auto">
 						<li class="nav-item dropdown dropdown-user">
 							<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
 								<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
@@ -386,13 +280,7 @@
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 
-					<div class="header-elements d-none mb-3 mb-md-0">
-						<div class="d-flex justify-content-center">
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-bars-alt"></i><span>Statistics</span></a>
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calculator"></i> <span>Invoices</span></a>
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calendar5"></i> <span>Schedule</span></a>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 			<!-- /page header -->
@@ -443,7 +331,7 @@
 											<div class="alert alert-success">{{ session('success') }}</div>
 											@endif
 
-										<form action="{{ @$game_event_follower->id ? route('event-community.update', @$game_event_follower->id) : route('event-community.store') }}" method="POST" enctype="multipart/form-data">
+										<form action="{{ @$game_event_follower->id ? route('event-community.update', @$game_event_follower->id) : route('event-community.store') }}" method="POST" id="form-community" enctype="multipart/form-data">
                                             @csrf
                                             @if (@$game_event_follower->id)
                                                 @method('PUT')
@@ -527,9 +415,9 @@
 					</span>
 
 					<ul class="navbar-nav ml-lg-auto">
-						<li class="nav-item"><a href="https://kopyov.ticksy.com/" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
-						<li class="nav-item"><a href="http://demo.interface.club/limitless/docs/" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
-						<li class="nav-item"><a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
+						<li class="nav-item"><i class="icon-lifebuoy mr-2"></i> </a></li>
+						<li class="nav-item"><i class="icon-file-text2 mr-2"></i> </a></li>
+						<li class="nav-item"><i class="icon-cart2 mr-2"></i> </span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -539,6 +427,47 @@
 		<!-- /main content -->
 
 	</div>
+
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			$(document).ready(function () {
+				$("#form-community").submit(function (e) {
+					e.preventDefault(); // Mencegah form submit default
+
+					let formData = new FormData(this); // Ambil data form
+
+					$.ajax({
+						url: "{{ route('event-community.store') }}", 
+						type: "POST",
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (response) {
+							if (response.success) {
+								Swal.fire({
+									title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
+									html: "<span style='color: #ffffff; font-weight: bold;'>" + response.message + "</span>",
+									iconHtml: "🎉",
+									// icon: "success",
+									confirmButtonText: "OKE"
+								}).then(() => {
+									// Reload halaman setelah klik OK
+									location.reload();
+								});
+							}
+						},
+						error: function (xhr) {
+							Swal.fire({
+								title: "<span style='color: #ff4444;'>Gagal!</span>",
+								text: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
+								icon: "error",
+								confirmButtonText: "OKE"
+							});
+						}
+					});
+				});
+			});
+		</script>
 	<!-- /page content -->
 </body>
 </html>

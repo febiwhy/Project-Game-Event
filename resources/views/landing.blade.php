@@ -191,64 +191,44 @@
 		<div class="collapse navbar-collapse" id="navbarmobile">
 			<ul class="navbar-nav">
 				<li class="nav-item"><a href="" class="navbar-nav-link active">Home</a></li>
-				 @if (optional(auth()->user())->hasAnyRole(['admin']))
-					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
+				@if (optional(auth()->user())->hasAnyRole(['admin']))
+				<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
 				@endif
-				<li class="nav-item dropdown ">
-					<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-paragraph-justify3"></i></a>
-					<div class="dropdown-menu dropdown-menu-right ">
-						<a href="#" class="dropdown-item">
-							<i class="mi-games fa-sm mr-2"></i>Event</a>
-						<a href="{{route('article')}}" class="dropdown-item"><i class="mi-web fa-sm mr-2"></i>Artikel</a>
-							<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Hubungi Kami </a>
-						<a href="#" class="dropdown-item disabled" id="spinner-light">
-							<i class="icon-spinner spinner mr-2"></i>Akan Datang</a>
-					</div>
-				</li>
+				<li class="nav-item"><a href="{{route('article')}}" class="navbar-nav-link">Artikel</a></li>
+				<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
 			</ul>
 
 			<span class="navbar-text ml-xl-3">
-				<span class="badge bg-success">Online</span>
+				@if (auth()->check())
+					  <span class="badge bg-success">{{ auth()->user()->name }} Sedang Online</span>
+				@endif
 			</span>
 
 			<ul class="navbar-nav ml-xl-auto">
-				<li class="nav-item">
-					<a href="#" class="navbar-nav-link">
-						<i class="icon-bell2"></i>
-						<span class="d-xl-none ml-2">Notifications</span>
-						<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a href="#" class="navbar-nav-link">
-						<i class="icon-bubbles4"></i>
-						<span class="d-xl-none ml-2">Messages</span>
-					</a>
-				</li>
 
-			<li class="nav-item dropdown dropdown-user">
-				<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-					<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
-					<span class="navbar-text">
+				<li class="nav-item dropdown dropdown-user">
+					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
+						<span class="navbar-text">
+							@if (auth()->check())
+								Halo, {{ auth()->user()->name }}
+							@else
+								Guest
+							@endif
+						</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right">
 						@if (auth()->check())
-							Halo, {{ auth()->user()->name }}
+							<a href="{{ route('logout') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Logout
+							</a>
 						@else
-							Guest
+							<a href="{{ route('login') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Login
+							</a>
 						@endif
-					</span>
-				</a>
-				<div class="dropdown-menu dropdown-menu-right">
-					@if (auth()->check())
-						<a href="{{ route('logout') }}" class="dropdown-item">
-							<i class="icon-switch2"></i> Logout
-						</a>
-					@else
-						<a href="{{ route('login') }}" class="dropdown-item">
-							<i class="icon-switch2"></i> Login
-						</a>
-					@endif
-				</div>
-			</li>
+					</div>
+				</li>
 
 			</ul>
 		</div>
@@ -266,7 +246,6 @@
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
 						<h4>
-						<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 15px; width: auto; display: inline-block; vertical-align: middle;">
 							<span class="font-weight-semibold"></span></h4>
 					</div>
 				</div>
@@ -460,8 +439,7 @@
 						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
 					</span>
 					<ul class="navbar-nav ml-xl-auto">
-						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Help Center</a></li>
-						<li class="nav-item"><a href="#" class="navbar-nav-link">Policy</a></li>
+						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Pusat Batuan</a></li>
 					</ul>
 				</div>
 			</div>
