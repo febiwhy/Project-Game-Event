@@ -303,7 +303,7 @@
 									<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="contact-table">
 										<thead style="background-color: #4a4e69; color: #fff;">
 												<a href="{{ route('contact.create') }}" class="btn btn-purple btn-sm fw-bold mb-3" 
-														style="background-color: #3f1485; color: white;"><i class="icon-plus22 mr-3"></i>
+														style="background-color: #5a67d8; color: white;"><i class="icon-plus22 mr-3"></i>
 														Tambah Data
 													</a>
 												

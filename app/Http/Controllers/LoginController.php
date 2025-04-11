@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -17,23 +19,38 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $validator =  $request->validate([
-            'email' => 'required',
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
-
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            if (Auth::user()->hasRole(['admin'])) {
-                return redirect()->intended('admin')
-                    ->withSuccess('Signed in');
-            } else {
-                return redirect()->intended('landing')->withSuccess('Signed in');
-            }
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
         }
-        $validator['emailPassword'] = 'Email address or password is incorrect.';
-        return redirect("login")->withErrors($validator);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Email tidak ditemukan, Silahkan daftar.',
+            ])->withInput($request->only('email'));
+        }
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            // Password salah
+            return back()->withErrors([
+                'password' => 'Password salah.',
+            ])->withInput($request->only('email'));
+        }
+
+        Cache::put('user-is-online-' . Auth::id(), true, now()->addMinutes(10));
+
+        if (Auth::user()->hasRole(['admin'])) {
+            return redirect()->intended('admin')->withSuccess('Signed in');
+        } else{
+            return redirect()->intended('landing')->withSuccess('Signed in');
+        }
+
     }
 
     public function register()
@@ -70,6 +87,7 @@ class LoginController extends Controller
 
     public function logout()
     {
+        Cache::forget('user-is-online-' . Auth::id());
         Session::flush();
         Auth::logout();
 

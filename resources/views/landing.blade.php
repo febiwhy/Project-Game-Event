@@ -421,8 +421,8 @@
 									<th>Email</th>
 									<th>Id Number</th>
 									<th>Alamat</th>
-									<th>Status</th>
-									<th>Game Event</th>
+									<th>Verifikasi</th>
+									<th>Game Turnament</th>
 								</tr>
 							</thead>
 							<tbody>

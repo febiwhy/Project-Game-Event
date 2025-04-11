@@ -1,65 +1,84 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Mengubah Kata Sandi</title>
+</head>
+<body class="bg-light">
+    <div class="container vh-100 d-flex justify-content-center align-items-center">
+        <div class="card shadow-lg p-4" style="width: 400px;">
+            <div class="text-center mb-4">
+                {{-- <h2 class="fw-bold">Daftarkan Akun Anda!</h2> --}}
+                <h2 class="fw-bold" style="color: #3498db;">Ubah Kata Sandi</h2>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
-                        @csrf
-
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+            </div>
+            <form method="POST" action="{{ route('password.update') }}">
+                @csrf
+                  <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email" name="email" class="form-control" required>
                 </div>
+                {{-- <div class="mb-3">
+                    <label>Kata Sandi Baru</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Konfirmasi Kata Sandi</label>
+                    <input type="password" name="password_confirmation" class="form-control" required>
+                </div> --}}
+
+               <div class="mb-3 position-relative">
+                    <label>Kata Sandi Baru</label>
+                    <div class="input-group">
+                        <input type="password" name="password" class="form-control" required>
+                        <button type="button" class="btn btn-outline-secondary toggle-password" aria-label="Toggle password visibility">
+                            <i class="fa fa-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3 position-relative">
+                    <label>Konfirmasi Kata Sandi</label>
+                    <div class="input-group">
+                        <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" required>
+                        <button type="button" class="btn btn-outline-secondary toggle-password" aria-label="Toggle password visibility">
+                            <i class="fa fa-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Ubah Kata Sandi</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a href="{{ route('login') }}" class="text-decoration-none">Login Kembali</a>
             </div>
         </div>
     </div>
-</div>
-@endsection
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+       document.querySelectorAll('.toggle-password').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

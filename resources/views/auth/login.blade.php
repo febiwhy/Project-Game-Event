@@ -7,9 +7,10 @@
     <title>Login</title>
     <!-- Tambahkan Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .bg-login-image {
-            background: url('https://via.placeholder.com/500x800') no-repeat center center;
+            background: url('global_assets/images/ui/login-bg.png') no-repeat center center;
             background-size: cover;
             border-radius: 0.25rem;
         }
@@ -64,6 +65,39 @@
         .form-check {
             font-size: 0.9rem;
         }
+
+        /* icons mata password */
+         .password-wrapper {
+        position: relative;
+        }
+
+        .toggle-eye {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
+
+        .toggle-eye svg {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .toggle-eye .eye-open {
+            display: block;
+        }
+
+        .password-wrapper input[type="text"] + .toggle-eye .eye-closed {
+            display: block;
+        }
+
+        .password-wrapper input[type="text"] + .toggle-eye .eye-open {
+            display: none;
+        }
     </style>
 </head>
 
@@ -99,13 +133,31 @@
                                         </div>
                                         <br>
                                         <div class="form-group">
+                                            <div class="input-group">
+                                                <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" 
+                                                    name="password" required autocomplete="current-password" placeholder="Password">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary toggle-password" type="button">
+                                                        <i class="fa fa-eye-slash"></i>
+                                                    </button>
+                                                </div>
+                                                @error('password')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+
+                                        {{-- <div class="form-group">
                                             <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
-                                        </div>
+                                        </div> --}}
 
                                         <!-- Remember Me & Forgot Password -->
                                         <div class="input-group mb-4 d-flex justify-content-between">
@@ -114,7 +166,7 @@
                                                 <label for="formCheck" class="form-check-label text-secondary"><small>Ingat Saya</small></label>
                                             </div>
                                             <div class="forgot">
-                                                <small><a href="{{('password.request') }}">Lupa Kata Sandi ?</a></small>
+                                                <small><a href="{{route('password.reset') }}">Lupa Kata Sandi ?</a></small>
                                             </div>
                                         </div>
 
@@ -128,7 +180,7 @@
 
                                     <!-- Register Link -->
                                     <div class="row">
-                                        <small class="text-center">Tidak Punya Akun ? <a href="{{ route('register') }}" class="text-primary">Mendaftar</a></small>
+                                        <small class="text-center">Tidak Punya Akun ? <a href="{{ route('register') }}" class="text-primary">Daftar</a></small>
                                     </div>
                                 </div>
                             </div>
@@ -141,6 +193,24 @@
 
     <!-- Tambahkan Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const input = this.closest('.input-group').querySelector('input');
+                const icon = this.querySelector('i');
+                
+                // Toggle input type
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                
+                // Toggle icon
+                icon.classList.toggle('fa-eye-slash', !isPassword);
+                icon.classList.toggle('fa-eye', isPassword);
+            });
+        });
+    </script>
+
 </body>
 
 </html>

@@ -10,7 +10,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<link href="{{asset('global_assets/css/icons/icomoon/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('global_assets/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
@@ -18,6 +17,8 @@
 	<link href="{{asset('assets/css/layout.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/components.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
+	
+
 	<!-- /global stylesheets -->
 
 	<!-- Core JS files -->
@@ -166,7 +167,7 @@
 								<hr>
 							</li>
 							<li class="nav-item">
-								<a href="{{route('roles.index')}}" class="nav-link"><i class="icon-enter5 mr-3 mr-3"></i> <span>Kembali</span></a>
+								<a href="{{route('account.index')}}" class="nav-link"><i class="icon-enter5 mr-3 mr-3"></i> <span>Kembali</span></a>
 							</li>
 
 						<!-- /main -->
@@ -191,7 +192,7 @@
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
 						<h4> <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
-							<span class="font-weight-semibold">Halaman</span> - {{ isset($role) ? 'Edit Role' : 'Tambah Role' }} </h4>
+							<span class="font-weight-semibold">Halaman</span> - Data Permission </h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 				</div>
@@ -216,7 +217,7 @@
 
 						<div class="card fade-in">
 							<div class="card-header header-elements-inline">
-								<h2 class="card-title"></h2>
+								<h2 class="card-title"> Data Permission</h2>
 									<div class="header-elements">
 										<div class="list-icons">
 											<a class="list-icons-item" data-action="collapse"></a>
@@ -226,58 +227,29 @@
 									</div>
 								</div>
 								
-								<div class="card-body">
-									<div class="row">
-										<div class="col-md-10 offset-md-1">
-											@if ($errors->any())
-											<div class="alert alert-danger">
-												<ul>
-													@foreach ($errors->all() as $error)
-													<li>{{ $error }}</li>
-													@endforeach
-												</ul>
-											</div>
-											@endif
-
-											<!-- Notifikasi Sukses -->
-											@if (session('success'))
-											<div class="alert alert-success">{{ session('success') }}</div>
-											@endif
-
-											<form action="{{ isset($role) ? route('roles.update', $role->id) : route('roles.store') }}" method="POST" id="form-role" enctype="multipart/form-data">
-												@csrf
-												@if (isset($role))
-													@method('PUT')
-												@endif
-													<div class="form-group">
-														<label for="name">Role :</label>
-														<input type="text" class="form-control" name="name" id="name" value="{{ $role->name ?? '' }}" placeholder="Massukan Nama Role" required>
-													</div>	
-						
-													
-
-													<div class="form-group">
-														<label for="permissions">Permission <span class="text-danger">*</span></label>
-														<select name="permissions[]" id="permissions" class="form-control select2" multiple required>
-															@foreach ($permissions as $permission)
-																<option value="{{ $permission->name }}"
-																	@if (isset($role))
-																		{{ in_array($permission->name, $role->getPermissionNames()->toArray()) ? 'selected' : '' }}
-																	@endif>
-																	{{ $permission->name }}
-																</option>
-															@endforeach
-														</select>
-													</div>
-
-													<div class="text-right">
-														<button type="submit" class="btn btn-primary"> {{ isset($role) ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
-													</div>
-											</form>
+								<div class="container mr-4" id="right-icon-tab1">
+									<div class="table-responsive">
+										<div class="btn-group">
+											<button type="button" class="btn bg-indigo-400" onclick="location.href='{{ route('permissions.create') }}'"><i class="icon-plus22 mr-3"></i> Tambah Permission </button>
 										</div>
-									</div>
+										<div class="container p-4">
+											<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="permissions-table">
+											<thead style="background-color: #4a4e69; color: #fff;">		
+											<tr>
+												<th>No</th>
+												<th>Nama Role</th>
+												<th>Aksi</th>
+											</tr>
+										</thead>
+										<tbody>
+											{{-- di isi datatables --}}
+										</tbody>
+									</table>
 								</div>
+							</div>
 						</div>
+					</div>
+
 			</div>
 			<!-- /content area -->
 
@@ -311,56 +283,125 @@
 	</div>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script>
-			$(document).ready(function () {
-				$("#form-role").submit(function (e) {
-					e.preventDefault();
+			$(document).ready(function() {
+				$('#permissions-table').DataTable({
+					processing: true,
+					serverSide: true,
+					ajax: "{{ route('permissions.index') }}",
+					columns: [
+						
+            			{ data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+						{ data: 'name', name: 'name' },
+						{ data: 'action', name: 'action', orderable: false, searchable: false }
+					],
+					language: {
+						paginate: {
+							previous: 'Sebelumnya',
+							next: 'Selanjutnya'
+						},
+						search: 'Cari:',
+						lengthMenu: 'Tampilkan _MENU_ entri',
+						info: 'Menampilkan _START_ hingga _END_ dari _TOTAL_ entri',
+						infoEmpty: 'Menampilkan 0 hingga 0 dari 0 entri',
+						infoFiltered: '(disaring dari _MAX_ total entri)'
+					},
+					dom: '<"top"lBf>rt<"bottom"ip>',
+					buttons: [
+						{
+							text: 'Download PDF',
+							className: 'btn btn-danger',
+							action: function () {
+								window.location.href = "";
+							}
+						}
+					],
+					initComplete: function() {
+						$('.dataTables_filter input').css({
+							'background-color': '#3e414d',
+							'color': '#ffffff',
+							'border': '1px solid #555'
+						});
 
-					let formData = new FormData(this); // Ambil data form
+						$('.dataTables_length select').css({
+							'background-color': '#3e414d',
+							'color': '#ffffff',
+							'border': '1px solid #555'
+						});
 
+						$('.dt-buttons').css({ 'margin-left': '10px' });
+
+						$('#permissions-table tbody tr').css({
+							'background-color': '#3e414d',
+							'color': '#ffffff'
+						});
+
+						$('#permissions-table thead').css({
+							'background-color': '#4a4e69',
+							'color': '#ffffff'
+						});
+					}
+				});
+			});
+
+			// Fungsi Konfirmasi Hapus
+			function confirmDelete(id) {
+				Swal.fire({
+					title: "<span style='color: #ff6666;'>Yakin ingin menghapus?</span>",
+					html: "<span style='color: #ff6666;'>Data yang dihapus tidak bisa dikembalikan!</span>",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#d33",
+					cancelButtonColor: "#3085d6",
+					confirmButtonText: "Ya, hapus!",
+					cancelButtonText: "Batal"
+				}).then((result) => {
+				 if (result.isConfirmed) {
 					$.ajax({
-						url: "{{ isset($role) ? route('roles.update', $role->id) : route('roles.store') }}", 
-						type: "POST",
-						data: formData,
-						processData: false,
-						contentType: false,
-						success: function (response) {
+						url: "/permissions/" + id,
+						type: "DELETE",
+						data: { _token: "{{ csrf_token() }}" },
+						success: function(response) {
 							if (response.success) {
 								Swal.fire({
 									title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
-									html: "<span style='color: #ffffff; font-weight: bold;'>" + response.message + "</span>",
-									iconHtml: "🎉",
+									html: "<span style='color: #ffffff;'>Data telah berhasil dihapus.</span>",
+									icon: "success",
+									iconHtml: "🗑️",
+									background: "#222831",
+									color: "#ffffff",
+									confirmButtonColor: "#00c853",
 									confirmButtonText: "OKE"
-									// text: response.message, 
-									// icon: "success",
-								}).then(() => {
-									// Reload halaman setelah klik OK
-									location.reload();
+								});
+								$('#permissions-table').DataTable().ajax.reload();
+							} else {
+								Swal.fire({
+									title: "<span style='color: #ff4444;'>Gagal!</span>",
+									html: "<span style='color: #ffffff;'>Terjadi kesalahan, data gagal dihapus.</span>",
+									icon: "error",
+									background: "#222831",
+									color: "#ffffff",
+									confirmButtonColor: "#ff4444",
+									confirmButtonText: "OKE"
 								});
 							}
 						},
-						error: function (xhr) {
+						error: function(xhr) {
 							Swal.fire({
 								title: "<span style='color: #ff4444;'>Gagal!</span>",
-								text: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
+								html: "<span style='color: #ffffff;'>Error " + xhr.status + ": " + xhr.responseJSON.message + "</span>",
 								icon: "error",
+								background: "#222831",
+								color: "#ffffff",
+								confirmButtonColor: "#ff4444",
 								confirmButtonText: "OKE"
 							});
 						}
 					});
-				});
+				}
 			});
+		}
+		
 		</script>
-
-		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-		<script>
-			 $(document).ready(function () {
-				$('#permissions').select2({
-					placeholder: 'Pilih permissions...',
-					allowClear: true
-				});
-			});
-		</script>
-
 	<!-- /page content -->
 </body>
 </html>

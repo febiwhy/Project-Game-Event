@@ -230,18 +230,18 @@
 									<div class="row">
 										<div class="col-md-10 offset-md-1">
 											@if ($errors->any())
-											<div class="alert alert-danger">
-												<ul>
-													@foreach ($errors->all() as $error)
-													<li>{{ $error }}</li>
-													@endforeach
-												</ul>
-											</div>
+												<div class="alert alert-danger">
+													<ul>
+														@foreach ($errors->all() as $error)
+														<li>{{ $error }}</li>
+														@endforeach
+													</ul>
+												</div>
 											@endif
 
 											<!-- Notifikasi Sukses -->
 											@if (session('success'))
-											<div class="alert alert-success">{{ session('success') }}</div>
+												<div class="alert alert-success">{{ session('success') }}</div>
 											@endif
 
 										<form action="{{ isset($users) ? route('account.update', $users->id) : route('account.store') }}" method="POST" id="form-account" enctype="multipart/form-data">
@@ -280,7 +280,7 @@
 												</div>
 
 												<div class="text-right">
-													<button type="submit" class="btn btn-primary"> Daftarkan <i class="icon-paperplane ml-2"></i></button>
+													<button type="submit" class="btn btn-primary"> {{ isset($users) ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
 												</div>
 											</form>
 										</div>
@@ -327,7 +327,7 @@
 					let formData = new FormData(this); // Ambil data form
 
 					$.ajax({
-						url: "{{ route('account.store') }}", 
+						url: "{{ isset($users) ? route('account.update', $users->id) : route('account.store') }}", 
 						type: "POST",
 						data: formData,
 						processData: false,

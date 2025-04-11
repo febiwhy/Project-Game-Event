@@ -250,7 +250,8 @@
 								<li class="nav-item nav-item-submenu">
 									<a href="#" class="nav-link"> Admin </a>
 									<ul class="nav nav-group-sub">
-										<li class="nav-item"><a href="{{route('roles.create')}}" class="nav-link active"><i class="icon-plus22 mr-3"></i>Tambah Role</a></li>
+										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
+										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
 									</ul>
 								</li>
 								<li class="nav-item">
@@ -259,13 +260,13 @@
 							</ul>
 						</li>
 						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
+							<a href="#" class="nav-link active"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
 
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
 								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
 								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
-								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
+								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link active"> Hubungi Kami </a></li>
 							</ul>
 						</li>
 					</ul>

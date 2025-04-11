@@ -239,12 +239,10 @@
 										<tr>
 											<th>Foto Peserta</th>
 											<td>
-												@if($pendaftaran->foto)
-													<div class="mb-3">
-														<img src="{{ asset($pendaftaran->foto ?? '-') }}" class="rounded-circle" width="100" height="100" alt="Contact Photo">
-													</div>
+												@if (!empty($pendaftaran->foto))
+													<img src="{{ asset($pendaftaran->foto) }}" alt="foto" height="100px">
 												@else
-													<p class="text-muted">No Photo Available</p>
+													<span class="text-muted">Tidak ada gambar</span>
 												@endif
 												{{-- <img src="{{ asset($pendaftaran->foto ?? '-') }}" alt="Foto" height="100px"> --}}
 											</td>

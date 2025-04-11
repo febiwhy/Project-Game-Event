@@ -244,7 +244,7 @@
 											@if (session('success'))
 											<div class="alert alert-success">{{ session('success') }}</div>
 											@endif
-											<form action="{{ route('pendaftaran.update', $pendaftaran->id) }}" method="POST" enctype="multipart/form-data">
+											<form action="{{ route('pendaftaran.update', $pendaftaran->id) }}" method="POST" id="form-pendaftar" enctype="multipart/form-data">
 												@csrf
 												@method('PUT')
 
@@ -294,14 +294,14 @@
 												</div>
 
 												<div class="form-group">
-													<label for="foto">Upload Foto Baru (Opsional): :</label>
+													<label for="foto">Upload Foto Baru (Opsional) : </label>
 													<input type="file" name="foto" class="form-control" name="foto" accept=".jpg,.jpeg,.png">
 												</div>
 
 												
 
 												<div class="text-right">
-													<button type="submit" class="btn btn-primary"> Daftarkan <i class="icon-paperplane ml-2"></i></button>
+													<button type="submit" class="btn btn-primary"> Perbarui <i class="icon-paperplane ml-2"></i></button>
 												</div>
 											</form>
 										</div>
@@ -339,6 +339,46 @@
 		<!-- /main content -->
 
 	</div>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			$(document).ready(function () {
+				$("#form-pendaftar").submit(function (e) {
+					e.preventDefault(); // Mencegah form submit default
+
+					let formData = new FormData(this); // Ambil data form
+
+					$.ajax({
+						url: "{{ route('pendaftaran.update', $pendaftaran->id) }}", 
+						type: "POST",
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (response) {
+							if (response.success) {
+								Swal.fire({
+									title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
+									html: "<span style='color: #ffffff; font-weight: bold;'>" + response.message + "</span>",
+									iconHtml: "🎉",
+									// icon: "success",
+									confirmButtonText: "OKE"
+								}).then(() => {
+									// Reload halaman setelah klik OK
+									location.reload();
+								});
+							}
+						},
+						error: function (xhr) {
+							Swal.fire({
+								title: "<span style='color: #ff4444;'>Gagal!</span>",
+								text: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
+								icon: "error",
+								confirmButtonText: "OKE"
+							});
+						}
+					});
+				});
+			});
+		</script>
 	<!-- /page content -->
 </body>
 </html>

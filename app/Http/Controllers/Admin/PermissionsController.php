@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Spatie\Permission\Models\Role;
 
-class AccountController extends Controller
+class PermissionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,24 +19,12 @@ class AccountController extends Controller
      */
     public function index(Request $request)
     {
-
-        // dd(Role::get());
         if ($request->ajax()) {
-            $data = User::select(['id', 'name', 'email']);
+            $data = DB::table('permissions')->select(['id', 'name']);
 
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('role', function ($row) {
-                    return $row->getRoleNames()->first();
-                })
-                ->addColumn('activity', function ($row) {
-                    if (Cache::has('user-is-online-' . $row->id)) {
-                        return '<span class="badge bg-success">Online</span>';
-                    } else {
-                        return '<span class="badge bg-secondary">Offline</span>';
-                    }
-                })
                 ->addColumn('action', function ($row) {
                     return '<div class="list-icons">
                                 <div class="dropdown">
@@ -45,10 +32,7 @@ class AccountController extends Controller
                                         <i class="icon-menu7"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a href="' . route('account.show', $row->id) . '" class="dropdown-item">
-                                            <i class="icon-file-stats"></i> Detail Data
-                                        </a>
-                                        <a href="' . route('account.edit', $row->id) . '" class="dropdown-item">
+                                        <a href="' . route('permissions.edit', $row->id) . '" class="dropdown-item">
                                             <i class="icon-file-text2"></i> Edit Data
                                         </a>
                                         <a href="javascript:void(0);" class="dropdown-item" onclick="confirmDelete(' . $row->id . ')">
@@ -58,13 +42,11 @@ class AccountController extends Controller
                                 </div>
                             </div>';
                 })
-                ->rawColumns(['action', 'role', 'activity'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
-
-        $users = User::with('roles')->get();
-        $data = Pendaftaran::all();
-        return view('admin.account.index', compact('data', 'users'));
+        $permissions = Permission::orderBy('name')->get();
+        return view('admin.account.add-permissions.index', compact('permissions'));
     }
 
     /**
@@ -74,8 +56,7 @@ class AccountController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-        return view('admin.account.create-edit', compact('roles'));
+        return view('admin.account.add-permissions.create-edit');
     }
 
     /**
@@ -87,26 +68,21 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'role' => 'required|string'
+            'name' => 'required|unique:permissions,name',
         ]);
 
-        $users = User::create([
+        $permissions = Permission::create([
             'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'guard_name' => 'web', // default guard
         ]);
+        $permissions->syncPermissions($request->permissions);
         return response()->json([
             'success' => true,
             'message' => 'Data Berhasil disimpan!',
-            'id' => $users->id
+            'id' => $permissions->id
         ]);
 
-        $users->assignRole($request->role);
-
-        // return redirect()->route('account.index')->with('success', 'User berhasil ditambahkan!');
+        // return redirect()->route('permissions.index')->with('success', 'Permission berhasil dibuat');
     }
 
     /**
@@ -117,8 +93,7 @@ class AccountController extends Controller
      */
     public function show($id)
     {
-        $users = User::with('roles')->findOrFail($id);
-        return view('admin.account.show', compact('users'));
+        //
     }
 
     /**
@@ -129,9 +104,8 @@ class AccountController extends Controller
      */
     public function edit($id)
     {
-        $users = User::findOrFail($id);
-        $roles = Role::all();
-        return view('admin.account.create-edit', compact('users', 'roles'));
+        $permissions = Permission::findOrFail($id);
+        return view('admin.account.add-permissions.create-edit', compact('permissions'));
     }
 
     /**
@@ -143,32 +117,23 @@ class AccountController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $users = User::findOrFail($id);
-
+        $permissions = Permission::findOrFail($id);
+        
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|string',
+            'name' => 'required|unique:permissions,name,' . $permissions->id,
         ]);
-
-        $users->update([
+        
+        $permissions->update([
             'name' => $request->name,
-            'email' => $request->email,
         ]);
-        
-        if ($request->filled('password')) {
-            $users->update(['password' => bcrypt($request->password)]);
-        }
-        
-        $users->syncRoles($request->role);
-
+        $permissions->syncPermissions($request->permissions);
         return response()->json([
             'success' => true,
-            'message' => 'Data Berhasil Perbarui',
-            'id' => $users->id
+            'message' => 'Data Berhasil disimpan!',
+            'id' => $permissions->id
         ]);
 
-        // return redirect()->route('account.index')->with('success', 'User berhasil diupdate!');
+        
     }
 
     /**
@@ -180,8 +145,8 @@ class AccountController extends Controller
     public function destroy($id)
     {
         try {
-            $user = User::findOrFail($id);
-            $user->delete();
+            $permissions = Permission::findOrFail($id);
+            $permissions->delete();
 
             return response()->json([
                 'success' => true,
@@ -200,30 +165,5 @@ class AccountController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-        // $user = User::findOrFail($id);
-        // $user->delete();
-
-        // return redirect()->route('account.index')->with('success', 'User berhasil dihapus!');
     }
-
-    // public function storeRole(Request $request)
-    // {
-    //     $request->validate([
-    //         'role_name' => 'required|string|unique:roles,name'
-    //     ]);
-
-    //     $users = Role::create(['name' => $request->role_name]);
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Data Berhasil disimpan!',
-    //         'id' => $users->id
-    //     ]);
-
-    //     // return redirect()->route('account.index')->with('success', 'Role baru berhasil ditambahkan!');
-    // }
-
-    // public function createRole()
-    // {
-    //     return view('admin.account.add-roles.create-edit');
-    // }
 }

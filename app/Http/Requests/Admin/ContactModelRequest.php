@@ -25,7 +25,7 @@ class ContactModelRequest extends FormRequest
     public function rules()
     {
         return [
-            'foto' => 'required',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'location' => 'required',
             'telepon' => 'required',
             'email' => 'required'

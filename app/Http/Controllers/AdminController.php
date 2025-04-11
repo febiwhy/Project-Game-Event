@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Exports\UserExport;
 use Spatie\Permission\Models\Role;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
@@ -17,7 +18,7 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Pendaftaran::with('gameEvent')->get();
+            $data = Pendaftaran::with('gameEvent', 'user')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('game_event', function ($row) {
@@ -50,8 +51,10 @@ class AdminController extends Controller
         $totalgameEvent = GameEvent::count();
         $users = User::all();
         $data = Pendaftaran::all();
-        $totalusers = User::count();
         $user = auth()->user();
+        $totalusers = $users->filter(function ($user) {
+            return Cache::has('user-is-online-' . $user->id);
+        })->count();
         return view('admin.index', compact('data', 'user', 'users', 'totalgameEvent', 'totalusers'));
     }
 

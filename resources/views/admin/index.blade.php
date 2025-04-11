@@ -196,7 +196,8 @@
 								<li class="nav-item nav-item-submenu">
 									<a href="#" class="nav-link"> Admin </a>
 									<ul class="nav nav-group-sub">
-										<li class="nav-item"><a href="{{route('roles.create')}}" class="nav-link active"><i class="icon-plus22 mr-3"></i>Tambah Role</a></li>
+										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
+										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
 									</ul>
 								</li>
 								<li class="nav-item">
@@ -277,8 +278,8 @@
 						<div class="row">
 							<div class="col-sm-4">
 								<div class="d-flex align-items-center justify-content-center mb-2">
-									<a class="btn bg-transparent border-success-300 text-success-300 rounded-round border-2 btn-icon mr-3">
-										<i class="icon-plus3"></i>
+									<a class="btn bg-transparent border-success-300 text-success-300 rounded-round border-2 btn-icon mr-3">	
+										<i class="mi-videogame-asset"></i>
 									</a>
 									<div>
 										<div class="font-weight-semibold">Total Game Turnament</div>
@@ -290,7 +291,7 @@
 
 							<div class="col-sm-4">
 								<div class="d-flex align-items-center justify-content-center mb-2">
-									<a href="#" class="btn bg-transparent border-orange-300 text-orange-300 rounded-round border-2 btn-icon mr-3">
+									<a class="btn bg-transparent border-orange-300 text-orange-300 rounded-round border-2 btn-icon mr-3">
 										<i class="icon-watch"></i>
 									</a>
 									<div>
@@ -303,7 +304,7 @@
 
 							<div class="col-sm-4">
 								<div class="d-flex align-items-center justify-content-center mb-2">
-									<a href="#" class="btn bg-transparent border-blue-300 text-blue-300 rounded-round border-2 btn-icon mr-3">
+									<a class="btn bg-transparent border-blue-300 text-blue-300 rounded-round border-2 btn-icon mr-3">
 										<i class="icon-accessibility"></i>
 									</a>
 									<div>
@@ -321,7 +322,7 @@
 
 				<div class="card" >
 					<div class="card-header header-elements-inline">
-						<h2 class="card-title"></h2>
+						<h2 class="card-title"> Daftar Peserta</h2>
 						<div class="header-elements">
 							<div class="list-icons">
 								<a class="list-icons-item" data-action="collapse"></a>
@@ -339,9 +340,8 @@
 											<th>Nama</th>
 											<th>Email</th>
 											<th>ID Number</th>
-											<th>WhatsApp</th>
-											<th>Alamat</th>
-											<th>Status</th>
+											<th>Verifikasi</th>
+											<th>Game Turnament</th>
 											<th>Aksi</th>
 										</tr>
 									</thead>
@@ -415,7 +415,6 @@
 						{ data: 'nama', name: 'nama' },
 						{ data: 'email', name: 'email' },
 						{ data: 'id_number', name: 'id_number' },
-						{ data: 'alamat', name: 'alamat' },
 						{ data: 'status', name: 'status' },
 						{ data: 'game_event', name: 'game_event' },
 						{ data: 'action', name: 'action', orderable: false, searchable: false }

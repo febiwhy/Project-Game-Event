@@ -131,7 +131,7 @@ class GameEventFollowerController extends Controller
      */
     public function update(GameEventFollowerRequest $request, $id)
     {
-        $event_community = GameEventFollower::findOrFail($id);
+        $communities = GameEventFollower::findOrFail($id);
 
         $data = $request->validate([
             'game_event_id' => 'required|exists:game_events,id',
@@ -148,9 +148,13 @@ class GameEventFollowerController extends Controller
             $data['member'] = implode(',', $data['member']);
         }
 
-        $event_community->update($data);
+        $communities->update($data);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil Diperbarui',
+            'id' => $communities->id
+        ]);
 
-        return redirect()->route('event-community.index', $id)->with('success', "Data Berhasil Diperbarui");
     }
 
     public function destroy($id)

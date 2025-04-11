@@ -152,7 +152,11 @@ class EventGameController extends Controller
         // update data
         $game_event->update($data);
 
-        return redirect()->route('game-event.show', $id)->with('success', "data berhasil di update");
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil Diperbarui',
+            'id' => $game_event->id
+        ]);
     }
 
     /**

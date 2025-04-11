@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\ContactModel;
 use Illuminate\Http\Request;
-use App\Mail\AdminContactMail;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
-use App\Http\Requests\Admin\ContactModelRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Spatie\Permission\Models\Permission;
 
-class ContactController extends Controller
+class RolesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,13 +20,11 @@ class ContactController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ContactModel::select(['id', 'location', 'foto', 'telepon', 'email']);
+            $data = DB::table('roles')->select(['id', 'name']);
+
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->editColumn('foto', function ($row) {
-                    return '<img src="' . asset($row->foto) . '" alt="Thumbnail" width="50" height="50">';
-                })
                 ->addColumn('action', function ($row) {
                     return '<div class="list-icons">
                                 <div class="dropdown">
@@ -35,7 +32,7 @@ class ContactController extends Controller
                                         <i class="icon-menu7"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a href="' . route('contact.edit', $row->id) . '" class="dropdown-item">
+                                        <a href="' . route('roles.edit', $row->id) . '" class="dropdown-item">
                                             <i class="icon-file-text2"></i> Edit Data
                                         </a>
                                         <a href="javascript:void(0);" class="dropdown-item" onclick="confirmDelete(' . $row->id . ')">
@@ -45,11 +42,10 @@ class ContactController extends Controller
                                 </div>
                             </div>';
                 })
-                ->rawColumns(['action', 'foto'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
-        $contact = ContactModel::first();      
-        return view('admin.contact.index', compact('contact'));
+        return view('admin.account.add-roles.index');
     }
 
     /**
@@ -59,7 +55,8 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return view('admin.contact.create-edit', ['contact' => null]);
+        $permissions = Permission::all();
+        return view('admin.account.add-roles.create-edit', compact('permissions'));
     }
 
     /**
@@ -68,21 +65,20 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ContactModelRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-        if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store('contact', 'public');
-            $data['foto'] = "/storage/" . $path;
-        }
-        $contact = ContactModel::create($data);
+        $request->validate([
+            'name' => 'required|string|unique:roles,name'
+        ]);
+
+        $roles = Role::create(['name' => $request->name]);
         return response()->json([
             'success' => true,
             'message' => 'Data Berhasil disimpan!',
-            'id' => $contact->id
+            'id' => $roles->id
         ]);
-        // return redirect()->route('contact.index')->with('success', "Data Berhasil disimpan");
     }
+
     /**
      * Display the specified resource.
      *
@@ -91,9 +87,7 @@ class ContactController extends Controller
      */
     public function show($id)
     {
-        $contact = ContactModel::findOrFail($id);
-        $contactus = ContactModel::all();
-        return view('admin.contact.show', compact('contact', 'contactus'));
+        //
     }
 
     /**
@@ -103,10 +97,10 @@ class ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
-        $contact_model = ContactModel::all();
-        $contact = ContactModel::findOrFail($id);
-        return view('admin.contact.create-edit', compact('contact', 'contact_model'));
+    {
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+        return view('admin.account.add-roles.create-edit', compact('role', 'permissions'));
     }
 
     /**
@@ -116,22 +110,18 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ContactModelRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $contact = ContactModel::findOrFail($id);
-        $data = $request->validated();
-        if ($request->hasFile('foto')) {
-            // Simpan file ke "storage/app/public/game-event"
-            $path = $request->file('foto')->store('contact', 'public');
+        $role = Role::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|unique:roles,name,' . $id
+        ]);
+        $role->update(['name' => $request->name]);
 
-            // Simpan path yang benar untuk ditampilkan di frontend
-            $data['foto'] = "/storage/" . $path;
-        }
-        $contact->update($data);
         return response()->json([
             'success' => true,
-            'message' => 'Data Berhasil Diperbarui',
-            'id' => $contact->id
+            'message' => 'Data Berhasil diperbarui!',
+            'id' => $role->id
         ]);
     }
 
@@ -144,8 +134,8 @@ class ContactController extends Controller
     public function destroy($id)
     {
         try {
-            $contact = ContactModel::findOrFail($id);
-            $contact->delete();
+            $role = Role::findOrFail($id);
+            $role->delete();
 
             return response()->json([
                 'success' => true,
@@ -164,39 +154,5 @@ class ContactController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-        // $contact = ContactModel::findOrFail($id);
-        // $contact->delete();
-
-        // return redirect()->route('contact.index', $id)->with('success', "data berhasil di Delete");
-    }
-
-    public function send(Request $request)
-    {
-        $request->validate([
-            'subject' => 'required',
-            'fname' => 'required',
-            'lname' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'message' => 'required',
-        ]);
-
-        $data = [
-            'subject' => $request->subject,
-            'fname' => $request->fname,
-            'lname' => $request->lname,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'message' => $request->message,
-        ];
-
-
-        Mail::to('admin@yourapp.com')->send(new AdminContactMail($data));
-        // Mail::send('emails.emailadmincontact', $data, function ($message) use ($data) {
-        //     $message->to('febiwahyu469@gmail.com', 'Admin')
-        //         ->subject('Pesan Baru: ' . $data['subject']);
-        // });
-
-        return back()->with('success', 'Pesan Anda berhasil dikirim!');
     }
 }

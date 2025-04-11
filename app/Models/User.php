@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Cache;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -42,4 +43,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Cek apakah user sedang online berdasarkan cache.
+     *
+     * @return bool
+     */
+    public function isonline()
+    {
+        return Cache::has('user-is-online-' . $this->id);
+    }
 }

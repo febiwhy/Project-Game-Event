@@ -183,16 +183,17 @@
 							<hr>
 						</li>
 						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
+							<a href="#" class="nav-link active"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Sidebars">
 								<li class="nav-item nav-item-submenu">
 									<a href="#" class="nav-link"> Admin </a>
 									<ul class="nav nav-group-sub">
-										<li class="nav-item"><a href="{{route('roles.create')}}" class="nav-link active"><i class="icon-plus22 mr-3"></i>Tambah Role</a></li>
+										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
+										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
 									</ul>
 								</li>
 								<li class="nav-item">
-									<a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
+									<a href="{{route('account.index')}}" class="nav-link active"> Daftar Akun </a>
 								</li>
 							</ul>
 						</li>
@@ -269,32 +270,32 @@
 					<div class="container mr-4" id="right-icon-tab1">
 						<div class="table-responsive">
 							<div class="btn-group">
-								<button type="button" class="btn bg-indigo-400" onclick="location.href='{{ route('account.create') }}'"><i class="icon-plus22 mr-3"></i> Tambah Akun </button>
-								<button type="button" class="btn bg-indigo-400 dropdown-toggle" data-toggle="dropdown"></button>
+								<button type="button" class="btn bg-indigo-400" style="background-color: #5a67d8; color: white;" onclick="location.href='{{ route('account.create') }}'">
+									<i class="icon-plus22 mr-3"></i> Tambah Akun </button>
+								<button type="button" class="btn bg-indigo-400 dropdown-toggle" style="background-color: #5a67d8; color: white;" data-toggle="dropdown"></button>
 								<div class="dropdown-menu dropdown-menu-right">
 									<div class="dropdown-header">Export</div>
 									<a href="{{ route('download.pdf') }}" class="dropdown-item"><i class="icon-file-pdf"></i> Export to PDF</a>
 									<a href="{{ route('export.excel') }}" class="dropdown-item"><i class="icon-file-excel"></i> Export to CSV</a>
 								</div>
 							</div>
-							<div class="container p-4">
-								<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="account-table">
-							<thead style="background-color: #4a4e69; color: #fff;">
-										
-								<tr>
-									
-									<th>No</th>
-									<th>Nama</th>
-									<th>Email</th>
-									<th>Role</th>
-									<th>Aksi</th>
-								</tr>
-							</thead>
-							<tbody>
-								{{-- di isi datatables --}}
-							</tbody>
-						</table>
-					</div>
+								<div class="container p-4">
+									<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="account-table">
+									<thead style="background-color: #4a4e69; color: #fff;">		
+									<tr>
+										<th>No</th>
+										<th>Nama</th>
+										<th>Email</th>
+										<th>Role</th>
+										<th>Aktivitas</th>
+										<th>Aksi</th>
+									</tr>
+								</thead>
+								<tbody>
+									{{-- di isi datatables --}}
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 
@@ -344,6 +345,7 @@
 						{ data: 'name', name: 'name' },
 						{ data: 'email', name: 'email'},
 						{ data: 'role', name: 'role'},
+						{ data: 'activity', name: 'activity'},
 						{ data: 'action', name: 'action', orderable: false, searchable: false }
 					],
 					language: {

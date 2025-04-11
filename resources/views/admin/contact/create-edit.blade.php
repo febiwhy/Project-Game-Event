@@ -369,7 +369,7 @@
 												</div>
 
 												<div class="text-right">
-													<button type="submit" class="btn btn-primary">{{ isset($contact) ? 'Update' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
+													<button type="submit" class="btn btn-primary">{{ isset($contact) ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
 												</div>
 											</form>
 										</div>
@@ -416,7 +416,7 @@
 				let formData = new FormData(this); // Ambil data form
 
 				$.ajax({
-					url: "{{ route('contact.store') }}", 
+					url: "{{ isset($contact) ? route('contact.update', $contact->id) : route('contact.store') }}", 
 					type: "POST",
 					data: formData,
 					processData: false,

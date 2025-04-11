@@ -389,7 +389,7 @@
 												</div>
 
 												<div class="text-right">
-													<button type="submit" class="btn btn-primary"> Daftarkan <i class="icon-paperplane ml-2"></i></button>
+													<button type="submit" class="btn btn-primary"> {{ isset($game_event_follower) ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
 												</div>
 											</form>
 										</div>
@@ -437,7 +437,7 @@
 					let formData = new FormData(this); // Ambil data form
 
 					$.ajax({
-						url: "{{ route('event-community.store') }}", 
+						url: "{{ isset($game_event_follower) ? route('event-community.update', $game_event_follower->id) : route('event-community.store') }}", 
 						type: "POST",
 						data: formData,
 						processData: false,
