@@ -45,7 +45,6 @@
 	</head>
 	<body>
 	<!-- Main navbar -->
-	@can('')
 	@if (optional(auth()->user())->hasAnyRole(['admin']))
 		<div class="navbar navbar-expand-md navbar-light navbar-static">
 			<div class="navbar-brand" style="display: flex; align-items: center;">
@@ -403,7 +402,6 @@
 		}
 		
 		</script>
-		@endcan
 	<!-- /page content -->
 </body>
 </html>

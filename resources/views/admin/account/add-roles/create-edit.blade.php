@@ -252,21 +252,7 @@
 													<div class="form-group">
 														<label for="name">Role :</label>
 														<input type="text" class="form-control" name="name" id="name" value="{{ @$roles->name ?? '' }}" placeholder="Massukan Nama Role" required>
-													</div>	
-					
-													<div class="form-group">
-														<label for="permissions">Permission <span class="text-danger">*</span></label>
-														<select name="permissions[]" id="permissions" class="form-control select2" multiple required>
-															@foreach ($permissions as $permission)
-																<option value="{{ $permission->name }}"
-																	@if (@$roles)
-																		{{ in_array($permission->name, @$roles->getPermissionNames()->toArray()) ? 'selected' : '' }}
-																	@endif>
-																	{{ $permission->name }}
-																</option>
-															@endforeach
-														</select>
-													</div>
+													</div>					
 													
 													<div class="text-right">
 														<button type="submit" class="btn btn-primary"> {{ @$roles ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
@@ -346,16 +332,6 @@
 							});
 						}
 					});
-				});
-			});
-		</script>
-
-		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-		<script>
-			 $(document).ready(function () {
-				$('#permissions').select2({
-					placeholder: 'Pilih permissions...',
-					allowClear: true
 				});
 			});
 		</script>
