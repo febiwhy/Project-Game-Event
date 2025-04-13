@@ -12,6 +12,13 @@ use Spatie\Permission\Models\Role;
 
 class PermissionsController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view permission', ['only' => ['index']]);
+    //     $this->middleware('permission:create permission', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:update permission', ['only' => ['update', 'edit']]);
+    //     $this->middleware('permission:delete permission', ['only' => ['destroy']]);
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -45,8 +52,10 @@ class PermissionsController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+
         $permissions = Permission::orderBy('name')->get();
-        return view('admin.account.add-permissions.index', compact('permissions'));
+        return view('admin.account.add-permissions.index', ['permissions' => $permissions]);
+        // return view('admin.account.add-permissions.index', compact('permissions'));
     }
 
     /**
@@ -68,12 +77,15 @@ class PermissionsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:permissions,name',
+            'name' => [
+                'required',
+                'string',
+                'unique:permissions,name'
+            ]
         ]);
 
         $permissions = Permission::create([
             'name' => $request->name,
-            'guard_name' => 'web', // default guard
         ]);
         $permissions->syncPermissions($request->permissions);
         return response()->json([
@@ -102,10 +114,9 @@ class PermissionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Permission $permissions)
     {
-        $permissions = Permission::findOrFail($id);
-        return view('admin.account.add-permissions.create-edit', compact('permissions'));
+        return view('admin.account.add-permissions.create-edit', ['permission' => $permissions]);
     }
 
     /**
@@ -115,12 +126,14 @@ class PermissionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $permissions = Permission::findOrFail($id);
-        
+    public function update(Request $request, Permission $permissions)
+    {   
         $request->validate([
-            'name' => 'required|unique:permissions,name,' . $permissions->id,
+            'name' => [
+                'required',
+                'string',
+                'unique:permissions,name,' . $permissions->id
+            ]
         ]);
         
         $permissions->update([
@@ -142,10 +155,10 @@ class PermissionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($permissionId)
     {
         try {
-            $permissions = Permission::findOrFail($id);
+            $permissions = Permission::find($permissionId);
             $permissions->delete();
 
             return response()->json([

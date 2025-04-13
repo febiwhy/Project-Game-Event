@@ -12,6 +12,13 @@ use Spatie\Permission\Models\Permission;
 
 class RolesController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view role', ['only' => ['index']]);
+    //     $this->middleware('permission:create role', ['only' => ['create', 'store', 'addPermissionToRole', 'givePermissionToRole']]);
+    //     $this->middleware('permission:update role', ['only' => ['update', 'edit']]);
+    //     $this->middleware('permission:delete role', ['only' => ['destroy']]);
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +52,9 @@ class RolesController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('admin.account.add-roles.index');
+
+        $roles = Role::get();
+        return view('admin.account.add-roles.index', ['roles' => $roles]);
     }
 
     /**
@@ -56,7 +65,7 @@ class RolesController extends Controller
     public function create()
     {
         $permissions = Permission::all();
-        return view('admin.account.add-roles.create-edit', compact('permissions'));
+        return view('admin.account.add-roles.create-edit',  compact('permissions'));
     }
 
     /**
@@ -68,10 +77,15 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|unique:roles,name'
+            'name' => [
+                'required',
+                'string',
+                'unique:roles,name'
+            ]
         ]);
 
         $roles = Role::create(['name' => $request->name]);
+        $roles->syncPermissions($request->permissions);
         return response()->json([
             'success' => true,
             'message' => 'Data Berhasil disimpan!',
@@ -98,9 +112,17 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::findOrFail($id);
+
+        $roles = Role::with('permissions')->findOrFail($id);
         $permissions = Permission::all();
-        return view('admin.account.add-roles.create-edit', compact('role', 'permissions'));
+        return view('admin.account.add-roles.create-edit', [
+            'roles' => $roles,
+            'permissions' => $permissions
+        ]);
+
+        // $role = Role::findOrFail($id);
+        // $permissions = Permission::all();
+        // return view('admin.account.add-roles.create-edit', compact('role', 'permissions'));
     }
 
     /**
@@ -112,16 +134,21 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $role = Role::findOrFail($id);
-        $request->validate([
-            'name' => 'required|string|unique:roles,name,' . $id
-        ]);
-        $role->update(['name' => $request->name]);
 
+        $roles = Role::findOrFail($id);
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'unique:roles,name,' . $roles->id
+            ]
+        ]);
+        $roles->update(['name' => $request->name]);
+        $roles->syncPermissions($request->permissions);
         return response()->json([
             'success' => true,
             'message' => 'Data Berhasil diperbarui!',
-            'id' => $role->id
+            'id' => $roles->id
         ]);
     }
 
@@ -131,10 +158,11 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($roleId)
     {
         try {
-            $role = Role::findOrFail($id);
+
+            $role = Role::find($roleId);
             $role->delete();
 
             return response()->json([
@@ -154,5 +182,33 @@ class RolesController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function addPermissionToRole($roleId)
+    {
+        $permissions = Permission::get();
+        $role = Role::findOrFail($roleId);
+        $rolePermissions = DB::table('role_has_permissions')
+            ->where('role_has_permissions.role_id', $role->id)
+            ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
+            ->all();
+
+        return view('role-permission.role.add-permissions', [
+            'role' => $role,
+            'permissions' => $permissions,
+            'rolePermissions' => $rolePermissions
+        ]);
+    }
+
+    public function givePermissionToRole(Request $request, $roleId)
+    {
+        $request->validate([
+            'permission' => 'required'
+        ]);
+
+        $role = Role::findOrFail($roleId);
+        $role->syncPermissions($request->permission);
+
+        return redirect()->back()->with('status', 'Permissions added to role');
     }
 }

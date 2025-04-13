@@ -45,7 +45,7 @@
 </head>
 
 <body>
-
+	
 	<!-- Main navbar role admin-->
 	<div class="navbar navbar-expand-md navbar-light navbar-static">
 		<div class="navbar-brand" style="display: flex; align-items: center;">
@@ -174,7 +174,7 @@
 									<a href="#" class="nav-link"> Admin </a>
 									<ul class="nav nav-group-sub">
 										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
-										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
+										{{-- <li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li> --}}
 									</ul>
 								</li>
 								<li class="nav-item">

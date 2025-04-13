@@ -11,6 +11,8 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\Admin\EventGameRequest;
 use App\Http\Requests\Admin\GameEventRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class EventGameController extends Controller
 {
@@ -53,8 +55,10 @@ class EventGameController extends Controller
                 ->rawColumns(['action', 'thumbnail'])
                 ->make(true);
         }
+        $permissions = Permission::all();
+        $roles = Role::all();
         $game_events = GameEvent::all();
-        return view('admin.game-event.index', compact('game_events'));
+        return view('admin.game-event.index', compact('game_events', 'permissions', 'roles'));
     }
 
     /**

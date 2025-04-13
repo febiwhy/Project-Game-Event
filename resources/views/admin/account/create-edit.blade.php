@@ -243,8 +243,7 @@
 											@if (session('success'))
 												<div class="alert alert-success">{{ session('success') }}</div>
 											@endif
-
-										<form action="{{ isset($users) ? route('account.update', $users->id) : route('account.store') }}" method="POST" id="form-account" enctype="multipart/form-data">
+											<form action="{{ isset($users) ? route('account.update', $users->id) : route('account.store') }}" method="POST" id="form-account" enctype="multipart/form-data">
                                             @csrf
                                             @if (isset($users))
                                                 @method('PUT')
@@ -271,9 +270,9 @@
 														<select name="role" id="role" class="form-control" required>
 															<option value="" disabled {{ isset($users) ? '' : 'selected' }}>Pilih Role</option>
 															        @foreach($roles as $role)
-																		<option value="{{ $role->name }}" 
-																			{{ (isset($user) && $user->hasRole($role->name)) ? 'selected' : '' }}>
-																			{{ ucfirst($role->name) }}
+																		<option value="{{ $role }}" 
+																			{{ (isset($user) && $user->hasRole($role)) ? 'selected' : '' }}>
+																			{{ ucfirst($role) }}
 																		</option>
 																	@endforeach
 														</select>

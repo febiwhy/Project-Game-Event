@@ -8,11 +8,19 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AccountController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view user', ['only' => ['index']]);
+    //     $this->middleware('permission:create user', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:update user', ['only' => ['update', 'edit']]);
+    //     $this->middleware('permission:delete user', ['only' => ['destroy']]);
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -63,8 +71,7 @@ class AccountController extends Controller
         }
 
         $users = User::with('roles')->get();
-        $data = Pendaftaran::all();
-        return view('admin.account.index', compact('data', 'users'));
+        return view('admin.account.index', ['users' => $users]);
     }
 
     /**
@@ -74,8 +81,8 @@ class AccountController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-        return view('admin.account.create-edit', compact('roles'));
+        $roles = Role::pluck('name', 'name')->all();
+        return view('admin.account.create-edit', ['roles' => $roles]);
     }
 
     /**
@@ -88,9 +95,9 @@ class AccountController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'role' => 'required|string'
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|max:20',
+            'roles' => 'required'
         ]);
 
         $users = User::create([
@@ -98,13 +105,15 @@ class AccountController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
+
+        $users->syncRoles($request->roles);
         return response()->json([
             'success' => true,
             'message' => 'Data Berhasil disimpan!',
             'id' => $users->id
         ]);
 
-        $users->assignRole($request->role);
+        $users->assignRole($request->roles);
 
         // return redirect()->route('account.index')->with('success', 'User berhasil ditambahkan!');
     }
@@ -130,8 +139,13 @@ class AccountController extends Controller
     public function edit($id)
     {
         $users = User::findOrFail($id);
-        $roles = Role::all();
-        return view('admin.account.create-edit', compact('users', 'roles'));
+        $roles = Role::pluck('name', 'name')->all();
+        $userRoles = $users->roles->pluck('name', 'name')->all();
+        return view('admin.account.create-edit', [
+            'users' => $users,
+            'roles' => $roles,
+            'userRoles' => $userRoles,
+        ]);
     }
 
     /**
@@ -144,22 +158,24 @@ class AccountController extends Controller
     public function update(Request $request, $id)
     {
         $users = User::findOrFail($id);
-
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|string',
+            'password' => 'nullable|string|min:8|max:20',
+            'role' => 'required'
         ]);
 
-        $users->update([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
-        ]);
-        
-        if ($request->filled('password')) {
-            $users->update(['password' => bcrypt($request->password)]);
+        ];
+
+        if (!empty($request->password)) {
+            $data += [
+                'password' => bcrypt($request->password)
+            ];
         }
-        
+
+        $users->update($data);
         $users->syncRoles($request->role);
 
         return response()->json([
@@ -177,10 +193,11 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($userId)
     {
         try {
-            $user = User::findOrFail($id);
+
+            $user = User::findOrFail($userId);
             $user->delete();
 
             return response()->json([

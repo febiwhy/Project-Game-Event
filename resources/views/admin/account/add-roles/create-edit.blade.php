@@ -191,7 +191,7 @@
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
 						<h4> <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
-							<span class="font-weight-semibold">Halaman</span> - {{ isset($role) ? 'Edit Role' : 'Tambah Role' }} </h4>
+							<span class="font-weight-semibold">Halaman</span> - {{ @$roles ? 'Edit Role' : 'Tambah Role' }} </h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 				</div>
@@ -243,37 +243,36 @@
 											@if (session('success'))
 											<div class="alert alert-success">{{ session('success') }}</div>
 											@endif
-
-											<form action="{{ isset($role) ? route('roles.update', $role->id) : route('roles.store') }}" method="POST" id="form-role" enctype="multipart/form-data">
+											{{-- {{dd(@$roles, @$permissions)}} --}}
+											<form action="{{ @$roles ? route('roles.update', @$roles->id) : route('roles.store') }}" method="POST" id="form-role" enctype="multipart/form-data">
 												@csrf
-												@if (isset($role))
+												@if (@$roles)
 													@method('PUT')
 												@endif
 													<div class="form-group">
 														<label for="name">Role :</label>
-														<input type="text" class="form-control" name="name" id="name" value="{{ $role->name ?? '' }}" placeholder="Massukan Nama Role" required>
+														<input type="text" class="form-control" name="name" id="name" value="{{ @$roles->name ?? '' }}" placeholder="Massukan Nama Role" required>
 													</div>	
-						
-													
-
+					
 													<div class="form-group">
 														<label for="permissions">Permission <span class="text-danger">*</span></label>
 														<select name="permissions[]" id="permissions" class="form-control select2" multiple required>
 															@foreach ($permissions as $permission)
 																<option value="{{ $permission->name }}"
-																	@if (isset($role))
-																		{{ in_array($permission->name, $role->getPermissionNames()->toArray()) ? 'selected' : '' }}
+																	@if (@$roles)
+																		{{ in_array($permission->name, @$roles->getPermissionNames()->toArray()) ? 'selected' : '' }}
 																	@endif>
 																	{{ $permission->name }}
 																</option>
 															@endforeach
 														</select>
 													</div>
-
+													
 													<div class="text-right">
-														<button type="submit" class="btn btn-primary"> {{ isset($role) ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
+														<button type="submit" class="btn btn-primary"> {{ @$roles ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
 													</div>
 											</form>
+											
 										</div>
 									</div>
 								</div>
@@ -318,7 +317,7 @@
 					let formData = new FormData(this); // Ambil data form
 
 					$.ajax({
-						url: "{{ isset($role) ? route('roles.update', $role->id) : route('roles.store') }}", 
+						url: "{{ @$roles ? route('roles.update', @$roles->id) : route('roles.store') }}", 
 						type: "POST",
 						data: formData,
 						processData: false,

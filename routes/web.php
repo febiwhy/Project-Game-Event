@@ -58,10 +58,14 @@ use App\Http\Controllers\Email\TurnamentReportMailController;
 
         Route::resource('account',AccountController::class);
         Route::resource('roles',RolesController::class);
+        Route::get('roles/{roleId}/give-permissions', [RolesController::class, 'addPermissionToRole']);
+        Route::put('roles/{roleId}/give-permissions', [RolesController::class, 'givePermissionToRole']);
+        
         Route::resource('permissions',PermissionsController::class);
-        // Route::get('/roles/create', [AccountController::class, 'createRole'])->name('roles.create');
-        // Route::post('/roles/store', [AccountController::class, 'storeRole'])->name('roles.store');
-        Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+
+    // Route::get('/roles/create', [AccountController::class, 'createRole'])->name('roles.create');
+    // Route::post('/roles/store', [AccountController::class, 'storeRole'])->name('roles.store');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
         // Export PDF
         Route::get('/download-pdf', [AdminController::class, 'getpdf'])->name('download.pdf');    
         // export excel
