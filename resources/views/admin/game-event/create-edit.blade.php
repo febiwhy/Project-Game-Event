@@ -449,7 +449,7 @@
 						error: function (xhr) {
 							Swal.fire({
 								title: "<span style='color: #ff4444;'>Gagal!</span>",
-								text: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
+								html: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
 								icon: "error",
 								confirmButtonText: "OKE"
 							});
