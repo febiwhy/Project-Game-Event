@@ -118,19 +118,13 @@
 
 			<div class="collapse navbar-collapse" id="navbarmobile">
 				<ul class="navbar-nav">
-					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link">Home</a></li>
+					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link ">Home</a></li>
 					@if (optional(auth()->user())->hasAnyRole(['admin']))
-						<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
+					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
 					@endif
-					<li class="nav-item dropdown ">
-						<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-paragraph-justify3"></i></a>
-						<div class="dropdown-menu dropdown-menu-right ">
-							<a href="#" class="dropdown-item">
-								<i class="mi-games fa-sm mr-2"></i>Event</a>
-							<a href="{{route('article')}}" class="dropdown-item"><i class="mi-web fa-sm mr-2"></i>Artikel</a>
-								<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Hubungi Kami </a>
-						</div>
-					</li>
+					<li class="nav-item"><a href="{{route('article')}}" class="navbar-nav-link ">Artikel</a></li>
+					<li class="nav-item"><a href="#" class="navbar-nav-link active">Komunitas</a></li>
+					<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
 				</ul>
 
 				<ul class="navbar-nav ml-xl-auto">
