@@ -41,6 +41,9 @@
             padding: 15px;
             color: white;
             width: 230px;
+			margin-bottom: 15px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease; 
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .event-card img {
             width: 100%;
@@ -124,7 +127,7 @@
 					@if (optional(auth()->user())->hasAnyRole(['admin']))
 					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
 					@endif
-					<li class="nav-item"><a href="{{route('article')}}" class="navbar-nav-link active">Artikel</a></li>
+					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link active">Artikel</a></li>
 					<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
 				</ul>
 
@@ -189,33 +192,63 @@
 				<!-- Search Bar Full Width -->
 				<div class="input-group my-4 w-100">
 					<span class="input-group-text event-tag border-0">
-						<i class="bi bi-search text-white"></i> <!-- Ikon Search -->
+						<i class="bi bi-search text-white"></i>
 					</span>
-					<input type="text" class="form-control event-tag text-white border-0" placeholder="Search article...">
+					<input type="text" id="articleSearchInput" class="form-control event-tag text-white border-0" placeholder="Search article...">
 				</div>
 
 				<!-- Filter Buttons -->
 				<div class="d-flex flex-wrap gap-2">
-					<button class="event-tag">Semua</button>
-					<button class="event-tag">Panduan Pokemon</button>
-					<button class="event-tag">Panduan Digimon</button>
-					<button class="event-tag">Panduan Bayblade</button>
-				</div>
+					<button class="event-tag active">Semua</button>
+						@foreach ($article as $item)		
+						<a href="{{ route('article.show', $item->id) }}" class="event-tag">{{ $item->title ?? 'Title Belum Tersedia' }}</a>
+						@endforeach
+					</div>
 
 				<div class="mt-4">
-					<select class="form-select w-100 event-tag">
+					<select id="timeFilter" class="form-select w-100 event-tag">
 						<option class="text-center">Minggu ini</option>
 						<option class="text-center">Bulan ini</option>
 						<option class="text-center">Semua Waktu</option>
 					</select>
         		</div>
 
-				<div class="container text-center mt-5">
-					<img src="{{asset('global_assets/images/not_found.png')}}" class="not-found-img" alt="Not Found">
-					<h5 class="mt-3">Artikel Kosong</h5>
-   				</div>
+				<div class="container my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+					<div class="row">
+						<div class="table-responsive">
+							<div class="d-flex gap-3 flex-wrap">
+								@foreach ($article as $row)
+									@if ($row)
+										<div class="event-card mr-4 event-card d-flex flex-column justify-content-between" style="height: 300px;"  style="cursor: pointer;" data-date="{{ \Carbon\Carbon::parse($row->created_at)->toISOString() }}">
+											<img src="{{ asset($row->image ?? 'default-thumbnail.png') }}" 
+												alt="" height="125px" width="100px">
+											{{-- onclick="window.location.href='{{ route('article.show', $row->id) }}'" --}}
+											<h1 class="event-title mt-2">{{ $row->title ?? 'Judul Tidak Tersedia' }}</h1>
+											<p class="event-info text-warning"></p>
 
+											@php
+												// Potong deskripsi jadi 100 karakter
+												$shortDescription = Str::limit(strip_tags($row->content), 50, '...');
+											@endphp
+											<p class="event-info">{{ $shortDescription }}</p>
+
+											<a href="{{ route('article.show', $row->id) }}" class="text-primary text-decoration-none mt-2">Baca Selengkapnya</a>
+										</div>
+									@endif
+								@endforeach
+							</div>
+						</div>
+					</div>
 				</div>
+
+				@if ($article->isEmpty())
+					<div class="container text-center mt-5">
+						<img src="{{asset('global_assets/images/not_found.png')}}" class="not-found-img" alt="Not Found">
+						<h5 class="mt-3">Artikel Kosong</h5>
+					</div>
+				@endif
+
+
 
 						</td>
 					</tr>
@@ -243,6 +276,71 @@
 
 	</div>
 	<!-- /page content -->
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const searchInput = document.getElementById('articleSearchInput');
+			const articleItems = document.querySelectorAll('.event-card');
+			
+			if (searchInput && articleItems.length > 0) {
+				searchInput.addEventListener('input', function(e) {
+					const searchTerm = e.target.value.toLowerCase();
+					
+					articleItems.forEach(item => {
+						const textContent = item.textContent.toLowerCase();
+						if (textContent.includes(searchTerm)) {
+							item.style.display = 'block';
+						} else {
+							item.style.display = 'none';
+						}
+					});
+				});
+				
+				console.log('Search functionality initialized successfully');
+			} else {
+				console.error('Required elements not found');
+			}
+		});
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const timeFilter = document.getElementById('timeFilter');
+			const articleCards = document.querySelectorAll('.event-card');
+
+			function isWithinRange(dateString, filterType) {
+				const today = new Date();
+				const articleDate = new Date(dateString);
+
+				if (filterType === 'week') {
+					const oneWeekAgo = new Date();
+					oneWeekAgo.setDate(today.getDate() - 7);
+					return articleDate >= oneWeekAgo;
+				}
+				if (filterType === 'month') {
+					const oneMonthAgo = new Date();
+					oneMonthAgo.setMonth(today.getMonth() - 1);
+					return articleDate >= oneMonthAgo;
+				}
+				// Semua Waktu
+				return true;
+			}
+
+			timeFilter.addEventListener('change', function () {
+				const filter = timeFilter.value;
+
+				articleCards.forEach(card => {
+					const date = card.getAttribute('data-date');
+					if (!date) return;
+
+					if (isWithinRange(date, filter)) {
+						card.style.display = 'block';
+					} else {
+						card.style.display = 'none';
+					}
+				});
+			});
+		});
+	</script>
 
 </body>
 </html>

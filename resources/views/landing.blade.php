@@ -194,7 +194,7 @@
 				@if (optional(auth()->user())->hasAnyRole(['admin']))
 				<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
 				@endif
-				<li class="nav-item"><a href="{{route('article')}}" class="navbar-nav-link">Artikel</a></li>
+				<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>
 				<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
 			</ul>
 
@@ -279,11 +279,11 @@
 											<span class="event-tag lounge-tag">Lounge Tersedia</span>
 											
 											<h5 class="event-title mt-2">{{ $game_event->name ?? 'Nama Tidak Tersedia' }}</h5>
-											<p class="event-info"> Description : {{ $game_event->description ?? 'Tidak ada deskripsi' }}</p>
 											<p class="event-info text-warning"></p>
 											<p class="event-info">Slots : {{ $game_event->slot_filled ?? 0 }} / {{ $game_event->slot_limit ?? 0 }}</p>
-
+											
 											<p class="event-info">Penyelenggara : {{ $game_event->organizer ?? 'Tidak diketahui' }}</p>
+											<p class="event-info"> Description : {{ $game_event->description ?? 'Tidak ada deskripsi' }}</p>
 										</div>
 									@endif
 								@endforeach
@@ -324,11 +324,11 @@
 									@endif
 									{{-- <img class="img-fluid" src="{{asset('global_assets/images/placeholders/placeholder.jpg')}}" alt=""> --}}
 									<div class="card-img-actions-overlay">
-										@if ($community->gameEvent)
+										{{-- @if ($community->gameEvent)
 										<a href="{{ asset($community->gameEvent->thumbnail) }}" class="btn btn-outline bg-white text-white border-white border-2" data-popup="lightbox">
 											Preview
 										</a>
-										@endif
+										@endif --}}
 										<a href="{{ route('event-community.show', $community->id) }}" class="btn btn-outline bg-white text-white border-white border-2 ml-2">
 											Details
 										</a>

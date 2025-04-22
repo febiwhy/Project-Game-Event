@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\GameEvent;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
@@ -91,8 +92,10 @@ class EventController extends Controller
     }
 
 
-    public function article(){
-        return view('article');
+    public function articlegame()
+    {
+        $article = Article::all();
+        return view('article', compact('article'));
     }
 
    

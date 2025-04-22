@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		@if (optional(auth()->user())->hasAnyRole(['admin']))
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>Admin</title>
 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
 	<link href="{{asset('global_assets/css/icons/icomoon/styles.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('global_assets/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/bootstrap_limitless.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/layout.min.css')}}" rel="stylesheet" type="text/css">
@@ -18,25 +17,35 @@
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<!-- /global stylesheets -->
-
+	
 	<!-- Core JS files -->
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
 	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_ui.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/main/bootstrap.bundle.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/velocity/velocity.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/velocity/velocity.ui.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_examples.js')}}"></script>
 
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbF9O9Ks9_-QNWHi2SFxLqLUBOwrMyzXk"></script>
+	<script src="{{asset('global_assets/js/demo_maps/google/drawings/circles.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_maps/google/drawings/polylines.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_maps/google/drawings/polygons.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_maps/google/drawings/rectangles.js')}}"></script>
 	<!-- /core JS files -->
 
 	<!-- Theme JS files -->
 	<script src="{{asset('global_assets/js/plugins/ui/prism.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/demo_pages/animations_css3.js')}}"></script>
 
 	<script src="{{asset('assets/js/app.js')}}"></script>
 	<!-- /theme JS files -->
@@ -45,7 +54,8 @@
 
 <body>
 
-	<!-- Main navbar role dmin-->
+	<!-- Main navbar role admin -->
+	@if (optional(auth()->user())->hasAnyRole(['admin']))
 	<div class="navbar navbar-expand-md navbar-light navbar-static">
 		<div class="navbar-brand" style="display: flex; align-items: center;">
 				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
@@ -72,7 +82,9 @@
 				</li>
 			</ul>
 
-			<ul class="navbar-nav ml-xl-auto">
+			<span class="badge bg-success my-3 my-md-0 ml-md-3 mr-md-auto">Online</span>
+
+			<ul class="navbar-nav">
 				<li class="nav-item dropdown dropdown-user">
 					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
 						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
@@ -99,16 +111,73 @@
 			</ul>
 		</div>
 	</div>
-	{{-- /Main Navbar Role Admin --}}
-
-
-
+	@endif
 	<!-- /main navbar -->
+	
+	{{-- Main navbar role user --}}
+		@if (optional(auth()->user())->hasAnyRole(['user']))
+		<div class="navbar navbar-expand-md navbar-light navbar-static">
+			<div class="navbar-brand" style="display: flex; align-items: center;">
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
+					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney</span>
+				</a>
+			</div>
+
+
+			<div class="d-md-none">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
+					<i class="icon-tree5"></i>
+				</button>
+			</div>
+
+			<div class="collapse navbar-collapse" id="navbarmobile">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link ">Home</a></li>
+					@if (optional(auth()->user())->hasAnyRole(['admin']))
+					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
+					@endif
+					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link active">Artikel</a></li>
+					<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link ">Hubungi Kami</a></li>
+				</ul>
+
+				<ul class="navbar-nav ml-xl-auto">
+					<li class="nav-item dropdown dropdown-user">
+						<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+							<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
+							<span class="navbar-text">
+								@if (auth()->check())
+									Halo, {{ auth()->user()->name }}
+								@else
+									Guest
+								@endif
+							</span>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right">
+							@if (auth()->check())
+								<a href="{{ route('logout') }}" class="dropdown-item">
+									<i class="icon-switch2"></i> Logout
+								</a>
+							@else
+								<a href="{{ route('login') }}" class="dropdown-item">
+									<i class="icon-switch2"></i> Login
+								</a>
+							@endif
+						</div>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	@endif
+	{{-- /Main Navbar role user --}}
+
 
 	<!-- Page content -->
 	<div class="page-content">
 
 		<!-- Main sidebar -->
+		 @if (optional(auth()->user())->hasAnyRole(['admin']))
 		<div class="sidebar sidebar-light sidebar-main sidebar-expand-md">
 
 			<!-- Sidebar mobile toggler -->
@@ -145,12 +214,12 @@
 									@endif
 								</div>
 								<div class="font-size-xs opacity-50">
-									<i class="icon-pin font-size-sm"></i> &nbsp;Aktif 
+									<i class="icon-pin font-size-sm"></i> &nbsp;
 								</div>
 							</div>
 
 							<div class="ml-3 align-self-center">
-								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
+								<a class="text-white"><i class="icon-cog3"></i></a>
 							</div>
 						</div>
 					</div>
@@ -196,12 +265,10 @@
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
 								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
-								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link active"> Komunitas </a></li>
-								<li class="nav-item"><a href="{{route('article.index')}}" class="nav-link"> Article </a></li>
-								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
+								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
+								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link active"> Hubungi Kami </a></li>
 							</ul>
 						</li>
-						<!-- /main -->
 					</ul>
 				</div>
 				<!-- /main navigation -->
@@ -210,6 +277,7 @@
 			<!-- /sidebar content -->
 			
 		</div>
+		@endif
 		<!-- /main sidebar -->
 
 
@@ -219,13 +287,15 @@
 			<!-- Page header -->
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
-					<div class="page-title d-flex">
-						<h4><img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
-							<span class="font-weight-semibold">Halaman</span> - Event Komunitas</h4>
+					<div class="page-title d-flex">				
+		 			@if (optional(auth()->user())->hasAnyRole(['admin']))
+						<h4> 
+							<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
+							<span class="font-weight-semibold">Halaman</span> - Kontak
+						</h4>
+					@endif
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
-
-				
 				</div>
 			</div>
 			<!-- /page header -->
@@ -233,58 +303,63 @@
 
 			<!-- Content area -->
 			<div class="content pt-0">
-
-				<!-- Info alert -->
-				<div class="alert alert-info bg-light text-default alert-styled-left alert-arrow-left alert-dismissible">
-					<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-					<h6 class="alert-heading font-weight-semibold mb-1">
-						@if (auth()->check())
-							Selamat Datang , {{ auth()->user()->name }}
-						@else
-							Guest
-						@endif
-					</h6>
-			    </div>
 			    <!-- /info alert -->
 				<!-- Navbar classes -->
-				<div class="card" >
+			<div class="card">
 					<div class="card-header header-elements-inline">
-						<h2 class="card-title"> Data Komunitas </h2>
+						<h1 class="card-title bold" data-transition="bounceUpIn" style="font-family: 'Press Start 2P', cursive; color: white;">{{ $article->title ?? 'Title Belum Tersedia' }}</h1>
 						<div class="header-elements">
-							<div class="list-icons">
-								<a class="list-icons-item" data-action="collapse"></a>
-								<a class="list-icons-item" data-action="reload"></a>
-								<a class="list-icons-item" data-action="remove"></a>
-							</div>
+						<div class="list-icons">
+							<a class="list-icons-item" data-action="collapse"></a>
+							<a class="list-icons-item" data-action="reload"></a>
+							<a class="list-icons-item" data-action="remove"></a>
+						</div>
 						</div>
 					</div>
 
-				<div class="container mr-4">
-					<div class="table-responsive">
-						<div class="container p-4">
-						<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="komunitas-table">
-							<thead style="background-color: #4a4e69; color: #fff;">
-								<a href="{{ route('event-community.create') }}" class="btn btn-purple btn-sm fw-bold mb-3" 
-										style="background-color: #5a67d8; color: white;"><i class="icon-plus22 mr-3"></i>
-										Tambah Komunitas
-									</a>
-								<tr>
-                                    <th>No</th>
-                                    <th>Nama Komunitas</th>
-                                    <th>Event</th>
-                                    <th>Pemilik</th>
-                                    <th>Aksi</th>
-								</tr>
-							</thead>
-							<tbody>
-								{{-- di isi t --}}
-							</tbody>
-						</table>
-					</div>
-					</div>
-				</div>
+					<!-- Mulai row agar artikel dan sidebar sejajar -->
+					<div class="row m-3">
+						<!-- Artikel -->
+						<div class="col-lg-8">
+						<p class="text-muted">{{ \Carbon\Carbon::parse($article->created_at)->locale('id')->translatedFormat('d F Y H:i') }} WIB</p>
 
-				</div>
+
+						<div class="row g-4">
+							<div class="col-md-6">
+							<img src="{{ asset($article->image ?? 'default-image.png') }}" class="img-fluid mb-2 rounded">
+							{{-- <p class="text-muted small">Presiden AS Donald Trump (kanan) saat menghadiri UFC 244 di Madison Square Garden, New York.</p> --}}
+							</div>
+							<div class="col-md-6 d-flex align-items-center">
+							</div>
+						</div>
+
+						<hr>
+
+						<p><strong>{{$article->title}}</strong> - {{$article->content}}</p>
+						</div>
+
+						<!-- Sidebar -->
+						<div class="col-lg-4">
+						<h5 class="border-bottom pb-2">Terpopuler</h5>
+
+						<!-- Setiap item terpopuler -->
+						@foreach ($populerArticle as $article)
+						<div class="d-flex mb-3">
+							<a href="{{ route('article.show', $article->id) }}" class="flex items-center">
+								<img src="{{ asset($article->image ?? 'default-image.png') }}" width="100px" height="70px" class="mr-2 rounded" alt="thumbnail">
+								<div class="text-white font-semibold text-sm">{{ Str::limit($article->title,50) }}
+									<div class="text-blue-400 text-xs">Baca Selengkapnya</div> 
+								</div>
+							</a>
+						</div>
+						@endforeach
+						</div>
+					</div>
+			</div>
+
+
+				<!-- /navbar classes -->
+
 			</div>
 			<!-- /content area -->
 
@@ -297,8 +372,7 @@
 								&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
 							</span>
 							<ul class="navbar-nav ml-xl-auto">
-								<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Help Center</a></li>
-								<li class="nav-item"><a href="#" class="navbar-nav-link">Policy</a></li>
+								<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Pusat Batuan</a></li>
 							</ul>
 						</div>
 					</div>
@@ -334,170 +408,50 @@
 		<!-- /main content -->
 
 	</div>
-	<!-- /page content -->
-
 
 	<script>
-    $(document).ready(function() {
-        $('#dropdownMenuButton').on('click', function() {
-            $.ajax({
-                url: '/users/online',
-                method: 'GET',
-                success: function(response) {
-                    let list = $('#onlineUsersList');
-                    list.empty();
+		// Inisialisasi Peta
+		function initMap() {
+			// Tentukan titik koordinat awal (contoh: Jakarta)
+			const lokasiAwal = { lat: -6.200000, lng: 106.816666 };
 
-                    if (response.length > 0) {
-                        response.forEach(user => {
-                            list.append(`
-                                <li class="media">
-                                    <div class="mr-3">
-                                        <img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" width="36" height="36" class="rounded-circle" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#" class="media-title text-white font-weight-semibold">${user.name}</a>
-                                        <span class="d-block text-muted font-size-sm">${user.email}</span>
-                                    </div>
-                                    <div class="ml-3 align-self-center"><span class="badge badge-mark border-success"></span></div>
-                                </li>
-                            `);
-                        });
-                    } else {
-                        list.append('<li class="media text-center"><span class="text-muted">No users online</span></li>');
-                    }
-                }
-            });
-        });
-    });
-</script>
+			// Buat peta di div dengan id 'map_drawing_rectangle'
+			const map = new google.maps.Map(document.getElementById("map_drawing_rectangle"), {
+				zoom: 12,
+				center: lokasiAwal,
+			});
 
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-		<script>
-			$(document).ready(function() {
-				$('#komunitas-table').DataTable({
-					processing: true,
-					serverSide: true,
-					ajax: "{{ route('event-community.index') }}",
-					columns: [
-						{ data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-						{ data: 'name_community', name: 'name_community' },
-						{ data: 'game_event', name: 'game_event' },
-						{ data: 'owner', name: 'owner' },
-						{ data: 'action', name: 'action', orderable: false, searchable: false }
-					],
-					language: {
-						paginate: {
-							previous: 'Sebelumnya',
-							next: 'Selanjutnya'
-						},
-						search: 'Cari:',
-						lengthMenu: 'Tampilkan _MENU_ entri',
-						info: 'Menampilkan _START_ hingga _END_ dari _TOTAL_ entri',
-						infoEmpty: 'Menampilkan 0 hingga 0 dari 0 entri',
-						infoFiltered: '(disaring dari _MAX_ total entri)'
-					},
-					dom: '<"top"lBf>rt<"bottom"ip>',
-					buttons: [
-						{
-							text: 'Download PDF',
-							className: 'btn btn-danger',
-							action: function () {
-								window.location.href = "{{ route('export.pdf') }}";
-							}
-						}
-					],
-					initComplete: function() {
-						$('.dataTables_filter input').css({
-							'background-color': '#3e414d',
-							'color': '#ffffff',
-							'border': '1px solid #555'
-						});
+			// Tambahkan marker di lokasi awal
+			const marker = new google.maps.Marker({
+				position: lokasiAwal,
+				map: map,
+				title: "Ini Lokasi Awal!"
+			});
 
-						$('.dataTables_length select').css({
-							'background-color': '#3e414d',
-							'color': '#ffffff',
-							'border': '1px solid #555'
-						});
+			// Contoh titik tambahan
+			const lokasiTambahan = [
+				{ lat: -6.210, lng: 106.820 },
+				{ lat: -6.190, lng: 106.830 }
+			];
 
-						$('.dt-buttons').css({ 'margin-left': '10px' });
-
-						$('#komunitas-table tbody tr').css({
-							'background-color': '#3e414d',
-							'color': '#ffffff'
-						});
-
-						$('#komunitas-table thead').css({
-							'background-color': '#4a4e69',
-							'color': '#ffffff'
-						});
-					}
+			// Loop untuk tambah titik marker lain
+			lokasiTambahan.forEach((lokasi) => {
+				new google.maps.Marker({
+					position: lokasi,
+					map: map,
+					title: "Titik Tambahan"
 				});
 			});
-
-			// Fungsi Konfirmasi Hapus
-			function confirmDelete(id) {
-				Swal.fire({
-					title: "<span style='color: #ff6666;'>Yakin ingin menghapus?</span>",
-					html: "<span style='color: #ff6666;'>Data yang dihapus tidak bisa dikembalikan!</span>",
-					icon: "warning",
-					showCancelButton: true,
-					confirmButtonColor: "#d33",
-					cancelButtonColor: "#3085d6",
-					confirmButtonText: "Ya, hapus!",
-					cancelButtonText: "Batal"
-				}).then((result) => {
-				 if (result.isConfirmed) {
-					$.ajax({
-						url: "/event-community/" + id,
-						type: "DELETE",
-						data: { _token: "{{ csrf_token() }}" },
-						success: function(response) {
-							if (response.success) {
-								Swal.fire({
-									title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
-									html: "<span style='color: #ffffff;'>Data telah berhasil dihapus.</span>",
-									icon: "success",
-									iconHtml: "🗑️",
-									background: "#222831",
-									color: "#ffffff",
-									confirmButtonColor: "#00c853",
-									confirmButtonText: "OKE"
-								});
-								$('#community-table').DataTable().ajax.reload();
-							} else {
-								Swal.fire({
-									title: "<span style='color: #ff4444;'>Gagal!</span>",
-									html: "<span style='color: #ffffff;'>Terjadi kesalahan, data gagal dihapus.</span>",
-									icon: "error",
-									background: "#222831",
-									color: "#ffffff",
-									confirmButtonColor: "#ff4444",
-									confirmButtonText: "OKE"
-								});
-							}
-						},
-						error: function(xhr) {
-							Swal.fire({
-								title: "<span style='color: #ff4444;'>Gagal!</span>",
-								html: "<span style='color: #ffffff;'>Error " + xhr.status + ": " + xhr.responseJSON.message + "</span>",
-								icon: "error",
-								background: "#222831",
-								color: "#ffffff",
-								confirmButtonColor: "#ff4444",
-								confirmButtonText: "OKE"
-							});
-						}
-					});
-				}
-			});
 		}
-		</script>
 
+		// Load Google Maps API dan panggil fungsi initMap
+		window.onload = function() {
+			initMap();
+		};
 
+	</script>
 
-	@else
-	<p>Anda tidak memiliki izin untuk mengakses halaman ini.</p>
-	@endif
+	<!-- /page content -->
 
 </body>
 </html>

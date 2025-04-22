@@ -1,14 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Dashboard Admin</title>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		@if (optional(auth()->user())->hasAnyRole(['admin']))
+	<title>Admin</title>
 
 	<!-- Global stylesheets -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
 	<link href="{{asset('global_assets/css/icons/icomoon/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('global_assets/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
@@ -17,108 +17,92 @@
 	<link href="{{asset('assets/css/layout.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/components.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+	
+	
+	
 	<!-- /global stylesheets -->
-
+	
 	<!-- Core JS files -->
 	<script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/main/bootstrap.bundle.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/velocity/velocity.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/velocity/velocity.ui.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_examples.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_ui.js')}}"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-	<script src="{{asset('global_assets/js/plugins/notifications/bootbox.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/forms/selects/select2.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/components_modals.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/ui/prism.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/animations_css3.js')}}"></script>
-	<script src="{{asset('assets/js/app.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
+	<!-- /core JS files -->
 
-	<script src="{{asset('global_assets/js/plugins/visualization/d3/d3.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/visualization/d3/d3_tooltip.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/forms/styling/switchery.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/ui/moment/moment.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/pickers/daterangepicker.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/dashboard.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/sparklines.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/lines.js')}}"></script>	
-	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/areas.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/donuts.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/bars.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/progress.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/heatmaps.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/pies.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/bullets.js')}}"></script>
+	<!-- Theme JS files -->
+	<script src="{{asset('global_assets/js/plugins/ui/prism.min.js')}}"></script>
+
+	<script src="{{asset('assets/js/app.js')}}"></script>
 	<!-- /theme JS files -->
 
-	</head>
-	<body>
-	<!-- Main navbar -->
-		<div class="navbar navbar-expand-md navbar-light navbar-static">
-			<div class="navbar-brand" style="display: flex; align-items: center;">
+</head>
+
+<body>
+	
+	<!-- Main navbar role admin-->
+	<div class="navbar navbar-expand-md navbar-light navbar-static">
+		<div class="navbar-brand" style="display: flex; align-items: center;">
 				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
 					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
 					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney </span>
 				</a>
 			</div>
 
-			<div class="d-md-none">
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
-					<i class="icon-tree5"></i>
-				</button>
-				<button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
-					<i class="icon-paragraph-justify3"></i>
-				</button>
-			</div>
-
-			<div class="collapse navbar-collapse" id="navbar-mobile">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
-							<i class="icon-paragraph-justify3"></i>
-						</a>
-					</li>
-				</ul>
-
-				<span class="navbar-text ml-xl-3">
-					@if (auth()->check())
-						<span class="badge bg-success">{{ auth()->user()->name }} Sedang Online</span>
-					@endif
-				</span>
-				
-				<ul class="navbar-nav ml-xl-auto">
-						<li class="nav-item dropdown dropdown-user">
-							<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-								<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
-								<span class="navbar-text">
-									@if (auth()->check())
-										Halo, {{ auth()->user()->name }}
-									@else
-										Guest
-									@endif
-								</span>
-							</a>
-							<div class="dropdown-menu dropdown-menu-right">
-								@if (auth()->check())
-									<a href="{{ route('logout') }}" class="dropdown-item">
-										<i class="icon-switch2"></i> Logout
-									</a>
-								@else
-									<a href="{{ route('login') }}" class="dropdown-item">
-										<i class="icon-switch2"></i> Login
-									</a>
-								@endif
-							</div>
-						</li>
-				</ul>
-			</div>
+		<div class="d-md-none">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+				<i class="icon-tree5"></i>
+			</button>
+			<button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+				<i class="icon-paragraph-justify3"></i>
+			</button>
 		</div>
-	<!-- /main navbar -->
 
+		<div class="collapse navbar-collapse" id="navbar-mobile">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
+						<i class="icon-paragraph-justify3"></i>
+					</a>
+				</li>
+			</ul>
+
+			<ul class="navbar-nav ml-xl-auto">
+
+				<li class="nav-item dropdown dropdown-user">
+					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
+						<span class="navbar-text">
+							@if (auth()->check())
+								Halo, {{ auth()->user()->name }}
+							@else
+								Guest
+							@endif
+						</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right">
+						@if (auth()->check())
+							<a href="{{ route('logout') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Logout
+							</a>
+						@else
+							<a href="{{ route('login') }}" class="dropdown-item">
+								<i class="icon-switch2"></i> Login
+							</a>
+						@endif
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- /main navbar -->
 
 	<!-- Page content -->
 	<div class="page-content">
@@ -152,20 +136,13 @@
 							</div>
 
 							<div class="media-body">
-								<div class="media-title font-weight-semibold">
-									@if (auth()->check())
-										{{ auth()->user()->name }}
-									@else
-										Guest
-									@endif
-								</div>
+								<div class="media-title font-weight-semibold">Admin</div>
 								<div class="font-size-xs opacity-50">
-									<i class="icon-pin font-size-sm"></i> &nbsp; 
 								</div>
 							</div>
 
 							<div class="ml-3 align-self-center">
-								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
+								<a class="text-white"><i class="icon-cog3"></i></a>
 							</div>
 						</div>
 					</div>
@@ -180,14 +157,14 @@
 						<!-- Main -->
 						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
 						<li class="nav-item">
-							<a class="nav-link active">
+							<a href="{{route('admin.index')}}" class="nav-link">
 								<i class="icon-home4"></i>
 								<span>
 									Dashboard Admin
 									<span class="d-block font-weight-normal opacity-50"></span>
 								</span>
 							</a>
-							<p></p>
+						<p></p>
 							<hr>
 						</li>
 						<li class="nav-item nav-item-submenu">
@@ -206,13 +183,13 @@
 							</ul>
 						</li>
 						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
+							<a href="#" class="nav-link active"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
 
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
-								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
+								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link "> Game Turnamaent </a></li>
 								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
-								<li class="nav-item"><a href="{{route('article.index')}}" class="nav-link"> Article </a></li>
+								<li class="nav-item"><a href="{{route('article.index')}}" class="nav-link active"> Article </a></li>
 								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
 							</ul>
 						</li>
@@ -225,8 +202,6 @@
 			<!-- /sidebar content -->
 			
 		</div>
-
-		
 		<!-- /main sidebar -->
 
 
@@ -237,10 +212,7 @@
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
-						<h4> 
-							<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
-							<span class="font-weight-semibold">Home</span> - Admin
-						</h4>
+						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Halaman</span> - Article</h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 				</div>
@@ -254,7 +226,7 @@
 				<!-- Info alert -->
 				<div class="alert alert-info bg-light text-default alert-styled-left alert-arrow-left alert-dismissible">
 					<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-					<h6 class="alert-heading font-weight-semibold mb-1"> 
+					<h6>
 						@if (auth()->check())
 							Selamat Datang , {{ auth()->user()->name }}
 						@else
@@ -264,113 +236,46 @@
 			    </div>
 			    <!-- /info alert -->
 
-
 				<!-- Navbar classes -->
-				<div class="card">
-					<div class="card-header header-elements-inline">
-						<h6 class="card-title"></h6>
-						<div class="header-elements">
-							<div class="form-check form-check-right form-check-switchery form-check-switchery-sm">
-							</div>
-						</div>
-					</div>
-
-					<div class="card-body py-0">
-						<div class="row">
-							<div class="col-sm-4">
-								<div class="d-flex align-items-center justify-content-center mb-2">
-									<a class="btn bg-transparent border-success-300 text-success-300 rounded-round border-2 btn-icon mr-3">	
-										<i class="mi-videogame-asset"></i>
-									</a>
-									<div>
-										<div class="font-weight-semibold">Total Game Turnament</div>
-										<span class="text-muted"><span class="badge badge-mark border-success mr-2"></span>{{ $totalgameEvent }}</span>
-									</div>
-								</div>
-								<div class="w-75 mx-auto mb-3" id="new-visitors"></div>
-							</div>
-
-							<div class="col-sm-4">
-								<div class="d-flex align-items-center justify-content-center mb-2">
-									<a class="btn bg-transparent border-orange-300 text-orange-300 rounded-round border-2 btn-icon mr-3">
-										<i class="icon-watch"></i>
-									</a>
-									<div>
-										<div class="font-weight-semibold">Jam</div>
-										<span class="text-muted" id="realTimeClock"> 00:00:00 </span>
-									</div>
-								</div>
-								<div class="w-75 mx-auto mb-3" id="new-sessions"></div>
-							</div>
-
-							<div class="col-sm-4">
-								<div class="d-flex align-items-center justify-content-center mb-2">
-									<a class="btn bg-transparent border-blue-300 text-blue-300 rounded-round border-2 btn-icon mr-3">
-										<i class="icon-accessibility"></i>
-									</a>
-									<div>
-										<div class="font-weight-semibold">Total online</div>
-										<span class="text-muted"><span class="badge badge-mark border-success mr-2"></span>{{ $totalusers }} </span>
-									</div>
-								</div>
-								<div class="w-75 mx-auto mb-3" id="total-online"></div>
-							</div>
-						</div>
-					</div>
-
-					<div class="chart position-relative" id="traffic-sources"></div>
-				</div>
-
 				<div class="card" >
 					<div class="card-header header-elements-inline">
-						<h2 class="card-title"> Daftar Peserta</h2>
+						<h2 class="card-title">Data Article </h2>
 						<div class="header-elements">
 							<div class="list-icons">
 								<a class="list-icons-item" data-action="collapse"></a>
 								<a class="list-icons-item" data-action="reload"></a>
 								<a class="list-icons-item" data-action="remove"></a>
-							</div>
-						</div>
-					</div>
-						<div class="table-responsive" id="right-icon-tab1">
-							<div class="container p-4">
-								<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="pendaftaran-table">
-									<thead style="background-color: #4a4e69; color: #fff;">
-										<tr>
-											<th>No</th>
-											<th>Nama</th>
-											<th>Email</th>
-											<th>ID Number</th>
-											<th>Verifikasi</th>
-											<th>Game Turnament</th>
-											<th>Aksi</th>
-										</tr>
-									</thead>
-									<tbody>
-										<!-- Data akan diisi oleh DataTables -->
-									</tbody>
-								</table>
-							</div>
-						</div>
-				</div>
-
-				<!-- /navbar classes -->
-				{{-- <!-- Body classes -->
-					<div class="card">
-						<div class="card-header header-elements-inline">
-							<h5 class="card-title"></h5>
-							<div class="header-elements">
-								<div class="list-icons">
-									<a class="list-icons-item" data-action="collapse"></a>
-									<a class="list-icons-item" data-action="reload"></a>
-									<a class="list-icons-item" data-action="remove"></a>
+								<div class="col-md-3 col-sm-4">
 								</div>
 							</div>
 						</div>
-                    
+					</div>
+				<div class="container mr-4" id="right-icon-tab1">
+					<div class="table-responsive">
+						<div class="container p-4">
+						<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="article">
+							<thead style="background-color: #4a4e69; color: #fff;">
+									<a href="{{ route('article.create') }}" class="btn btn-purple btn-sm fw-bold mb-3" 
+										style="background-color: #5a67d8; color: white;"><i class="icon-plus22 mr-3"></i>
+										Tambah Aticle
+									</a>
+								<tr>
+									<th>No</th>
+									<th>Judul</th>
+									<th>Gambar</th>
+									<th>Deskripsi Content</th>
+									<th>Aksi</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{-- di isi data tables --}}
+							</tbody>
+						</table>
+					</div>
+					</div>
 				</div>
-				<!-- /body classes --> --}}
 
+				</div>
 			</div>
 			<!-- /content area -->
 
@@ -402,22 +307,30 @@
 		<!-- /main content -->
 
 	</div>
-	<!-- /page content -->
 
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script>
 			$(document).ready(function() {
-				$('#pendaftaran-table').DataTable({
+				$('#article').DataTable({
 					processing: true,
 					serverSide: true,
-					ajax: "{{ route('admin.index') }}",
+					ajax: "{{ route('article.index') }}",
 					columns: [
-						{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
-						{ data: 'nama', name: 'nama' },
-						{ data: 'email', name: 'email' },
-						{ data: 'id_number', name: 'id_number' },
-						{ data: 'status', name: 'status' },
-						{ data: 'game_event', name: 'game_event' },
+						
+            			{ data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+						{ data: 'title', name: 'title' },
+						{ data: 'image', name: 'image', orderable: false, searchable: false },
+						{  data: 'content', name: 'content',
+							render: function(data, type, row) {
+								// Batasi teks maksimal 100 karakter
+								if (type === 'display') {
+									return data.length > 48 ? 
+										data.substr(0, 48) + '...' : 
+										data;
+								}
+								return data;
+							}
+						},
 						{ data: 'action', name: 'action', orderable: false, searchable: false }
 					],
 					language: {
@@ -437,7 +350,7 @@
 							text: 'Download PDF',
 							className: 'btn btn-danger',
 							action: function () {
-								window.location.href = "{{ route('export.pdf') }}";
+								window.location.href = "#";
 							}
 						}
 					],
@@ -456,12 +369,12 @@
 
 						$('.dt-buttons').css({ 'margin-left': '10px' });
 
-						$('#pendaftaran-table tbody tr').css({
+						$('#article tbody tr').css({
 							'background-color': '#3e414d',
 							'color': '#ffffff'
 						});
 
-						$('#pendaftaran-table thead').css({
+						$('#article thead').css({
 							'background-color': '#4a4e69',
 							'color': '#ffffff'
 						});
@@ -483,7 +396,7 @@
 				}).then((result) => {
 				 if (result.isConfirmed) {
 					$.ajax({
-						url: "/pendaftaran/delete/" + id,
+						url: "/article/" + id,
 						type: "DELETE",
 						data: { _token: "{{ csrf_token() }}" },
 						success: function(response) {
@@ -498,7 +411,7 @@
 									confirmButtonColor: "#00c853",
 									confirmButtonText: "OKE"
 								});
-								$('#pendaftaran-table').DataTable().ajax.reload();
+								$('#game-table').DataTable().ajax.reload();
 							} else {
 								Swal.fire({
 									title: "<span style='color: #ff4444;'>Gagal!</span>",
@@ -527,19 +440,9 @@
 			});
 		}
 		</script>
-
-		<script>
-			function updateClock() {
-				const now = new Date();
-				const hours = String(now.getHours()).padStart(2, '0');
-				const minutes = String(now.getMinutes()).padStart(2, '0');
-				const seconds = String(now.getSeconds()).padStart(2, '0');
-				document.getElementById('realTimeClock').textContent = `${hours}:${minutes}:${seconds}`;
-			}
-
-			setInterval(updateClock, 1000);
-			updateClock();
-		</script>
+	@else
+	<p>Anda tidak memiliki izin untuk mengakses halaman ini.</p>
+	@endif
 
 </body>
 </html>

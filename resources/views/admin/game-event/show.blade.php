@@ -120,7 +120,7 @@
 					@if (optional(auth()->user())->hasAnyRole(['admin']))
 					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
 					@endif
-					<li class="nav-item"><a href="{{route('article')}}" class="navbar-nav-link ">Artikel</a></li>
+					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link ">Artikel</a></li>
 					<li class="nav-item"><a href="#" class="navbar-nav-link active">Event</a></li>
 					<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
 				</ul>

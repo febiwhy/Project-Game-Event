@@ -240,11 +240,10 @@
 											<th>Foto Peserta</th>
 											<td>
 												@if (!empty($pendaftaran->foto))
-													<img src="{{ asset($pendaftaran->foto) }}" alt="foto" height="100px">
+													<img src="{{ Storage::url($pendaftaran->foto) }}" alt="foto" height="100px">
 												@else
 													<span class="text-muted">Tidak ada gambar</span>
 												@endif
-												{{-- <img src="{{ asset($pendaftaran->foto ?? '-') }}" alt="Foto" height="100px"> --}}
 											</td>
 										</tr>
 										<tr>

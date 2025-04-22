@@ -204,6 +204,7 @@
 								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
 								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
 								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
+								<li class="nav-item"><a href="{{route('article.index')}}" class="nav-link"> Article </a></li>
 								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
 							</ul>
 						</li>

@@ -35,8 +35,8 @@
 	<script src="{{asset('global_assets/js/plugins/velocity/velocity.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/plugins/velocity/velocity.ui.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_examples.js')}}"></script>
-
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbF9O9Ks9_-QNWHi2SFxLqLUBOwrMyzXk"></script>
+	
+	{{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ_Y429gUDbCJgatVb_J9V2bS_pzo_rLM&callback=initMap"></script> --}}
 	<script src="{{asset('global_assets/js/demo_maps/google/drawings/circles.js')}}"></script>
 	<script src="{{asset('global_assets/js/demo_maps/google/drawings/polylines.js')}}"></script>
 	<script src="{{asset('global_assets/js/demo_maps/google/drawings/polygons.js')}}"></script>
@@ -137,7 +137,7 @@
 					@if (optional(auth()->user())->hasAnyRole(['admin']))
 					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
 					@endif
-					<li class="nav-item"><a href="{{route('article')}}" class="navbar-nav-link ">Artikel</a></li>
+					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link ">Artikel</a></li>
 					<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link active">Hubungi Kami</a></li>
 				</ul>
 
@@ -266,6 +266,7 @@
 								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
 								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
 								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
+								<li class="nav-item"><a href="{{route('article.index')}}" class="nav-link"> Article </a></li>
 								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link active"> Hubungi Kami </a></li>
 							</ul>
 						</li>
@@ -318,7 +319,7 @@
 						</div>
 					</div>
                     <div class="card shadow-sm p-4">
-						<div class="map-container" id="map_drawing_rectangle" style="height: 500px; width: 100%;"></div>
+						<div id="map_drawing_rectangle" style="height: 500px; width: 100%;"></div>
 						<p></p>
 						<hr>
                     <div class="contact-info">
@@ -453,45 +454,41 @@
 
 	</div>
 
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ_Y429gUDbCJgatVb_J9V2bS_pzo_rLM&callback=initMap" async defer></script>
 	<script>
-		// Inisialisasi Peta
 		function initMap() {
-			// Tentukan titik koordinat awal (contoh: Jakarta)
-			const lokasiAwal = { lat: -6.200000, lng: 106.816666 };
-
-			// Buat peta di div dengan id 'map_drawing_rectangle'
-			const map = new google.maps.Map(document.getElementById("map_drawing_rectangle"), {
-				zoom: 12,
+			// Pastikan elemen peta ada
+			const mapElement = document.getElementById("map_drawing_rectangle");
+			
+			if (!mapElement) {
+				console.error("Elemen peta tidak ditemukan!");
+				return;
+			}
+			
+			const lokasiAwal = { lat: -6.993179, lng: 110.350855 };
+			
+			// Buat peta
+			const map = new google.maps.Map(mapElement, {
+				zoom: 16,
 				center: lokasiAwal,
+				mapTypeId: 'roadmap'
 			});
 
-			// Tambahkan marker di lokasi awal
+			// Tambahkan marker (gunakan addListener yang baru)
 			const marker = new google.maps.Marker({
 				position: lokasiAwal,
 				map: map,
-				title: "Ini Lokasi Awal!"
+				title: "Lokasi Awal",
+				icon: {
+					url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+				}
 			});
 
-			// Contoh titik tambahan
-			const lokasiTambahan = [
-				{ lat: -6.210, lng: 106.820 },
-				{ lat: -6.190, lng: 106.830 }
-			];
-
-			// Loop untuk tambah titik marker lain
-			lokasiTambahan.forEach((lokasi) => {
-				new google.maps.Marker({
-					position: lokasi,
-					map: map,
-					title: "Titik Tambahan"
-				});
+			// Contoh event listener modern
+			marker.addListener("click", () => {
+				console.log("Marker diklik!");
 			});
 		}
-
-		// Load Google Maps API dan panggil fungsi initMap
-		window.onload = function() {
-			initMap();
-		};
 
 	</script>
 
