@@ -302,7 +302,7 @@
 										</tr>
 										<tr>
 											<th>Nama Game Event</th>
-											<td>{{ $game_event_follower->game_event?->name ?? 'Tidak ada' }}</td>
+											<td>{{ $game_event_follower->gameEvent?->name ?? 'Tidak ada' }}</td>
 										</tr>
 										<tr>
 											<th>Pemilik Komunitas</th>
@@ -312,7 +312,7 @@
 											<th> List Anggota Komunitas</th>
 											<td>
 												 <ul>
-													@if(is_string($game_event_follower->member))
+													{{-- @if(is_string($game_event_follower->member))
 														@foreach(explode(',', $game_event_follower->member) as $member)
 															<li>{{ $member }}</li>
 														@endforeach
@@ -322,7 +322,10 @@
 														@endforeach
 													@else
 														<li>Tidak ada anggota</li>
-													@endif
+													@endif --}}
+													@foreach($members as $member)
+														<li>{{ $member->name }}</li>
+													@endforeach
 												</ul>
 											</td>
 										</tr>

@@ -103,8 +103,10 @@ class GameEventFollowerController extends Controller
     public function show($id)
     {
         $game_event_follower = GameEventFollower::findOrFail($id);
+        $memberIds = explode(',', $game_event_follower->member);
+        $members = User::whereIn('id', $memberIds)->get();
         $event_communitys = GameEventFollower::with('gameEvent')->get();
-        return view('admin.event-community.show', compact('event_communitys', 'game_event_follower'));
+        return view('admin.event-community.show', compact('event_communitys', 'game_event_follower', 'members'));
     }
 
     /**

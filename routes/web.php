@@ -37,10 +37,12 @@ use App\Models\Article;
 // Route::get('/', function () {
 //     return view('w');
 // });
+
     Route::get('/', function () {
         return redirect()->route('landing');
     });
-    Route::get('/landing', [UserController::class, 'index'])->name('landing');
+
+Route::get('/landing', [UserController::class, 'index'])->name('landing');
     
     // pendaftaran
     Route::get('/pendaftar/{id}', [PendaftaranController::class, 'pendaftaran'])->where('id', '[0-9]+')->name('pendaftaran');

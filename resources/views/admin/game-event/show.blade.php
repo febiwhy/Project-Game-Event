@@ -339,10 +339,6 @@
 											</td>
 										</tr>
 										<tr>
-											<th>Owner</th>
-											<td>{{ $game_event->user?->name ?? 'Tidak ada' }}</td>
-										</tr>
-										<tr>
 											<th>Penyelenggara</th>
 											<td>{{ $game_event->organizer ?? 'Tidak ada' }}</td>
 										</tr>
@@ -365,7 +361,11 @@
 									</table>
 									<p></p>
 									<!-- Tombol Kembali Berdasarkan Peran -->
-									<a href="{{ route('pendaftaran', $game_event->id ?? 0) }}" class="btn btn-primary">Daftar <i class="icon-paperplane ml-2"></i></a>
+									@if($game_event->slot_filled >= $game_event->slot_limit)
+										<button class="btn btn-warning" onclick="alert('Slot sudah penuh!')" disabled>Slot Penuh</button>
+									@else
+										<a href="{{ route('pendaftaran', $game_event->id ?? 0) }}" class="btn btn-primary">Daftar <i class="icon-paperplane ml-2"></i></a>
+									@endif
 									
 									@if (optional(auth()->user())->hasAnyRole(['user']))
 									<a href="{{ route('landing') }}" class="btn btn-secondary">Kembali</a>

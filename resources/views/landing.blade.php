@@ -18,7 +18,8 @@
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="{{asset('assets/css/game_event.css')}}">
 	<link rel="stylesheet" href="{{ asset('assets/css/datatables.css') }}">
-	
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
 	<!-- /global stylesheets -->
@@ -80,6 +81,11 @@
             padding: 2px 10px;
             border-radius: 5px;
             font-size: 12px;
+          
+        }
+		.event-tag:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
         }
         .lounge-tag {
             background-color: orange;
@@ -164,7 +170,36 @@
 		.custom-btn i {
 			font-size: 14px; /* Ukuran ikon */
 		}
+		  h1 {
+            font-family: 'Bungee', sans-serif;
+            color: #ffffff;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+		}
+		.search-container {
+			width: 100%;
+			margin-bottom: 20px;
+		}
 
+		.search-input {
+			background-color: #09093b;
+			color: white;
+			border: none;
+			border-radius: 20px;
+			padding: 8px 16px;
+			font-weight: bold;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			transition: all 0.3s ease;
+		}
+
+		.search-input:focus {
+			outline: none;
+			background-color: #09093b;
+		}
+
+		.search-input::placeholder {
+			color: rgba(255, 255, 255, 0.7);
+			font-size: 14px;
+		}
     </style>
 
 
@@ -254,13 +289,22 @@
 
 			<div class="card fade-in">
 				<div class="card-header header-elements-inline">
-					<h2 class="card-title">Event Game </h2>
+					<h1 class="card-title">Event Game Turnamen</h1>
 						<div class="header-elements">
 							<div class="list-icons">
 								<a class="list-icons-item" data-action="collapse"></a>
 								<a class="list-icons-item" data-action="reload"></a>
 								<a class="list-icons-item" data-action="remove"></a>
 							</div>
+						</div>
+					</div>
+
+					<div class="search-container my-3">
+						<div class="input-group">
+							<span class="input-group-text event-tag border-0">
+								<i class="bi bi-search text-white"></i>
+							</span>
+							<input type="text" id="searchEvent" class="form-control search-input" placeholder="Cari Event Turnamen ...">
 						</div>
 					</div>
 
@@ -296,7 +340,7 @@
 
 			<div class="card fade-in">
 				<div class="card-header header-elements-inline">
-					<h2 class="card-title">Komunitas </h2>
+					<h1 class="card-title">Komunitas </h1>
 					<div class="header-elements">
 						<div class="list-icons">
 							<a class="list-icons-item" data-action="collapse"></a>
@@ -306,8 +350,18 @@
 					</div>
 				</div>
 				
+				<div class="search-container my-3">
+					<div class="input-group">
+						<span class="input-group-text event-tag border-0">
+							<i class="bi bi-search text-white"></i>
+						</span>
+						<input type="text" id="searchCommunity" class="form-control search-input" placeholder="Cari Event Komunitas ...">
+					</div>
+				</div>
+				
+
 					<!-- Multiple titles -->
-					<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+					<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mx-3 my-5">
 						@foreach($event_communitys as $community)
 						<div class="col mb-3">
 							<div class="card h-100 shadow" style="background-color: #1e293b; color: #e2e8f0; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">
@@ -402,7 +456,7 @@
 
 			<div class="card fade-in">
 				<div class="card-header header-elements-inline">
-					<h2 class="card-title">Data Peserta </h2>
+					<h1 class="card-title">Data Peserta </h1>
 						<div class="header-elements">
 							<div class="list-icons">
 								<a class="list-icons-item" data-action="collapse"></a>
@@ -551,5 +605,46 @@
 				});
 
 			</script>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					const searchEvent = document.getElementById('searchEvent');
+					const searchCommunity = document.getElementById('searchCommunity');
+
+					const eventCards = document.querySelectorAll('.event-card');
+					const communityCards = document.querySelectorAll('.col.mb-3');
+
+					// Filter Event Game
+					searchEvent.addEventListener('input', function () {
+						const searchTerm = searchEvent.value.toLowerCase();
+						eventCards.forEach(card => {
+							const title = card.querySelector('.event-title')?.textContent.toLowerCase() || '';
+							const description = card.querySelector('.event-info')?.textContent.toLowerCase() || '';
+
+							if (title.includes(searchTerm) || description.includes(searchTerm)) {
+								card.style.display = 'block';
+							} else {
+								card.style.display = 'none';
+							}
+						});
+					});
+
+					// Filter Komunitas
+					searchCommunity.addEventListener('input', function () {
+						const searchTerm = searchCommunity.value.toLowerCase();
+						communityCards.forEach(card => {
+							const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+							const description = card.querySelector('.card-text')?.textContent.toLowerCase() || '';
+
+							if (title.includes(searchTerm) || description.includes(searchTerm)) {
+								card.style.display = 'block';
+							} else {
+								card.style.display = 'none';
+							}
+						});
+					});
+				});
+			</script>
+
 	</body>
 </html>
