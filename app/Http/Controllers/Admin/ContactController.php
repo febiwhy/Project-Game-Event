@@ -189,14 +189,14 @@ class ContactController extends Controller
             'phone' => $request->phone,
             'message' => $request->message,
         ];
-
-
+        
+        
         Mail::to('admin@yourapp.com')->send(new AdminContactMail($data));
         // Mail::send('emails.emailadmincontact', $data, function ($message) use ($data) {
-        //     $message->to('febiwahyu469@gmail.com', 'Admin')
-        //         ->subject('Pesan Baru: ' . $data['subject']);
-        // });
-
-        return back()->with('success', 'Pesan Anda berhasil dikirim!');
+            //     $message->to('febiwahyu469@gmail.com', 'Admin')
+            //         ->subject('Pesan Baru: ' . $data['subject']);
+            // });
+            
+            return back()->with('success', 'Pesan Anda berhasil dikirim!');
     }
 }

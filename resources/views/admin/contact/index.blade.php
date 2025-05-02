@@ -361,7 +361,7 @@
                         <form action="{{ route('contact.send') }}" method="POST">
                             @csrf
 
-							 <div class="mb-3">
+							 {{-- <div class="mb-3">
 								<label for="subject" class="form-label">Subjek*</label>
 								<select name="subject" id="subject" class="form-select" required>
 									<option value="">Pilih Subjek</option>
@@ -370,7 +370,18 @@
                                     <option value="Pengajuan Membuat Game Event">Pengajuan Membuat Game Event</option>
                                     <option value="Pengajuan Membuat Komunitas">Pengajuan Membuat Komunitas</option>
 								</select>
+							</div> --}}
+							<div class="mb-3">
+								<label for="subject" class="form-label">Subjek*</label>
+								<input class="form-control" list="subjectOptions" name="subject" id="subject" placeholder="Pilih atau ketik subjek" required>
+								<datalist id="subjectOptions">
+									<option value="Informasi">
+									<option value="Rencana Acara">
+									<option value="Pengajuan Membuat Game Event">
+									<option value="Pengajuan Membuat Komunitas">
+								</datalist>
 							</div>
+
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -465,7 +476,7 @@
 				return;
 			}
 			
-			const lokasiAwal = { lat: -6.993179, lng: 110.350855 };
+			const lokasiAwal = { lat: -6.990351, lng: 110.355498 };
 			
 			// Buat peta
 			const map = new google.maps.Map(mapElement, {

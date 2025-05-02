@@ -190,7 +190,7 @@
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
-						<h4> <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> <span class="font-weight-semibold">Halaman</span> - Pembaruan Data Peserta</h4>
+						<h4> <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> <span class="font-weight-semibold">Halaman</span> - Pembaruan Data Peserta {{ $pendaftaran->nama ?? 'Nama' }}</h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 
@@ -217,7 +217,7 @@
 
 						<div class="card fade-in">
 							<div class="card-header header-elements-inline">
-								<h2 class="card-title">Perbarui Data Peserta {{ $pendaftaran->nama ?? 'Nama' }} </h2>
+								<h2 class="card-title"></h2>
 									<div class="header-elements">
 										<div class="list-icons">
 											<a class="list-icons-item" data-action="collapse"></a>
@@ -267,18 +267,18 @@
 													<label for="whatsapp">Whatsapp :</label>
 													<input type="text" class="form-control" name="whatsapp" id="whatsapp" value="{{old('whatsapp', $pendaftaran->whatsapp)}}" placeholder="Eugene Kopyov" required>
 												</div>
-												
-												
-												<div class="form-group">
+
+												{{-- <div class="form-group">
 													<label for="game_pendaftar_id">Game Event:</label>
 														<select name="game_pendaftar_id" id="game_pendaftar_id" class="form-control">
 															@foreach($events as $event)
-																<option value="{{ $event->id }}" {{ old('game_pendaftar_id', $pendaftaran->game_event_id) == $event->id ? 'selected' : '' }}>
+																<option value="{{ $event->id }}" {{ old('game_pendaftar_id', $pendaftaran->game_pendaftar_id) == $event->id ? 'selected' : '' }}>
 																	{{ $event->name }}
 																</option>
 															@endforeach
 														</select>
-												</div>
+												</div> --}}
+												<input type="hidden" name="game_pendaftar_id" value="{{ $pendaftaran->game_pendaftar_id }}">
 												
 												<div class="form-group">
 													<label for="alamat">Massukan Alamat Anda :</label>

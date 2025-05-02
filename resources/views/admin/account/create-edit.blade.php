@@ -264,14 +264,14 @@
 												<input type="password" class="form-control" name="password" id="password" placeholder="Massukan Password">
 												<span class="form-text text-muted">Biarkan kosong kalau tidak ingin diubah</span>
 											</div>
-
+												{{-- {{dd($users->role, $roles)}} --}}
 												<div class="form-group">
 													<label for="role">Pilih Role :</label>
 														<select name="role" id="role" class="form-control" required>
 															<option value="" disabled {{ isset($users) ? '' : 'selected' }}>Pilih Role</option>
 															        @foreach($roles as $role)
 																		<option value="{{ $role }}" 
-																			{{ (isset($user) && $user->hasRole($role)) ? 'selected' : '' }}>
+																			{{ (isset($users) && $users->hasRole($role)) ? 'selected' : '' }}>
 																			{{ ucfirst($role) }}
 																		</option>
 																	@endforeach

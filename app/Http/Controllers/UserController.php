@@ -20,7 +20,8 @@ class UserController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('game_event', function ($row) {
-                    return $row->gameEvent->name;
+                    // return $row->gameEvent->name;
+                    return $row->gameEvent ? $row->gameEvent->name : '-';
                 })
                 ->rawColumns(['game_event'])
                 ->make(true);

@@ -349,7 +349,7 @@
 												
 												<div class="form-group">
 													<label for="image">Unggah Foto Article :</label>
-													<input type="file" name="image" class="form-control" {{ isset($article) ? '' : 'required' }} accept=".jpg,.jpeg,.png" required>
+													<input type="file" name="image" class="form-control" {{ isset($article) ? '' : '' }} accept=".jpg,.jpeg,.png" required>
 													<span class="form-text text-muted">Format yang DI Terima: jpeg, png, jpg. Max file size 2Mb</span>
 														@error('image') <p style="color: red;">{{ $message }}</p> @enderror
 												</div>

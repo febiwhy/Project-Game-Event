@@ -64,7 +64,8 @@
                 <td>{{ $data->whatsapp }}</td>
                 <td>{{ $data->alamat }}</td>
                 <td>{{ $data->status }}</td>            
-                <td>{{ $data->gameEvent->name }}</td>                
+                {{-- <td>{{ $data->gameEvent->name }}</td> --}}
+                <td>{{ $data->gameEvent ? $data->gameEvent->name : '-' }}</td>                
             </tr>
             @endforeach
         </tbody>

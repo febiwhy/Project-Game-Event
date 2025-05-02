@@ -327,7 +327,7 @@
 											<p class="event-info">Slots : {{ $game_event->slot_filled ?? 0 }} / {{ $game_event->slot_limit ?? 0 }}</p>
 											
 											<p class="event-info">Penyelenggara : {{ $game_event->organizer ?? 'Tidak diketahui' }}</p>
-											<p class="event-info"> Description : {{ $game_event->description ?? 'Tidak ada deskripsi' }}</p>
+											<p class="event-info"> Description : {!! nl2br(e($game_event->description ?? 'Tidak ada deskripsi')) !!}</p>
 										</div>
 									@endif
 								@endforeach
@@ -361,10 +361,12 @@
 				
 
 					<!-- Multiple titles -->
-					<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mx-3 my-5">
+					<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1 mx-1 my-2">
+					{{-- <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1 mx-3 my-5"> --}}
 						@foreach($event_communitys as $community)
 						<div class="col mb-3">
-							<div class="card h-100 shadow" style="background-color: #1e293b; color: #e2e8f0; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">
+							<div class="card h-100 shadow-sm" style="background-color: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; max-width: 280px; margin: auto;">
+							{{-- <div class="card h-100 shadow" style="background-color: #1e293b; color: #e2e8f0; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);"> --}}
 								<div class="card-header d-flex justify-content-between align-items-center" style="background-color: #334155; border-bottom: 1px solid #475569;">
 									<span><i class="icon-user-check mr-2"></i> <a >	{{ $community->owner?->name ?? 'Tidak ada' }} </a></span>
 									<span class="text-muted"> {{ $community->created_at?->format('d M Y') ?? 'Tidak tersedia' }} </span>
@@ -402,7 +404,7 @@
 								
 								<div class="card-body">
 									<h6 class="card-title font-weight-semibold"> {{ $community->name_community }} </h6>
-									<p class="card-text">{{ $community->description ?? 'Tidak ada deskripsi' }}</p>
+									<p class="card-text">{!! nl2br(e($community->description ?? 'Tidak ada deskripsi')) !!}</p>
 								</div>
 
 								<div class="card-footer border-light d-flex justify-content-between">

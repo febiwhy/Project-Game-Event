@@ -57,11 +57,7 @@ class EventController extends Controller
             'message' => 'Data Berhasil Diperbarui',
             'id' => $pendaftaran->id
         ]);
-
-    
     }
-
-
 
     public function delete($id)
     {

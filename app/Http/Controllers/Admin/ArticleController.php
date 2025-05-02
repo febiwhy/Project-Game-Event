@@ -35,6 +35,9 @@ class ArticleController extends Controller
                                         <i class="icon-menu7"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="' . route('article.show', $row->id) . '" class="dropdown-item">
+                                            <i class="icon-file-stats"></i> Detail Data
+                                        </a>
                                         <a href="' . route('article.edit', $row->id) . '" class="dropdown-item">
                                             <i class="icon-file-text2"></i> Edit Data
                                         </a>
@@ -116,7 +119,7 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, $id)
     {
-        $article = Article::finOrFail($id);
+        $article = Article::findOrFail($id);
         $data = $request->validated();
         if ($request->hasFile('image')) {
             // Simpan file ke "storage/app/public/game-event"

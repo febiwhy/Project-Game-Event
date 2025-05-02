@@ -367,7 +367,7 @@
 
                                                 <div class="form-group">
 													<label for="thumbnail">Unggah thumbnail :</label>
-													<input type="file" name="thumbnail" class="form-control" name="thumbnail" {{ isset($game_event) ? '' : 'required' }} accept=".jpg,.jpeg,.png" required>
+													<input type="file" name="thumbnail" class="form-control" name="thumbnail" {{ isset($game_event) ? '' : '' }} accept=".jpg,.jpeg,.png" required>
 													<span class="form-text text-muted">Format yang DI Terima: jpeg, png, jpg. Max file size 2Mb</span>
 														@error('foto')
 														<small class="text-warning">Harap unggah ulang foto jika terjadi kesalahan</small>
@@ -376,7 +376,7 @@
 												
 												<div class="form-group">
 													<label for="description">Deskripsi :</label>
-													<textarea rows="5" cols="5" class="form-control" name="description" id="description" placeholder="Massukan description"></textarea>
+													<textarea rows="5" cols="5" class="form-control" name="description" id="description" placeholder="Massukan description">{{ $game_event->description ?? '' }}</textarea>
 												</div>
 
 												<div class="text-right">

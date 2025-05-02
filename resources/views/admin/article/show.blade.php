@@ -331,7 +331,7 @@
 								</div>
 							</div>
 							<hr>
-							<p><strong>{{$article->title}}</strong> - {{$article->content}}</p>
+							<p><strong>{{$article->title}}</strong> - {!! nl2br(e($article->content ?? 'Tidak ada content')) !!}</p>
 						</div>
 
 						<div class="col-lg-4">
