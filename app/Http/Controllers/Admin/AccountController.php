@@ -14,13 +14,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AccountController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:view user', ['only' => ['index']]);
-    //     $this->middleware('permission:create user', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:update user', ['only' => ['update', 'edit']]);
-    //     $this->middleware('permission:delete user', ['only' => ['destroy']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('permission:account-list|account-create|account-edit|account-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:account-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:account-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:account-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *

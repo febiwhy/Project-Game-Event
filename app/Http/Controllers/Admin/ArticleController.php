@@ -13,6 +13,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:article-list|article-create|article-edit|article-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:article-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:article-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:article-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *

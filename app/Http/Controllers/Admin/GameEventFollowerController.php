@@ -14,6 +14,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GameEventFollowerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:event-community-list|event-community-create|event-community-edit|event-community-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:event-community-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:event-community-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:event-community-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *

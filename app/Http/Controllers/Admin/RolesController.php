@@ -64,7 +64,7 @@ class RolesController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::all();
+        $permissions = Permission::get();
         return view('admin.account.add-roles.create-edit',  compact('permissions'));
     }
 

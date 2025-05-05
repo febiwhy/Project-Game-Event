@@ -274,7 +274,19 @@
 													<div class="form-group">
 														<label for="name">Role :</label>
 														<input type="text" class="form-control" name="name" id="name" value="{{ @$roles->name ?? '' }}" placeholder="Massukan Nama Role" required>
-													</div>					
+													</div>	
+													
+													<div class="form-group">
+														<div class="col-xs-12 col-sm-12 col-md-12">
+															<strong>Permission:</strong>
+															<br/>
+															@foreach($permissions as $value)
+																<label>{{ Form::checkbox('permissions[]', $value->id, false, array('class' => 'name')) }}
+																{{ $value->name }}</label>
+															<br/>
+															@endforeach
+														</div>
+													</div>
 													
 													<div class="text-right">
 														<button type="submit" class="btn btn-primary"> {{ @$roles ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
