@@ -375,7 +375,7 @@
 								<div class="card-img-actions">
 									@if ($community->gameEvent)
 									<div class="text-center">
-										<img src="{{ asset($community->gameEvent->thumbnail) }}" alt="" height="250px" width="250px">
+										<img src="{{ asset($community->gameEvent->thumbnail ?? 'belom ada') }}" alt="" height="250px" width="250px">
 									</div>
 									@endif
 									{{-- <img class="img-fluid" src="{{asset('global_assets/images/placeholders/placeholder.jpg')}}" alt=""> --}}

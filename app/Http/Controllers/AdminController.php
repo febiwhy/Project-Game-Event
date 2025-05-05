@@ -7,6 +7,8 @@ use App\Models\GameEvent;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 use App\Http\Exports\UserExport;
+use App\Models\Article;
+use App\Models\GameEventFollower;
 use Spatie\Permission\Models\Role;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
@@ -50,13 +52,15 @@ class AdminController extends Controller
         }
 
         $totalgameEvent = GameEvent::count();
+        $totalkomunitas = GameEventFollower::count();
+        $totalarticle = Article::count();
         $users = User::all();
         $data = Pendaftaran::all();
         $user = auth()->user();
         $totalusers = $users->filter(function ($user) {
             return Cache::has('user-is-online-' . $user->id);
         })->count();
-        return view('admin.index', compact('data', 'user', 'users', 'totalgameEvent', 'totalusers'));
+        return view('admin.index', compact('data', 'user', 'users', 'totalgameEvent', 'totalusers', 'totalkomunitas', 'totalarticle'));
     }
 
     public function users()

@@ -279,7 +279,6 @@
 														</select>
 												</div> --}}
 												<input type="hidden" name="game_pendaftar_id" value="{{ $pendaftaran->game_pendaftar_id }}">
-												
 												<div class="form-group">
 													<label for="alamat">Massukan Alamat Anda :</label>
 													<textarea rows="2" cols="2" class="form-control" name="alamat" id="alamat" >{{ old('alamat', $pendaftaran->alamat) }}</textarea>

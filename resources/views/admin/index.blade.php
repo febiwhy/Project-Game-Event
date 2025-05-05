@@ -55,6 +55,40 @@
 	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/bullets.js')}}"></script>
 	<!-- /theme JS files -->
 
+	<style>
+		.card-dashboard {
+			width: 180px;
+			padding: 25px;
+			background: #f1f4fc;
+			border-radius: 16px;
+			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+			text-align: center;
+			transition: all 0.3s ease;
+		}
+
+		.card-dashboard:hover {
+			transform: translateY(-6px);
+			box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+		}
+
+		.card-icon {
+			font-size: 24px;
+			margin-bottom: 12px;
+		}
+
+		.card-number {
+			font-size: 32px;
+			font-weight: bold;
+			color: #2e3a59;
+		}
+
+		.card-label {
+			font-size: 15px;
+			color: #6c757d;
+			margin-top: 8px;
+		}
+	</style>
+
 	</head>
 	<body>
 	<!-- Main navbar -->
@@ -275,46 +309,33 @@
 						</div>
 					</div>
 
-					<div class="card-body py-0">
-						<div class="row">
-							<div class="col-sm-4">
-								<div class="d-flex align-items-center justify-content-center mb-2">
-									<a class="btn bg-transparent border-success-300 text-success-300 rounded-round border-2 btn-icon mr-3">	
-										<i class="mi-videogame-asset"></i>
-									</a>
-									<div>
-										<div class="font-weight-semibold">Total Game Turnament</div>
-										<span class="text-muted"><span class="badge badge-mark border-success mr-2"></span>{{ $totalgameEvent }}</span>
-									</div>
-								</div>
-								<div class="w-75 mx-auto mb-3" id="new-visitors"></div>
-							</div>
+					<div class="my-4" style="display: flex; flex-wrap: wrap; gap: 20px; font-family: 'Segoe UI', Arial, sans-serif; justify-content: center;">
+						<!-- Card 1 -->
+						<div class="card-dashboard">
+							<div class="card-icon" style="color: #4e73df;"><i class="icon-user icon-4x"></i></div>
+							<div class="card-number">{{$totalusers}}</div>
+							<div class="card-label">Total Online</div>
+						</div>
 
-							<div class="col-sm-4">
-								<div class="d-flex align-items-center justify-content-center mb-2">
-									<a class="btn bg-transparent border-orange-300 text-orange-300 rounded-round border-2 btn-icon mr-3">
-										<i class="icon-watch"></i>
-									</a>
-									<div>
-										<div class="font-weight-semibold">Jam</div>
-										<span class="text-muted" id="realTimeClock"> 00:00:00 </span>
-									</div>
-								</div>
-								<div class="w-75 mx-auto mb-3" id="new-sessions"></div>
-							</div>
+						<!-- Card 2 -->
+						<div class="card-dashboard">
+							<div class="card-icon" style="color: #1cc88a;"><i class="mi-videogame-asset mi-4x"></i></div>
+							<div class="card-number">{{$totalgameEvent}}</div>
+							<div class="card-label">Total Game Turnamen</div>
+						</div>
 
-							<div class="col-sm-4">
-								<div class="d-flex align-items-center justify-content-center mb-2">
-									<a class="btn bg-transparent border-blue-300 text-blue-300 rounded-round border-2 btn-icon mr-3">
-										<i class="icon-accessibility"></i>
-									</a>
-									<div>
-										<div class="font-weight-semibold">Total online</div>
-										<span class="text-muted"><span class="badge badge-mark border-success mr-2"></span>{{ $totalusers }} </span>
-									</div>
-								</div>
-								<div class="w-75 mx-auto mb-3" id="total-online"></div>
-							</div>
+						<!-- Card 3 -->
+						<div class="card-dashboard">
+							<div class="card-icon" style="color: #e74a3b;"><i class="icon-newspaper2 icon-4x"></i></div>
+							<div class="card-number">{{$totalarticle}}</div>
+							<div class="card-label">Total Artikel</div>
+						</div>
+
+						<!-- Card 4 -->
+						<div class="card-dashboard">
+							<div class="card-icon" style="color: #f6c23e;"><i class="icon-users4 icon-4x"></i></div>
+							<div class="card-number">{{$totalkomunitas}}</div>
+							<div class="card-label">Total Komunitas</div>
 						</div>
 					</div>
 
@@ -483,7 +504,7 @@
 				}).then((result) => {
 				 if (result.isConfirmed) {
 					$.ajax({
-						url: "/pendaftaran/delete/" + id,
+						url: "/pendaftaran-delete/" + id,
 						type: "DELETE",
 						data: { _token: "{{ csrf_token() }}" },
 						success: function(response) {

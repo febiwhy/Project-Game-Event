@@ -339,15 +339,18 @@
 													<input type="text" class="form-control" name="whatsapp" id="whatsapp" value="{{old('whatsapp')}}" placeholder="Massukan Nomor Whatsapp" required>
 												</div>
 												
-												<div class="form-group">
+												{{-- <div class="form-group">
 													<label for="game_pendaftar_id">Game Event:</label>
 														<select name="game_pendaftar_id" id="game_pendaftar_id" class="form-control">
 															@foreach($events as $event)
 															<option value="{{ $event->id }}">{{ $event->name }}</option>
 															@endforeach
 														</select>
-												</div>
-												
+												</div> --}}
+												@foreach($events as $event)
+												<input type="hidden" name="game_pendaftar_id" value="{{ $event->id }}">
+												@endforeach
+
 												<div class="form-group">
 													<label for="alamat">Massukan Alamat Anda :</label>
 													<textarea rows="2" cols="2" class="form-control" name="alamat" id="alamat" placeholder="Massukan Alamat Anda"></textarea>

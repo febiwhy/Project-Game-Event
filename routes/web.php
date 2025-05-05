@@ -81,7 +81,7 @@ Route::get('/landing', [UserController::class, 'index'])->name('landing');
         Route::get('/pendaftaran/edit/{id}', [EventController::class, 'update'])->name('pendaftaran.edit');
         Route::put('/pendaftaran/update/{id}', [EventController::class, 'updatedata'])->name('pendaftaran.update');
         // delete data
-        Route::delete('/pendaftaran/delete/{id}', [EventController::class, 'delete'])->name('pendaftarandelete');
+        Route::delete('/pendaftaran-delete/{id}', [EventController::class, 'delete'])->name('pendaftarandelete');
     });
     
     Route::middleware('auth')->group(function () {

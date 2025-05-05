@@ -62,8 +62,8 @@ class EventController extends Controller
     public function delete($id)
     {
         try {
-            $contact = Pendaftaran::findOrFail($id);
-            $contact->delete();
+            $pendaftaran = Pendaftaran::findOrFail($id);
+            $pendaftaran->delete();
 
             return response()->json([
                 'success' => true,
