@@ -115,10 +115,20 @@ class RolesController extends Controller
 
         $roles = Role::with('permissions')->findOrFail($id);
         $permissions = Permission::all();
+        $rolePermissions = $roles->permissions->pluck('id')->toArray(); // ambil ID-nya saja
+
         return view('admin.account.add-roles.create-edit', [
             'roles' => $roles,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'rolePermissions' => $rolePermissions
         ]);
+
+        // $roles = Role::with('permissions')->findOrFail($id);
+        // $permissions = Permission::all();
+        // return view('admin.account.add-roles.create-edit', [
+        //     'roles' => $roles,
+        //     'permissions' => $permissions
+        // ]);
 
         // $role = Role::findOrFail($id);
         // $permissions = Permission::all();

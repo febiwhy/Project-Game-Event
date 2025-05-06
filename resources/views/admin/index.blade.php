@@ -193,13 +193,6 @@
 										Guest
 									@endif
 								</div>
-								<div class="font-size-xs opacity-50">
-									<i class="icon-pin font-size-sm"></i> &nbsp; 
-								</div>
-							</div>
-
-							<div class="ml-3 align-self-center">
-								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
 							</div>
 						</div>
 					</div>
@@ -231,7 +224,7 @@
 									<a href="#" class="nav-link"> Admin </a>
 									<ul class="nav nav-group-sub">
 										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
-										{{-- <li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li> --}}
+										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
 									</ul>
 								</li>
 								<li class="nav-item">

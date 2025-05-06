@@ -58,7 +58,7 @@ Route::get('/landing', [UserController::class, 'index'])->name('landing');
     Route::get('/reset-password', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-    Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::middleware(['auth', 'role:admin|petugas'])->group(function () {
         
         Route::resource('account',AccountController::class);
         Route::resource('roles',RolesController::class);

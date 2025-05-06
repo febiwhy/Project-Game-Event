@@ -139,10 +139,6 @@
 								<div class="font-size-xs opacity-50">
 								</div>
 							</div>
-
-							<div class="ml-3 align-self-center">
-								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -155,21 +151,43 @@
 
 						<!-- Main -->
 						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
-							<li class="nav-item">
-								<a href="{{route('admin.index')}}" class="nav-link">
-									<i class="icon-home4"></i>
-									<span>
-										Dashboard Admin
-										<span class="d-block font-weight-normal opacity-50"></span>
-									</span>
-								</a>
-							<p></p>
-								<hr>
-							</li>
-							<li class="nav-item">
-								<a href="{{route('account.index')}}" class="nav-link"><i class="icon-enter5 mr-3 mr-3"></i> <span>Kembali</span></a>
-							</li>
+						<li class="nav-item">
+							<a href="{{route('admin.index')}}" class="nav-link">
+								<i class="icon-home4"></i>
+								<span>
+									Dashboard Admin
+									<span class="d-block font-weight-normal opacity-50"></span>
+								</span>
+							</a>
+						<p></p>
+							<hr>
+						</li>
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link active"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
+							<ul class="nav nav-group-sub" data-submenu-title="Sidebars">
+								<li class="nav-item nav-item-submenu">
+									<a href="#" class="nav-link"> Admin </a>
+									<ul class="nav nav-group-sub">
+										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
+										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link active">Data Permission</a></li>
+									</ul>
+								</li>
+								<li class="nav-item">
+									<a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link "><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
 
+							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
+								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
+								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
+								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link "> Komunitas </a></li>
+								<li class="nav-item"><a href="{{route('article.index')}}" class="nav-link"> Article </a></li>
+								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
+							</ul>
+						</li>
 						<!-- /main -->
 					</ul>
 				</div>

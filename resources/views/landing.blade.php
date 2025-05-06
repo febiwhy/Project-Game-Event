@@ -226,7 +226,7 @@
 		<div class="collapse navbar-collapse" id="navbarmobile">
 			<ul class="navbar-nav">
 				<li class="nav-item"><a href="" class="navbar-nav-link active">Home</a></li>
-				@if (optional(auth()->user())->hasAnyRole(['admin']))
+				@if (auth()->check() && !auth()->user()->hasRole('user'))
 				<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
 				@endif
 				<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>

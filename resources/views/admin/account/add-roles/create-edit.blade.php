@@ -10,7 +10,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="{{asset('global_assets/css/icons/icomoon/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('global_assets/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
@@ -18,6 +19,7 @@
 	<link href="{{asset('assets/css/layout.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/components.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
+	
 	<!-- /global stylesheets -->
 
 	<!-- Core JS files -->
@@ -40,6 +42,66 @@
 	<script src="{{asset('global_assets/js/demo_pages/form_layouts.js')}}"></script>
 	<script src="{{asset('assets/js/app.js')}}"></script>
 	<!-- /theme JS files -->
+
+	<style>
+		/* Main container */
+		.select2-container--default .select2-selection--multiple {
+			background-color: #2d3748 !important;
+			border: 1px solid #4a5568 !important;
+			color: white !important;
+		}
+
+		/* Selected items (tags/chips) */
+		.select2-container--default .select2-selection--multiple .select2-selection__choice {
+			background-color: #4f46e5 !important;
+			color: white !important;
+			border: none !important;
+		}
+
+		/* Remove button (x) in tags */
+		.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+			color: rgba(255,255,255,0.7) !important;
+		}
+		.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+			color: white !important;
+		}
+
+		/* Search input */
+		.select2-container--default .select2-search--inline .select2-search__field {
+			color: white !important;
+			background: transparent !important;
+		}
+
+		/* Dropdown menu */
+		.select2-dropdown {
+			background-color: #2d3748 !important;
+			border-color: #4a5568 !important;
+			color: white !important;
+		}
+
+		/* Dropdown options */
+		.select2-container--default .select2-results__option {
+			color: white !important;
+		}
+
+		/* Highlighted option */
+		.select2-container--default .select2-results__option--highlighted[aria-selected] {
+			background-color: #4f46e5 !important;
+			color: white !important;
+		}
+
+		/* Selected option in dropdown */
+		.select2-container--default .select2-results__option[aria-selected=true] {
+			background-color: #4a5568 !important;
+			color: white !important;
+		}
+
+		/* "No results found" message */
+		.select2-results__option--empty {
+			color: white !important;
+		}
+	</style>
+
 
 	</head>
 	<body>
@@ -138,10 +200,6 @@
 								<div class="font-size-xs opacity-50">
 								</div>
 							</div>
-
-							<div class="ml-3 align-self-center">
-								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -172,7 +230,7 @@
 									<a href="#" class="nav-link"> Admin </a>
 									<ul class="nav nav-group-sub">
 										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link active">Data Role</a></li>
-										{{-- <li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li> --}}
+										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
 									</ul>
 								</li>
 								<li class="nav-item">
@@ -272,21 +330,33 @@
 													@method('PUT')
 												@endif
 													<div class="form-group">
-														<label for="name">Role :</label>
+														<label for="name" class="form-label fw-semibold text-white mb-2">Role :</label>
 														<input type="text" class="form-control" name="name" id="name" value="{{ @$roles->name ?? '' }}" placeholder="Massukan Nama Role" required>
 													</div>	
 													
-													<div class="form-group">
+													{{-- <div class="form-group">
 														<div class="col-xs-12 col-sm-12 col-md-12">
 															<strong>Permission:</strong>
 															<br/>
 															@foreach($permissions as $value)
-																<label>{{ Form::checkbox('permissions[]', $value->id, false, array('class' => 'name')) }}
+																{{ Form::checkbox('permissions[]', $value->id, in_array($value->id, $rolePermissions), ['class' => 'name']) }}
 																{{ $value->name }}</label>
 															<br/>
 															@endforeach
 														</div>
+													</div> --}}
+
+													<div class="form-group">
+														<label for="permissions" class="form-label fw-semibold text-white mb-2">Pilih Permissions</label>
+														<select class="form-select js-select2" name="permissions[]" id="permissions" multiple="multiple" data-placeholder="Pilih permissions...">
+															@foreach($permissions as $value)
+															<option value="{{ $value->id }}" {{ in_array($value->id, $rolePermissions) ? 'selected' : '' }}>
+																{{ $value->name }}
+															</option>
+															@endforeach
+														</select>
 													</div>
+
 													
 													<div class="text-right">
 														<button type="submit" class="btn btn-primary"> {{ @$roles ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
@@ -328,6 +398,37 @@
 		<!-- /main content -->
 
 	</div>
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.js-select2').select2({
+				placeholder: "Pilih permissions...",
+				allowClear: true,
+				width: '100%',
+				closeOnSelect: false,
+				theme: 'bootstrap',
+				language: {
+					noResults: function() {
+						return "Tidak ada hasil ditemukan";
+					}
+				},
+				templateResult: function(data) {
+					if (!data.id) {
+						return data.text;
+					}
+					var $result = $("<span style='color:white !important'>" + data.text + "</span>");
+					return $result;
+				},
+				templateSelection: function(data) {
+					if (!data.id) {
+						return data.text;
+					}
+					var $result = $("<span style='color:white !important'>" + data.text + "</span>");
+					return $result;
+				}
+			});
+		});
+	</script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script>
 			$(document).ready(function () {

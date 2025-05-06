@@ -5,7 +5,6 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		@if (optional(auth()->user())->hasAnyRole(['admin']))
 	<title>Admin</title>
 
 	<!-- Global stylesheets -->
@@ -155,10 +154,6 @@
 								<div class="font-size-xs opacity-50">
 								</div>
 							</div>
-
-							<div class="ml-3 align-self-center">
-								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -189,7 +184,7 @@
 									<a href="#" class="nav-link"> Admin </a>
 									<ul class="nav nav-group-sub">
 										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
-										{{-- <li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li> --}}
+										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
 									</ul>
 								</li>
 								<li class="nav-item">
@@ -447,9 +442,6 @@
 		}
 		
 		</script>
-	@else
-	<p>Anda tidak memiliki izin untuk mengakses halaman ini.</p>
-	@endif
 
 </body>
 </html>
