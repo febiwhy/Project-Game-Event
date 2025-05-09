@@ -96,80 +96,7 @@
         .event-info {
             font-size: 14px;
         }
-    
-        .card-community {
-            background-color: #1e1e1e;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        .community-banner {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-        .profile-img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            margin-top: -35px;
-            border: 3px solid #1e1e1e;
-        }
-        .btn-follow {
-            background-color: #3498db;
-            color: white;
-            border-radius: 10px;
-            width: 100%;
-        }
-        .btn-view {
-            border: 2px solid white;
-            color: white;
-            border-radius: 10px;
-            width: 100%;
-        }
-        .event-followers {
-            display: flex;
-            justify-content: flex-end;
-            gap: 20px;
-            margin-top: 10px;
-        }
-        .event-followers div {
-            text-align: center;
-        }
-        .event-followers div strong {
-            font-size: 18px;
-        }
 
-		.button-container {
-			display: flex;
-			gap: 10px; /* Memberi jarak antara tombol */
-		}
-
-		.custom-btn {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 5px; /* Jarak antara ikon dan teks */
-			background: #007bff; /* Warna biru */
-			color: white;
-			border: none;
-			padding: 10px 15px;
-			border-radius: 5px;
-			font-size: 14px;
-			font-weight: bold;
-			transition: background 0.3s ease-in-out;
-			cursor: pointer;
-		}
-
-		.custom-btn:hover {
-			background: #0056b3; /* Warna saat hover (lebih gelap) */
-		}
-
-		.custom-btn i {
-			font-size: 14px; /* Ukuran ikon */
-		}
 		  h1 {
             font-family: 'Bungee', sans-serif;
             color: #ffffff;
@@ -361,12 +288,12 @@
 				
 
 					<!-- Multiple titles -->
-					<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1 mx-1 my-2">
-					{{-- <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1 mx-3 my-5"> --}}
+					<div class="container row g-0 mx-1 my-1">
+						{{-- <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1 mx-3 my-5"> --}}
 						@foreach($event_communitys as $community)
 						<div class="col mb-3">
-							<div class="card h-100 shadow-sm" style="background-color: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; max-width: 280px; margin: auto;">
-							{{-- <div class="card h-100 shadow" style="background-color: #1e293b; color: #e2e8f0; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);"> --}}
+							<div class="card my-1 h-100 shadow-sm" style="background-color: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; max-width: 280px; margin: auto;">
+								{{-- <div class="card h-100 shadow" style="background-color: #1e293b; color: #e2e8f0; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);"> --}}
 								<div class="card-header d-flex justify-content-between align-items-center" style="background-color: #334155; border-bottom: 1px solid #475569;">
 									<span><i class="icon-user-check mr-2"></i> <a >	{{ $community->owner?->name ?? 'Tidak ada' }} </a></span>
 									<span class="text-muted"> {{ $community->created_at?->format('d M Y') ?? 'Tidak tersedia' }} </span>
@@ -375,7 +302,7 @@
 								<div class="card-img-actions">
 									@if ($community->gameEvent)
 									<div class="text-center">
-										<img src="{{ asset($community->gameEvent->thumbnail ?? 'belom ada') }}" alt="" height="250px" width="250px">
+										<img src="{{ asset($community->gameEvent->thumbnail ?? 'belom ada') }}" alt="" height="150px" width="150px">
 									</div>
 									@endif
 									{{-- <img class="img-fluid" src="{{asset('global_assets/images/placeholders/placeholder.jpg')}}" alt=""> --}}
@@ -422,37 +349,7 @@
 						</div>
 						@endforeach
 					</div>
-					<!-- /multiple titles -->
 
-				{{-- <div class="container my-4 p-4">
-					<div class="row g-3">
-						<div class="d-flex flex-wrap gap-3">
-						@foreach($event_communitys as $community)
-						<div class="card-community">
-							<div class="card-header" 
-								style="background-image: url('{{ asset($community->gameEvent->thumbnail ?? '-') }}');">
-								<div class="logo">
-									@if ($community->gameEvent)
-										<img src="{{ asset($community->gameEvent->thumbnail) }}" alt="Event Thumbnail">
-									@else
-										<img src="{{ asset($community->gameEvent->thumbnail ?? '-') }}" alt="Default Thumbnail">
-									@endif
-								</div>
-							</div>
-							<div class="card-body">
-								<h5>{{ $community->name_community }}</h5>
-								<span class="followers-count" data-id="{{ $community->id }}">0</span> Pengikut
-								<span id="events-count">0</span> Events
-								<div class="button-group">
-									<a href="{{ route('event-community.show', $community->id) }}" class="btn btn-outline-light">LIHAT PROFIL</a>
-									<a class="btn btn-primary follow-btn" data-id="{{ $community->id }}">IKUTI</a>
-								</div>
-							</div>
-						</div>
-						@endforeach
-					</div>
-					</div>
-				</div> --}}
 			</div>
 			
 
@@ -468,7 +365,7 @@
 						</div>
 					</div>
 
-				<div class="container p-4">
+					<div class="container p-4">
 						<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="pendaftaran-table">
 							<thead style="background-color: #4a4e69; color: #fff;">
 								<tr>
@@ -600,6 +497,12 @@
 							// Styling header tabel
 							$('#pendaftaran-table thead').css({
 								'background-color': '#4a4e69',
+								'color': '#ffffff'
+							});
+						},
+						drawCallback: function () {
+							$('#pendaftaran-table tbody tr').css({
+								'background-color': '#3e414d',
 								'color': '#ffffff'
 							});
 						}

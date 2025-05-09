@@ -10,6 +10,12 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EventController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:peserta-edit', ['only' => ['update', 'updatedata']]);
+        $this->middleware('permission:peserta-delete', ['only' => ['delete']]);
+    }
+    
     public function update($id)
     {
 

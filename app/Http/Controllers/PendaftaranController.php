@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PendaftaranController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('permission:peserta-show', ['only' => ['show']]);
+    }
+    
     public function pendaftaran($id)
     {
         $game_event = GameEvent::findOrFail($id);

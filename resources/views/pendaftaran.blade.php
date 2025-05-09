@@ -130,7 +130,7 @@
 						<div class="dropdown-menu dropdown-menu-right ">
 							<a href="#" class="dropdown-item">
 								<i class="mi-games fa-sm mr-2"></i>Event</a>
-							<a href="{{route('article')}}" class="dropdown-item"><i class="mi-web fa-sm mr-2"></i>Artikel</a>
+							<a href="{{route('article.index')}}" class="dropdown-item"><i class="mi-web fa-sm mr-2"></i>Artikel</a>
 								<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Hubungi Kami </a>
 							<a href="#" class="dropdown-item disabled" id="spinner-light">
 								<i class="icon-spinner spinner mr-2"></i>Akan Datang</a>
