@@ -20,11 +20,10 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-	
-	
-	<!-- /global stylesheets -->
-	
 	<!-- Core JS files -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
 	<script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
 	<script src="{{asset('global_assets/js/main/bootstrap.bundle.min.js')}}"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -50,6 +49,7 @@
 	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/pies.js')}}"></script>
 	<script src="{{asset('global_assets/js/demo_charts/pages/dashboard/dark/bullets.js')}}"></script>
 	<!-- /core JS files -->
+		
 
 	<!-- Theme JS files -->
 	<script src="{{asset('global_assets/js/plugins/ui/prism.min.js')}}"></script>
@@ -250,7 +250,7 @@
 			    <!-- /info alert -->
 
 				<!-- Navbar classes -->
-				<div class="card" >
+			<div class="card" >
 					<div class="card-header header-elements-inline">
 						<h2 class="card-title">Data Daftar Akun </h2>
 						<div class="header-elements">
@@ -278,25 +278,36 @@
 								<div class="container p-4">
 									<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="account-table">
 									<thead style="background-color: #4a4e69; color: #fff;">		
-									<tr>
-										<th>No</th>
-										<th>Nama</th>
-										<th>Email</th>
-										<th>Role</th>
-										<th>Aktivitas</th>
-										<th>Aksi</th>
-									</tr>
-								</thead>
-								<tbody>
+										<tr>
+											<th>No</th>
+											<th>Nama</th>
+											<th>Email</th>
+											<th>Bukti Pembayaran</th>
+											<th>Status</th>
+											<th>Role</th>
+											<th>Aktivitas</th>
+											<th>Aksi</th>
+										</tr>
+									</thead>
+									<tbody>
 									{{-- di isi datatables --}}
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-
+			</div>
+			<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content bg-dark text-center">
+						<div class="modal-body">
+							<img id="payment_proof" src="" alt="Bukti Pembayaran" style="width:100%; border-radius:10px;">
+						</div>
+					</div>
 				</div>
 			</div>
+
+		</div>
 			<!-- /content area -->
 
 
@@ -328,74 +339,65 @@
 
 	</div>
 
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-		<script>
-			$(document).ready(function() {
-				$('#account-table').DataTable({
-					processing: true,
-					serverSide: true,
-					ajax: "{{ route('account.index') }}",
-					columns: [
-						
-            			{ data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-						{ data: 'name', name: 'name' },
-						{ data: 'email', name: 'email'},
-						{ data: 'role', name: 'role'},
-						{ data: 'activity', name: 'activity'},
-						{ data: 'action', name: 'action', orderable: false, searchable: false }
-					],
-					language: {
-						paginate: {
-							previous: 'Sebelumnya',
-							next: 'Selanjutnya'
-						},
-						search: 'Cari:',
-						lengthMenu: 'Tampilkan _MENU_ entri',
-						info: 'Menampilkan _START_ hingga _END_ dari _TOTAL_ entri',
-						infoEmpty: 'Menampilkan 0 hingga 0 dari 0 entri',
-						infoFiltered: '(disaring dari _MAX_ total entri)'
-					},
-					initComplete: function() {
-						$('.dataTables_filter input').css({
-							'background-color': '#3e414d',
-							'color': '#ffffff',
-							'border': '1px solid #555'
-						});
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		$(document).ready(function() {
+			$('#account-table').DataTable({
+				processing: true,
+				serverSide: true,
+				ajax: "{{ route('account.index') }}",
+				columns: [
+					{ data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+					{ data: 'name', name: 'name' },
+					{ data: 'email', name: 'email' },
+					{ data: 'payment_proof', name: 'payment_proof' },
+					{ data: 'status', name: 'status' },
+					{ data: 'role', name: 'role' },
+					{ data: 'activity', name: 'activity' },
+					{ data: 'action', name: 'action', orderable: false, searchable: false }
+				],
+				language: {
+					paginate: { previous: 'Sebelumnya', next: 'Selanjutnya' },
+					search: 'Cari:',
+					lengthMenu: 'Tampilkan _MENU_ entri',
+					info: 'Menampilkan _START_ hingga _END_ dari _TOTAL_ entri',
+					infoEmpty: 'Menampilkan 0 hingga 0 dari 0 entri',
+					infoFiltered: '(disaring dari _MAX_ total entri)'
+				},
+				initComplete: function() {
+					$('.dataTables_filter input').css({
+						'background-color': '#3e414d',
+						'color': '#ffffff',
+						'border': '1px solid #555'
+					});
 
-						$('.dataTables_length select').css({
-							'background-color': '#3e414d',
-							'color': '#ffffff',
-							'border': '1px solid #555'
-						});
+					$('.dataTables_length select').css({
+						'background-color': '#3e414d',
+						'color': '#ffffff',
+						'border': '1px solid #555'
+					});
 
-						$('.dt-buttons').css({ 'margin-left': '10px' });
-
-						$('#account-table tbody tr').css({
-							'background-color': '#3e414d',
-							'color': '#ffffff'
-						});
-
-						$('#account-table thead').css({
-							'background-color': '#4a4e69',
-							'color': '#ffffff'
-						});
-					}
-				});
+					$('#account-table thead').css({
+						'background-color': '#4a4e69',
+						'color': '#ffffff'
+					});
+				}
 			});
+		});
 
-			// Fungsi Konfirmasi Hapus
-			function confirmDelete(id) {
-				Swal.fire({
-					title: "<span style='color: #ff6666;'>Yakin ingin menghapus?</span>",
-					html: "<span style='color: #ff6666;'>Data yang dihapus tidak bisa dikembalikan!</span>",
-					icon: "warning",
-					showCancelButton: true,
-					confirmButtonColor: "#d33",
-					cancelButtonColor: "#3085d6",
-					confirmButtonText: "Ya, hapus!",
-					cancelButtonText: "Batal"
-				}).then((result) => {
-				 if (result.isConfirmed) {
+		// Fungsi Konfirmasi Hapus (sudah ada)
+		function confirmDeleteAccount(id) {
+			Swal.fire({
+				title: "<span style='color: #ff6666;'>Yakin ingin menghapus?</span>",
+				html: "<span style='color: #ff6666;'>Data yang dihapus tidak bisa dikembalikan!</span>",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#d33",
+				cancelButtonColor: "#3085d6",
+				confirmButtonText: "Ya, hapus!",
+				cancelButtonText: "Batal"
+			}).then((result) => {
+				if (result.isConfirmed) {
 					$.ajax({
 						url: "/account/" + id,
 						type: "DELETE",
@@ -424,24 +426,98 @@
 									confirmButtonText: "OKE"
 								});
 							}
-						},
-						error: function(xhr) {
-							Swal.fire({
-								title: "<span style='color: #ff4444;'>Gagal!</span>",
-								html: "<span style='color: #ffffff;'>Error " + xhr.status + ": " + xhr.responseJSON.message + "</span>",
-								icon: "error",
-								background: "#222831",
-								color: "#ffffff",
-								confirmButtonColor: "#ff4444",
-								confirmButtonText: "OKE"
-							});
 						}
 					});
 				}
 			});
 		}
-		
-		</script>
+	</script>
+	<script>
+		function showImageModal(imgSrc) {
+			$('#payment_proof').attr('src', imgSrc);
+			$('#imageModal').modal('show');
+		}
+
+		function updateStatus(id, status) {
+			if (status === 'approved') {
+				// Logic untuk approve
+				Swal.fire({
+					title: 'Konfirmasi Pembayaran?',
+					text: 'Data akan disetujui.',
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonText: 'Ya',
+					cancelButtonText: 'Batal',
+					background: "#222831",
+					color: "#fff"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url: "/account/update-status/" + id,
+							type: "POST",
+							data: {
+								_token: "{{ csrf_token() }}",
+								status: status
+							},
+							success: function() {
+								Swal.fire({
+									title: 'Berhasil!',
+									text: 'Status berhasil diperbarui.',
+									icon: 'success',
+									background: '#222831',
+									color: '#fff'
+								});
+								$('#account-table').DataTable().ajax.reload();
+							}
+						});
+					}
+				});
+			} else if (status === 'rejected') {
+				// Logic untuk reject (hapus akun)
+				Swal.fire({
+					title: 'Tolak Pembayaran?',
+					text: 'Akun akan dihapus permanen!',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Ya, Hapus!',
+					cancelButtonText: 'Batal',
+					confirmButtonColor: '#d33',
+					background: "#222831",
+					color: "#fff"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url: "/account/" + id,
+							type: "DELETE",
+							data: {
+								_token: "{{ csrf_token() }}"
+							},
+							success: function(response) {
+								Swal.fire({
+									title: 'Dihapus!',
+									text: 'Akun berhasil dihapus.',
+									icon: 'success',
+									background: '#222831',
+									color: '#fff'
+								});
+								$('#account-table').DataTable().ajax.reload();
+							},
+							error: function(xhr) {
+								Swal.fire({
+									title: 'Error!',
+									text: 'Gagal menghapus akun.',
+									icon: 'error',
+									background: '#222831',
+									color: '#fff'
+								});
+							}
+						});
+					}
+				});
+			}
+		}
+	</script>
+	
 
 </body>
 </html>

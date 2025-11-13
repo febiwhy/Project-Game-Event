@@ -143,21 +143,34 @@
 			</a>
 		</div>
 
-
 		<div class="d-md-none">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
-				<i class="icon-tree5"></i>
-			</button>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+					<i class="icon-tree5"></i>
+				</button>
+
 		</div>
 
 		<div class="collapse navbar-collapse" id="navbarmobile">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a href="" class="navbar-nav-link active">Home</a></li>
-				@if (auth()->check() && !auth()->user()->hasRole('user'))
-				<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
-				@endif
-				<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>
-				<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
+				@guest
+					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link active">Home</a></li>
+					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>
+				@endguest
+				@if (auth()->check() && auth()->user()->status == 'pending')
+					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link active">Home</a></li>
+					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>
+					<li class="nav-item"><a href="{{route('status-user.index')}}" class="navbar-nav-link ">Status Akun</a></li>
+					<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
+					@elseif (auth()->check() && auth()->user()->status == 'approved')
+					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link active">Home</a></li>
+					<li class="nav-item"><a href="{{route('status-user.index')}}" class="navbar-nav-link ">Status Akun</a></li>
+					<li class="nav-item"><a href="{{route('leaderboard')}}" class="navbar-nav-link">leaderboard</a></li>
+					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>
+					<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
+					@endif
+					@if (auth()->check() && !auth()->user()->hasRole('user'))
+						<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
+					@endif
 			</ul>
 
 			<span class="navbar-text ml-xl-3">
@@ -213,195 +226,208 @@
 				</div>
 			</div>
 			<!-- /page header -->
-
-			<div class="card fade-in">
-				<div class="card-header header-elements-inline">
-					<h1 class="card-title">Event Game Turnamen</h1>
-						<div class="header-elements">
-							<div class="list-icons">
-								<a class="list-icons-item" data-action="collapse"></a>
-								<a class="list-icons-item" data-action="reload"></a>
-								<a class="list-icons-item" data-action="remove"></a>
+					<div class="card-header header-elements-inline">
+						<h1>Menunggu Persetujuan Admin</h1>
+					</div>
+						<div class="card-header header-elements-inline">
+							<h1>Jika Sudah Mengirim Bukti Pembayaran dan Sesuai dengan Syarat Pembayaran maka Hubungi 
+								<a href="{{ route('contact.index') }}" class="text-primary text-decoration-none mt-2">Hubungi Kami</a>
+							</h1>
+						</div>
+							<div class="card-header header-elements-inline">
+								<h1>Atau Bisa juga Hubungi Admin  
+									<a href="https://wa.me/6281234567890" target="_blank">Hubungi Kami via WhatsApp</a>
+								</h1>
 							</div>
-						</div>
-					</div>
+								{{-- @elseif (auth()->check() && auth()->user()->status == 'approved') --}}
+									<div class="card fade-in">
+										<div class="card-header header-elements-inline">
+											<h1 class="card-title">Event Game Turnamen</h1>
+												<div class="header-elements">
+													<div class="list-icons">
+														<a class="list-icons-item" data-action="collapse"></a>
+														<a class="list-icons-item" data-action="reload"></a>
+														<a class="list-icons-item" data-action="remove"></a>
+													</div>
+												</div>
+											</div>
 
-					<div class="search-container my-3">
-						<div class="input-group">
-							<span class="input-group-text event-tag border-0">
-								<i class="bi bi-search text-white"></i>
-							</span>
-							<input type="text" id="searchEvent" class="form-control search-input" placeholder="Cari Event Turnamen ...">
-						</div>
-					</div>
+											<div class="search-container my-3">
+												<div class="input-group">
+													<span class="input-group-text event-tag border-0">
+														<i class="bi bi-search text-white"></i>
+													</span>
+													<input type="text" id="searchEvent" class="form-control search-input" placeholder="Cari Event Turnamen ...">
+												</div>
+											</div>
 
-				<div class="container my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-					<div class="row">
-					<div class="table-responsive">
-							<div class="d-flex gap-3 flex-wrap">
-								@foreach ($game_events as $game_event)
-								@if ($game_event)
-										<div class="event-card mr-4" onclick="window.location.href='{{ route('game-event.show', $game_event->id) }}'" style="cursor: pointer;">
-											<img src="{{ asset($game_event->thumbnail ?? 'default-thumbnail.png') }}" 
-												alt="" height="125px" width="100px">
+										<div class="container my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+											<div class="row">
+											<div class="table-responsive">
+													<div class="d-flex gap-3 flex-wrap">
+														@foreach ($game_events as $game_event)
+														@if ($game_event)
+
+																<div class="event-card mr-4" onclick="window.location.href='{{ route('game-event.show', $game_event->id) }}'" style="cursor: pointer;">
+																	<img src="{{ asset($game_event->thumbnail ?? 'default-thumbnail.png') }}" 
+																		alt="" height="125px" width="100px">
 
 
-											<span class="event-tag">Event</span>
-											<span class="event-tag lounge-tag">Lounge Tersedia</span>
-											
-											<h5 class="event-title mt-2">{{ $game_event->name ?? 'Nama Tidak Tersedia' }}</h5>
-											<p class="event-info text-warning"></p>
-											<p class="event-info">Slots : {{ $game_event->slot_filled ?? 0 }} / {{ $game_event->slot_limit ?? 0 }}</p>
-											
-											<p class="event-info">Penyelenggara : {{ $game_event->organizer ?? 'Tidak diketahui' }}</p>
-											<p class="event-info"> Description : {!! nl2br(e($game_event->description ?? 'Tidak ada deskripsi')) !!}</p>
+																	<span class="event-tag">Event</span>
+																	<span class="event-tag lounge-tag">Lounge Tersedia</span>
+																	
+																	<h5 class="event-title mt-2">{{ $game_event->name ?? 'Nama Tidak Tersedia' }}</h5>
+																	<p class="event-info text-warning"></p>
+																	<p class="event-info">Slots : {{ $game_event->slot_filled ?? 0 }} / {{ $game_event->slot_limit ?? 0 }}</p>
+																	
+																	<p class="event-info">Penyelenggara : {{ $game_event->organizer ?? 'Tidak diketahui' }}</p>
+																	<p class="event-info"> Description : {!! nl2br(e($game_event->description ?? 'Tidak ada deskripsi')) !!}</p>
+																</div>
+															@endif
+														@endforeach
+													</div>
+												</div>
+											</div>
 										</div>
-									@endif
-								@endforeach
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-
-			<div class="card fade-in">
-				<div class="card-header header-elements-inline">
-					<h1 class="card-title">Komunitas </h1>
-					<div class="header-elements">
-						<div class="list-icons">
-							<a class="list-icons-item" data-action="collapse"></a>
-							<a class="list-icons-item" data-action="reload"></a>
-							<a class="list-icons-item" data-action="remove"></a>
-						</div>
-					</div>
-				</div>
-				
-				<div class="search-container my-3">
-					<div class="input-group">
-						<span class="input-group-text event-tag border-0">
-							<i class="bi bi-search text-white"></i>
-						</span>
-						<input type="text" id="searchCommunity" class="form-control search-input" placeholder="Cari Event Komunitas ...">
-					</div>
-				</div>
-				
-
-					<!-- Multiple titles -->
-					<div class="container row g-0 mx-1 my-1">
-						{{-- <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1 mx-3 my-5"> --}}
-						@foreach($event_communitys as $community)
-						<div class="col mb-3">
-							<div class="card my-1 h-100 shadow-sm" style="background-color: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; max-width: 280px; margin: auto;">
-								{{-- <div class="card h-100 shadow" style="background-color: #1e293b; color: #e2e8f0; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);"> --}}
-								<div class="card-header d-flex justify-content-between align-items-center" style="background-color: #334155; border-bottom: 1px solid #475569;">
-									<span><i class="icon-user-check mr-2"></i> <a >	{{ $community->owner?->name ?? 'Tidak ada' }} </a></span>
-									<span class="text-muted"> {{ $community->created_at?->format('d M Y') ?? 'Tidak tersedia' }} </span>
-								</div>
-								
-								<div class="card-img-actions">
-									@if ($community->gameEvent)
-									<div class="text-center">
-										<img src="{{ asset($community->gameEvent->thumbnail ?? 'belom ada') }}" alt="" height="150px" width="150px">
 									</div>
-									@endif
-									{{-- <img class="img-fluid" src="{{asset('global_assets/images/placeholders/placeholder.jpg')}}" alt=""> --}}
-									<div class="card-img-actions-overlay">
-										{{-- @if ($community->gameEvent)
-										<a href="{{ asset($community->gameEvent->thumbnail) }}" class="btn btn-outline bg-white text-white border-white border-2" data-popup="lightbox">
-											Preview
-										</a>
-										@endif --}}
-										<a href="{{ route('event-community.show', $community->id) }}" class="btn btn-outline bg-white text-white border-white border-2 ml-2">
-											Details
-										</a>
+
+									@if (auth()->check() && auth()->user()->status == 'approved')
+									<div class="card fade-in">
+										<div class="card-header header-elements-inline">
+											<h1 class="card-title">Komunitas </h1>
+											<div class="header-elements">
+												<div class="list-icons">
+													<a class="list-icons-item" data-action="collapse"></a>
+													<a class="list-icons-item" data-action="reload"></a>
+													<a class="list-icons-item" data-action="remove"></a>
+												</div>
+											</div>
+										</div>
+										
+										<div class="search-container my-3">
+											<div class="input-group">
+												<span class="input-group-text event-tag border-0">
+													<i class="bi bi-search text-white"></i>
+												</span>
+												<input type="text" id="searchCommunity" class="form-control search-input" placeholder="Cari Event Komunitas ...">
+											</div>
+										</div>
+										
+
+											<!-- Multiple titles -->
+											<div class="container row g-0 mx-1 my-1">
+												{{-- <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1 mx-3 my-5"> --}}
+												@foreach($event_communitys as $community)
+												<div class="col mb-3">
+													<div class="card my-1 h-100 shadow-sm" style="background-color: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; max-width: 280px; margin: auto;">
+														{{-- <div class="card h-100 shadow" style="background-color: #1e293b; color: #e2e8f0; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);"> --}}
+														<div class="card-header d-flex justify-content-between align-items-center" style="background-color: #334155; border-bottom: 1px solid #475569;">
+															<span><i class="icon-user-check mr-2"></i> <a >	{{ $community->owner?->name ?? 'Tidak ada' }} </a></span>
+															<span class="text-muted"> {{ $community->created_at?->format('d M Y') ?? 'Tidak tersedia' }} </span>
+														</div>
+														
+														<div class="card-img-actions">
+															@if ($community->gameEvent)
+															<div class="text-center">
+																<img src="{{ asset($community->gameEvent->thumbnail ?? 'belom ada') }}" alt="" height="150px" width="150px">
+															</div>
+															@endif
+															{{-- <img class="img-fluid" src="{{asset('global_assets/images/placeholders/placeholder.jpg')}}" alt=""> --}}
+															<div class="card-img-actions-overlay">
+																{{-- @if ($community->gameEvent)
+																<a href="{{ asset($community->gameEvent->thumbnail) }}" class="btn btn-outline bg-white text-white border-white border-2" data-popup="lightbox">
+																	Preview
+																</a>
+																@endif --}}
+																<a href="{{ route('event-community.show', $community->id) }}" class="btn btn-outline bg-white text-white border-white border-2 ml-2">
+																	Details
+																</a>
+															</div>
+														</div>
+														<div class="card-footer d-flex justify-content-between border-top-0 pb-0">
+															<span class="text-muted likes-count" data-id="{{ $community->id }}"> 0 Suka</span>
+															<ul class="list-inline list-inline-condensed mb-0">
+																<li class="list-inline-item">
+																	<a class="text-indigo-400"><i class="icon-thumbs-up2 like-btn" data-id="{{ $community->id }}" style="cursor: pointer; color: #6c757d;"></i></a>
+																</li>
+																<li class="list-inline-item ml-3">
+																	<a class="text-muted"><i class="icon-flag4"></i></a>
+																</li>
+															</ul>
+														</div>
+														
+														<div class="card-body">
+															<h6 class="card-title font-weight-semibold"> {{ $community->name_community }} </h6>
+															<p class="card-text">{!! nl2br(e($community->description ?? 'Tidak ada deskripsi')) !!}</p>
+														</div>
+
+														<div class="card-footer border-light d-flex justify-content-between">
+															<span class="text-muted"></span>
+															<span>
+																<i class="icon-star-full2 font-size-base text-warning"></i>
+																<i class="icon-star-full2 font-size-base text-warning"></i>
+																<i class="icon-star-full2 font-size-base text-warning"></i>
+																<i class="icon-star-full2 font-size-base text-warning"></i>
+																<i class="icon-star-full2 font-size-base text-warning"></i>
+																<span class="text-muted ml-2"></span>
+															</span>
+														</div>
+													</div>
+												</div>
+												@endforeach
+											</div>
+
 									</div>
-								</div>
-								<div class="card-footer d-flex justify-content-between border-top-0 pb-0">
-									<span class="text-muted likes-count" data-id="{{ $community->id }}"> 0 Suka</span>
-									<ul class="list-inline list-inline-condensed mb-0">
-										<li class="list-inline-item">
-											<a class="text-indigo-400"><i class="icon-thumbs-up2 like-btn" data-id="{{ $community->id }}" style="cursor: pointer; color: #6c757d;"></i></a>
-										</li>
-										<li class="list-inline-item ml-3">
-											<a class="text-muted"><i class="icon-flag4"></i></a>
-										</li>
+
+									<div class="card fade-in">
+										<div class="card-header header-elements-inline">
+											<h1 class="card-title">Data Peserta </h1>
+												<div class="header-elements">
+													<div class="list-icons">
+														<a class="list-icons-item" data-action="collapse"></a>
+														<a class="list-icons-item" data-action="reload"></a>
+														<a class="list-icons-item" data-action="remove"></a>
+													</div>
+												</div>
+											</div>
+
+											<div class="container p-4">
+												<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="pendaftaran-table">
+													<thead style="background-color: #4a4e69; color: #fff;">
+														<tr>
+															<th>No</th>
+															<th>Nama</th>
+															<th>Email</th>
+															<th>Id Number</th>
+															<th>Alamat</th>
+															<th>Verifikasi</th>
+															<th>Game Turnament</th>
+														</tr>
+													</thead>
+													<tbody>
+														<!-- Data akan diisi oleh DataTables -->
+													</tbody>
+												</table>
+											</div>
+									</div>
+								@endif
+			<!-- Footer -->
+							<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
+								<div class="navbar-collapse collapse">
+									<span class="navbar-text">
+										&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
+									</span>
+									<ul class="navbar-nav ml-xl-auto">
+										<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Pusat Batuan</a></li>
 									</ul>
 								</div>
-								
-								<div class="card-body">
-									<h6 class="card-title font-weight-semibold"> {{ $community->name_community }} </h6>
-									<p class="card-text">{!! nl2br(e($community->description ?? 'Tidak ada deskripsi')) !!}</p>
-								</div>
-
-								<div class="card-footer border-light d-flex justify-content-between">
-									<span class="text-muted"></span>
-									<span>
-										<i class="icon-star-full2 font-size-base text-warning"></i>
-										<i class="icon-star-full2 font-size-base text-warning"></i>
-										<i class="icon-star-full2 font-size-base text-warning"></i>
-										<i class="icon-star-full2 font-size-base text-warning"></i>
-										<i class="icon-star-full2 font-size-base text-warning"></i>
-										<span class="text-muted ml-2"></span>
-									</span>
-								</div>
 							</div>
+							<!-- /footer -->
+
 						</div>
-						@endforeach
+						<!-- /main content -->
+
 					</div>
-
-			</div>
-			
-
-			<div class="card fade-in">
-				<div class="card-header header-elements-inline">
-					<h1 class="card-title">Data Peserta </h1>
-						<div class="header-elements">
-							<div class="list-icons">
-								<a class="list-icons-item" data-action="collapse"></a>
-								<a class="list-icons-item" data-action="reload"></a>
-								<a class="list-icons-item" data-action="remove"></a>
-							</div>
-						</div>
-					</div>
-
-					<div class="container p-4">
-						<table class="table table-striped table-bordered" style="background-color: #3e414d; color: #ffffff;" id="pendaftaran-table">
-							<thead style="background-color: #4a4e69; color: #fff;">
-								<tr>
-									<th>No</th>
-									<th>Nama</th>
-									<th>Email</th>
-									<th>Id Number</th>
-									<th>Alamat</th>
-									<th>Verifikasi</th>
-									<th>Game Turnament</th>
-								</tr>
-							</thead>
-							<tbody>
-								 <!-- Data akan diisi oleh DataTables -->
-							</tbody>
-						</table>
-					</div>
-			</div>
-
-			<!-- Footer -->
-			<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
-				<div class="navbar-collapse collapse">
-					<span class="navbar-text">
-						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
-					</span>
-					<ul class="navbar-nav ml-xl-auto">
-						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Pusat Batuan</a></li>
-					</ul>
-				</div>
-			</div>
-			<!-- /footer -->
-
-		</div>
-		<!-- /main content -->
-
-	</div>
 	<!-- /page content -->
 
 			<script>

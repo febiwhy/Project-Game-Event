@@ -102,80 +102,11 @@
 	@endif
 	<!-- /main navbar -->
 
-	{{-- Main Navbar Role User --}}
-	@if (optional(auth()->user())->hasAnyRole(['user']))
-		<div class="navbar navbar-expand-md navbar-light navbar-static">
-			<div class="navbar-brand" style="display: flex; align-items: center;">
-				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
-					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
-					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney</span>
-				</a>
-			</div>
-
-
-			<div class="d-md-none">
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
-					<i class="icon-tree5"></i>
-				</button>
-			</div>
-
-			<div class="collapse navbar-collapse" id="navbarmobile">
-				<ul class="navbar-nav">
-					@if (auth()->check() && auth()->user()->status == 'pending')
-						<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>
-						<li class="nav-item"><a href="{{route('status-user.index')}}" class="navbar-nav-link ">Status Akun</a></li>
-						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
-					@elseif (auth()->check() && auth()->user()->status == 'approved')
-						<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link ">Home</a></li>
-						<li class="nav-item"><a href="{{route('status-user.index')}}" class="navbar-nav-link ">Status Akun</a></li>
-						<li class="nav-item"><a href="{{route('leaderboard')}}" class="navbar-nav-link">leaderboard</a></li>
-						<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>
-						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link ">Hubungi Kami</a></li>
-						<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link active">pendaftaran {{ $game_event->name ?? 'Event' }}</a></li>
-					@elseif (auth()->check() && !auth()->user()->hasRole('admin'))
-						<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
-					@endif
-				</ul>
-
-
-				<ul class="navbar-nav ml-xl-auto">
-
-				<li class="nav-item dropdown dropdown-user">
-					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
-						<span class="navbar-text">
-							@if (auth()->check())
-								Halo, {{ auth()->user()->name }}
-							@else
-								Guest
-							@endif
-						</span>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right">
-						@if (auth()->check())
-							<a href="{{ route('logout') }}" class="dropdown-item">
-								<i class="icon-switch2"></i> Logout
-							</a>
-						@else
-							<a href="{{ route('login') }}" class="dropdown-item">
-								<i class="icon-switch2"></i> Login
-							</a>
-						@endif
-					</div>
-				</li>
-
-				</ul>
-			</div>
-		</div>
-	@endif
-	{{-- Main Navbar Role User --}}
-
 
 	<!-- Page content -->
 	<div class="page-content">
 
 		<!-- Main sidebar -->
-		@if (optional(auth()->user())->hasAnyRole(['admin']));
 		<div class="sidebar sidebar-light sidebar-main sidebar-expand-md">
 
 			<!-- Sidebar mobile toggler -->
@@ -232,7 +163,7 @@
 							<hr>
 						</li>
 						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
+							<a href="#" class="nav-link active"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Sidebars">
 								<li class="nav-item nav-item-submenu">
 									<a href="#" class="nav-link"> Admin </a>
@@ -242,16 +173,16 @@
 									</ul>
 								</li>
 								<li class="nav-item">
-									<a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
+									<a href="{{route('account.index')}}" class="nav-link active"> Daftar Akun </a>
 								</li>
 							</ul>
 						</li>
 						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link active"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
+							<a href="#" class="nav-link"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
 
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
-								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link active"> Game Turnamaent </a></li>
+								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
 								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link "> Komunitas </a></li>
 								<li class="nav-item"><a href="{{route('article.index')}}" class="nav-link"> Article </a></li>
 								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
@@ -266,7 +197,6 @@
 			<!-- /sidebar content -->
 			
 		</div>
-		@endif
 
 		
 		<!-- /main sidebar -->
@@ -279,7 +209,8 @@
 			<div class="page-header border-bottom-0">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
-						<h4> <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> <span class="font-weight-semibold">Halaman Pendaftaran untuk {{ $game_event->name ?? 'Event' }}</span></h4>
+						<h4> <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
+							<span class="font-weight-semibold">Halaman</span> - {{ isset($users) ? 'Edit Data Akun' : 'Tambah Data Akun' }}</h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
 				</div>
@@ -298,10 +229,10 @@
 							Selamat Datang , {{ auth()->user()->name }}
 						@else
 							Guest
-						@endif
-					</h6>
+						@endif</h6>
 			    </div>
 			    <!-- /info alert -->
+
 						<div class="card fade-in">
 							<div class="card-header header-elements-inline">
 								<h2 class="card-title"> </h2>
@@ -318,87 +249,56 @@
 									<div class="row">
 										<div class="col-md-10 offset-md-1">
 											@if ($errors->any())
-											<div class="alert alert-danger">
-												<ul>
-													@foreach ($errors->all() as $error)
-													<li>{{ $error }}</li>
-													@endforeach
-												</ul>
-											</div>
+												<div class="alert alert-danger">
+													<ul>
+														@foreach ($errors->all() as $error)
+														<li>{{ $error }}</li>
+														@endforeach
+													</ul>
+												</div>
 											@endif
 
 											<!-- Notifikasi Sukses -->
 											@if (session('success'))
-											<div class="alert alert-success">{{ session('success') }}</div>
+												<div class="alert alert-success">{{ session('success') }}</div>
 											@endif
-											<form action="{{ route('pendaftarandata', ['id' => $game_event->id]) }}" method="POST" id="form-pendaftar" enctype="multipart/form-data">
-												@csrf
+											<form action="{{ isset($pre) ? route('pre-registration.update', $pre->id) : route('pre-registration.store') }}" method="POST" id="form-pre-registration" enctype="multipart/form-data">
 
-												<input type="hidden" name="event_pendaftaran_id" value="{{ $game_event->id ?? '' }}">
-												<input type="hidden" name="pendaftar_id" value="{{ auth()->id() }}">
-												
-												<div class="form-group">
-													<label for="nama">Nama :</label>
-													<input type="text" class="form-control" name="nama" id="nama" value="{{old('nama')}}" placeholder="Massukan Nama Lengkap" required>
-												</div>
+                                            @csrf
+                                            @if (isset($pre))
+                                                @method('PUT')
+                                            @endif
 
-												<div class="form-group">
-													<label for="email">Email :</label>
-													<input type="email" class="form-control" name="email" id="email" value="{{old('email', auth()->user()->email ?? '-' )}}" placeholder="Massukan Email Lengkap" required>
-												</div>
+											<div class="form-group">
+												<label for="name">Nama :</label>
+												<input type="text" class="form-control" name="name" id="name" value="{{ $pre->name ?? '' }}" placeholder="Massukan Nama" required>
+											</div>
 
-												<div class="form-group">
-													<label for="id_number">ID Number :</label>
-													<input type="text" class="form-control" name="id_number" id="id_number" value="{{old('id_number')}}" placeholder="Massukan ID Number " required>
-												</div>
+											<div class="form-group">
+												<label for="email">Email :</label>
+												<input type="email" class="form-control" name="email" id="email" value="{{ $pre->email ?? '' }}" placeholder="Massukan Email " required>
+											</div>
 
-												<div class="form-group">
-													<label for="whatsapp">Whatsapp :</label>
-													<input type="text" class="form-control" name="whatsapp" id="whatsapp" value="{{old('whatsapp')}}" placeholder="Massukan Nomor Whatsapp" required>
-												</div>
-												
-												{{-- <div class="form-group">
-													<label for="game_pendaftar_id">Game Event:</label>
-														<select name="game_pendaftar_id" id="game_pendaftar_id" class="form-control">
-															@foreach($events as $event)
-															<option value="{{ $event->id }}">{{ $event->name }}</option>
-															@endforeach
-														</select>
-												</div> --}}
-												@foreach($events as $event)
-												<input type="hidden" name="game_pendaftar_id" value="{{ $event->id }}">
-												@endforeach
+											{{-- <div class="form-group">
+												<label for="amount">Jumlah Pembayaran :</label>
+												<input type="text" class="form-control" name="amount" id="amount" placeholder="Massukan Jumlah Pembayaran">
+											</div> --}}
+											<div class="form-group">
+												<label for="amount">Jumlah Pembayaran :</label>
+												<input type="text" class="form-control" name="amount" id="amount" 
+													   value="{{ old('amount', $pre->amount ?? '') }}" placeholder="Masukkan Jumlah Pembayaran"{{ !isset($pre) ? 'readonly' : '' }}></div>
 
-												<div class="form-group">
-													<label for="alamat">Massukan Alamat Anda :</label>
-													<textarea rows="2" cols="2" class="form-control" name="alamat" id="alamat" placeholder="Massukan Alamat Anda"></textarea>
-												</div>
 
-												<div class="form-group">
-													<label for="status">Status :</label>
-														<select name="status" id="status" class="form-control">
-															<option value="Menunggu" {{ old('status', 'Menunggu') == 'Menunggu' ? 'selected' : '' }}>Menunggu</option>
-															@if (optional(auth()->user())->hasAnyRole(['admin']))
-															<option value="Diterima" {{ old('status') == 'Diterima' ? 'selected' : '' }}>Diterima</option>
-															@endif
-														</select>
-												</div>
-
-												<div class="form-group">
-													<label for="foto">Unggah Foto :</label>
-													<input type="file" name="foto" class="form-control" name="foto" accept=".jpg,.jpeg,.png" required>
-													<span class="form-text text-muted">Format yang DI Terima: jpg. Max file size 2Mb</span>
-														@error('foto')
-														<small class="text-warning">Harap unggah ulang foto jika terjadi kesalahan</small>
-														@enderror
-												</div>
+											<div class="form-group">
+												<label for="status">Status :</label>
+													<select name="status" id="status" class="form-control">
+														<option value="waiting_payment" {{ old('status', $pre->status ?? '') == 'waiting_payment' ? 'selected' : '' }}>Menunggu Pembayaran</option>
+														<option value="waiting_approval" {{ old('status', $pre->status ?? '') == 'waiting_approval' ? 'selected' : '' }}>Menunggu Persetujuan</option>
+													</select>
+											</div>
 
 												<div class="text-right">
-													
-													@if (optional(auth()->user())->hasAnyRole(['user']))
-													<a href="{{ route('landing') }}" class="btn btn-secondary">Kembali</a>
-													@endif
-													<button type="submit" class="btn btn-primary"> Daftarkan <i class="icon-paperplane ml-2"></i></button>
+													<button type="submit" class="btn btn-primary"> {{ isset($pre) ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
 												</div>
 											</form>
 										</div>
@@ -409,24 +309,7 @@
 			<!-- /content area -->
 
 
-			{{-- Footer User --}}
-		@if (optional(auth()->user())->hasAnyRole(['user']))
-			<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
-				<div class="navbar-collapse collapse">
-					<span class="navbar-text">
-						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
-					</span>
-					<ul class="navbar-nav ml-xl-auto">
-						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Pusat Bantuan</a></li>
-					</ul>
-				</div>
-			</div>
-		@endif
-			{{-- Footer User --}}
-			
-			<!-- Footer admin-->
-			
-		@if (optional(auth()->user())->hasAnyRole(['admin']))
+			<!-- Footer -->
 			<div class="navbar navbar-expand-lg navbar-light">
 				<div class="text-center d-lg-none w-100">
 					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
@@ -447,54 +330,53 @@
 					</ul>
 				</div>
 			</div>
-		@endif
-			<!-- /footer admin -->
+			<!-- /footer -->
 
 		</div>
 		<!-- /main content -->
 
 	</div>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			$(document).ready(function () {
+				$("#form-pre-registration").submit(function (e) {
+					e.preventDefault(); // Mencegah form submit default
 
-			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-			<script>
-				$(document).ready(function () {
-					$("#form-pendaftar").submit(function (e) {
-						e.preventDefault(); // Mencegah form submit default
+					let formData = new FormData(this); // Ambil data form
 
-						let formData = new FormData(this); // Ambil data form
-
-						$.ajax({
-							url: "{{ route('pendaftarandata') }}", 
-							type: "POST",
-							data: formData,
-							processData: false,
-							contentType: false,
-							success: function (response) {
-								if (response.success) {
-									Swal.fire({
-										title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
-										html: "<span style='color: #ffffff; font-weight: bold;'>" + response.message + "</span>",
-										iconHtml: "🎉",
-										// icon: "success",
-										confirmButtonText: "OKE"
-									}).then(() => {
-										// Reload halaman setelah klik OK
-										location.reload();
-									});
-								}
-							},
-							error: function (xhr) {
+					$.ajax({
+						url: "{{ isset($pre) ? route('pre-registration.update', $pre->id) : route('pre-registration.store') }}", 
+						type: "POST",
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (response) {
+							if (response.success) {
 								Swal.fire({
-									title: "<span style='color: #ff4444;'>Gagal!</span>",
-									html: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
-									icon: "error",
+									title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
+									html: "<span style='color: #ffffff; font-weight: bold;'>" + response.message + "</span>",
+									iconHtml: "🎉",
+									// icon: "success",
 									confirmButtonText: "OKE"
+								}).then(() => {
+									// Reload halaman setelah klik OK
+									location.reload();
 								});
 							}
-						});
+						},
+						error: function (xhr) {
+							Swal.fire({
+								title: "<span style='color: #ff4444;'>Gagal!</span>",
+								icon: "error",
+								html: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
+								confirmButtonText: "OKE"
+							});
+						}
 					});
 				});
-			</script>
+			});
+		</script>
+
 	<!-- /page content -->
 </body>
 </html>

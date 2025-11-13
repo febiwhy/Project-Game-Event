@@ -126,13 +126,35 @@
 
 		<div class="collapse navbar-collapse" id="navbarmobile">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link ">Home</a></li>
-				@if (optional(auth()->user())->hasAnyRole(['admin']))
-				<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
+				@if (auth()->check() && auth()->user()->status == 'pending')
+                <li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link">Home</a></li>
+					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link active">Artikel</a></li>
+					<li class="nav-item"><a href="{{route('status-user.index')}}" class="navbar-nav-link ">Status Akun</a></li>
+					<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
+				@elseif (auth()->check() && auth()->user()->status == 'approved')
+					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link">Home</a></li>
+					<li class="nav-item"><a href="{{route('status-user.index')}}" class="navbar-nav-link ">Status Akun</a></li>
+					<li class="nav-item"><a href="{{route('leaderboard')}}" class="navbar-nav-link">leaderboard</a></li>
+					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link active">Artikel</a></li>
+					<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
+				@elseif (auth()->check() && !auth()->user()->hasRole('admin'))
+					<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
 				@endif
-				<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link active">Artikel</a></li>
-				<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Hubungi Kami</a></li>
 			</ul>
+            
+            <span class="navbar-text ml-xl-3">
+				@if (auth()->check())
+					@php
+						$status = auth()->user()->status;
+					@endphp
+
+					@if ($status == 'approved')
+						<span class="badge bg-success">{{ auth()->user()->name }} (Approved)</span>
+					@elseif ($status == 'pending')
+						<span class="badge bg-warning text-dark">{{ auth()->user()->name }} (Pending Approval)</span>
+					@endif
+				@endif
+			</span>
 
 			<ul class="navbar-nav ml-xl-auto">
 
@@ -159,6 +181,7 @@
 						@endif
 					</div>
 				</li>
+
 
 			</ul>
 		</div>

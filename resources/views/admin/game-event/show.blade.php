@@ -380,11 +380,18 @@
 									</table>
 									<p></p>
 									<!-- Tombol Kembali Berdasarkan Peran -->
-									@if($game_event->slot_filled >= $game_event->slot_limit)
-										<button class="btn btn-warning" onclick="alert('Slot sudah penuh!')" disabled>Slot Penuh</button>
+									@if($game_event->slot_filled >= $game_event->slot_limit)    
+										<button class="btn btn-warning" onclick="showFullSlotAlert()">Slot Penuh</button>
+									@elseif(auth()->check() && auth()->user()->status == 'approved')
+										<a href="{{ route('pendaftaran', $game_event->id ?? 0) }}" class="btn btn-primary">
+											Daftar <i class="icon-paperplane ml-2"></i>
+										</a>
 									@else
-										<a href="{{ route('pendaftaran', $game_event->id ?? 0) }}" class="btn btn-primary">Daftar <i class="icon-paperplane ml-2"></i></a>
+										<button class="btn btn-danger" onclick="showLoginAlert()">
+											Tidak Dapat Mendaftar
+										</button>
 									@endif
+
 									
 									@if (optional(auth()->user())->hasAnyRole(['user']))
 									<a href="{{ route('landing') }}" class="btn btn-secondary">Kembali</a>
@@ -534,6 +541,36 @@
 
 	</div>
 	<!-- /page content -->
+	{{-- Script SweetAlert2 --}}
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		function showLoginAlert() {
+			Swal.fire({
+				title: 'Tidak Dapat Mendaftar!',
+				text: 'Silakan login terlebih dahulu atau tunggu persetujuan akun!',
+				icon: 'info',
+				confirmButtonText: 'OK',
+				confirmButtonColor: '#d33',     
+				background: '#1e1e2f',          
+				color: '#ffffff',                
+				iconColor: '#3498db',            
+			});
+		}
+
+		function showFullSlotAlert() {
+			Swal.fire({
+				title: 'Slot Sudah Penuh!',
+				text: 'Mohon maaf, silahkan mengikuti event lainnya.',
+				icon: 'warning',
+				confirmButtonText: 'OK',
+				confirmButtonColor: '#007bff',   // tombol biru
+				background: '#1e1e2f',           // latar biru muda
+				color: '#ffffff',                // teks biru gelap
+				iconColor: '#3498db',            // ikon biru
+			});
+		}
+	</script>
+
 
 </body>
 </html>

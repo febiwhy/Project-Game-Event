@@ -167,6 +167,7 @@
                                             </div>
                                             <div class="forgot">
                                                 <small><a href="{{route('password.reset') }}">Lupa Kata Sandi ?</a></small>
+                                                {{-- <small><a href="{{route('pre-registration.create') }}">Ikuti Syarat!</a></small> --}}
                                             </div>
                                         </div>
 
@@ -193,7 +194,17 @@
 
     <!-- Tambahkan Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Masuk',
+                text: '{{ session('error') }}',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
     <script>
         document.querySelectorAll('.toggle-password').forEach(function(button) {
             button.addEventListener('click', function() {

@@ -19,8 +19,11 @@ use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\GameEventFollowerController;
+use App\Http\Controllers\Auth\PreRegistration;
+use App\Http\Controllers\Auth\PreRegistrationController;
 use App\Http\Controllers\Email\AdminNotificationController;
 use App\Http\Controllers\Email\TurnamentReportMailController;
+use App\Http\Controllers\StatusController;
 use App\Models\Article;
 
 /*
@@ -37,6 +40,17 @@ use App\Models\Article;
 // Route::get('/', function () {
 //     return view('w');
 // });
+// routes/web.php
+// Route::get('/', function () {
+//     if (auth()->check()) {
+//         if (auth()->user()->status == 'pending') {
+//             return redirect()->route('article.game');
+//         } else {
+//             return redirect()->route('landing');
+//         }
+//     }
+//     return redirect()->route('landing'); // untuk guest
+// });
 
     Route::get('/', function () {
         return redirect()->route('landing');
@@ -49,7 +63,8 @@ Route::get('/landing', [UserController::class, 'index'])->name('landing');
     Route::post('/pendaftaran', [PendaftaranController::class, 'pendaftarandata'])->name('pendaftarandata');
     Route::get('/pendaftaran-show/{id}', [PendaftaranController::class, 'show'])->name('pendaftar.show');
 
-    //login
+//login
+    Route::resource('pre-registration', PreRegistrationController::class);
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('auth-login', [LoginController::class, 'login'])->name('auth.login');
     Route::get('register', [LoginController::class, 'register'])->name('register');
@@ -60,6 +75,7 @@ Route::get('/landing', [UserController::class, 'index'])->name('landing');
 
     Route::middleware(['auth', 'role:admin|petugas'])->group(function () {
         
+        Route::post('/account/update-status/{id}', [AccountController::class, 'updateStatus']);
         Route::resource('account',AccountController::class);
         Route::resource('roles',RolesController::class);
         Route::get('roles/{roleId}/give-permissions', [RolesController::class, 'addPermissionToRole']);
@@ -85,12 +101,14 @@ Route::get('/landing', [UserController::class, 'index'])->name('landing');
     });
     
     Route::middleware('auth')->group(function () {
+        Route::resource('status-user', StatusController::class);
         Route::resource('article', ArticleController::class);
         Route::resource('game-event', EventGameController::class);
         Route::resource('contact', ContactController::class);
         Route::get('index-article', [ArticleController::class, 'indexarticle'])->name('index.article');
         Route::resource('event-community', GameEventFollowerController::class);    
         Route::get('/article-game', [EventController::class, 'articlegame'])->name('article.game');
+        Route::get('/leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
     });
 
     Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.send');

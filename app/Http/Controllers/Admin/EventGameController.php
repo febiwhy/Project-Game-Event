@@ -16,14 +16,14 @@ use Spatie\Permission\Models\Role;
 
 class EventGameController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:game-event-list|game-event-create|game-event-edit|game-event-delete', ['only' => ['index']]);
-        $this->middleware('permission:game-event-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:game-event-show', ['only' => ['show']]);
-        $this->middleware('permission:game-event-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:game-event-delete', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:game-event-list|game-event-create|game-event-edit|game-event-delete', ['only' => ['index']]);
+    //     $this->middleware('permission:game-event-create', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:game-event-show', ['only' => ['show']]);
+    //     $this->middleware('permission:game-event-edit', ['only' => ['edit', 'update']]);
+    //     $this->middleware('permission:game-event-delete', ['only' => ['destroy']]);
+    // }
     /**
      * Display a listing of the resource.
      *

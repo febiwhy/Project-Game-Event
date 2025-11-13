@@ -13,14 +13,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ContactController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:contact-list|contact-create|contact-edit|contact-delete', ['only' => ['show']]);
-        $this->middleware('permission:contact-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:contact-index', ['only' => ['index']]);
-        $this->middleware('permission:contact-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:contact-delete', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:contact-list|contact-create|contact-edit|contact-delete', ['only' => ['show']]);
+    //     $this->middleware('permission:contact-create', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:contact-index', ['only' => ['index']]);
+    //     $this->middleware('permission:contact-edit', ['only' => ['edit', 'update']]);
+    //     $this->middleware('permission:contact-delete', ['only' => ['destroy']]);
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -199,7 +199,7 @@ class ContactController extends Controller
         ];
         
         
-        Mail::to('admin@yourapp.com')->send(new AdminContactMail($data));
+        Mail::to('febiwahyu469@gmail.com')->send(new AdminContactMail($data));
         // Mail::send('emails.emailadmincontact', $data, function ($message) use ($data) {
             //     $message->to('febiwahyu469@gmail.com', 'Admin')
             //         ->subject('Pesan Baru: ' . $data['subject']);
