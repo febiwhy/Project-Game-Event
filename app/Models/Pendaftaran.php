@@ -30,19 +30,45 @@ class Pendaftaran extends Model
     public function user(){
         return $this->belongsTo(User::class,'pendaftar_id');
     }
-    
+
     protected static function boot()
     {
         parent::boot();
-        
+
         static::created(function ($pendaftaran) {
+            // Update slot filled
             $pendaftaran->gameEvent->increment('slot_filled');
+
+            // Berikan koin ketika pendaftaran berhasil
+            $user = $pendaftaran->user;
+            $gameEvent = $pendaftaran->gameEvent;
+
+            if ($user && $gameEvent) {
+                // Panggil service untuk memberikan koin
+                app(\App\Services\CoinService::class)->rewardParticipation($user, $gameEvent);
+            }
         });
-        
+
         static::deleted(function ($pendaftaran) {
             $pendaftaran->gameEvent->decrement('slot_filled');
+
+            // Optional: Jika ingin mengurangi koin saat batal
+            // app(\App\Services\CoinService::class)->deductCancellation($pendaftaran->user, $pendaftaran->gameEvent);
         });
     }
+
+    // protected static function boot()
+    // {
+    //     parent::boot();
+        
+    //     static::created(function ($pendaftaran) {
+    //         $pendaftaran->gameEvent->increment('slot_filled');
+    //     });
+        
+    //     static::deleted(function ($pendaftaran) {
+    //         $pendaftaran->gameEvent->decrement('slot_filled');
+    //     });
+    // }
 
     public function pendaftarEvent(){
         return $this->belongsTo(GameEvent::class, 'game_pendaftar_id');

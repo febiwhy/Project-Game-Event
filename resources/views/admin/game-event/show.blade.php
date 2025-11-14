@@ -563,10 +563,10 @@
 				text: 'Mohon maaf, silahkan mengikuti event lainnya.',
 				icon: 'warning',
 				confirmButtonText: 'OK',
-				confirmButtonColor: '#007bff',   // tombol biru
-				background: '#1e1e2f',           // latar biru muda
-				color: '#ffffff',                // teks biru gelap
-				iconColor: '#3498db',            // ikon biru
+				confirmButtonColor: '#007bff',   
+				background: '#1e1e2f',   
+				color: '#ffffff',         
+				iconColor: '#3498db',      
 			});
 		}
 	</script>

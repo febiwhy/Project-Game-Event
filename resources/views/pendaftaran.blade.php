@@ -139,6 +139,14 @@
 
 
 				<ul class="navbar-nav ml-xl-auto">
+					@auth
+						<li class="nav-item">
+							<div class="navbar-nav-link" style="display: flex; align-items: center;">
+								<i class="fas fa-coins text-warning mr-1"></i>
+								<span class="font-weight-semibold">{{ $userCoins }} Koin</span>
+							</div>
+						</li>
+					@endauth
 
 				<li class="nav-item dropdown dropdown-user">
 					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
@@ -153,6 +161,9 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-right">
 						@if (auth()->check())
+							<a href="{{ route('coins.history') }}" class="dropdown-item">
+									<i class="fas fa-coins"></i> History Koin
+							</a>
 							<a href="{{ route('logout') }}" class="dropdown-item">
 								<i class="icon-switch2"></i> Logout
 							</a>
@@ -329,16 +340,31 @@
 
 											<!-- Notifikasi Sukses -->
 											@if (session('success'))
-											<div class="alert alert-success">{{ session('success') }}</div>
+												<div class="alert alert-success alert-dismissible">
+													<button type="button" class="close" data-dismiss="alert">&times;</button>
+													{{ session('success') }}
+													@if(session('coin_message'))
+														<br><strong class="mt-2">{{ session('coin_message') }}</strong>
+													@endif
+												</div>
+											@endif
+
+											@if(session('error'))
+												<div class="alert alert-danger alert-dismissible">
+													<button type="button" class="close" data-dismiss="alert">&times;</button>
+													{{ session('error') }}
+												</div>
 											@endif
 											<form action="{{ route('pendaftarandata', ['id' => $game_event->id]) }}" method="POST" id="form-pendaftar" enctype="multipart/form-data">
 												@csrf
 
 												<input type="hidden" name="event_pendaftaran_id" value="{{ $game_event->id ?? '' }}">
+												<input type="hidden" name="game_pendaftar_id" value="{{ $game_event->id }}">
 												<input type="hidden" name="pendaftar_id" value="{{ auth()->id() }}">
+
 												
 												<div class="form-group">
-													<label for="nama">Nama :</label>
+													<label for="nama">Nama Lengkap:</label>
 													<input type="text" class="form-control" name="nama" id="nama" value="{{old('nama')}}" placeholder="Massukan Nama Lengkap" required>
 												</div>
 
@@ -370,7 +396,7 @@
 												@endforeach
 
 												<div class="form-group">
-													<label for="alamat">Massukan Alamat Anda :</label>
+													<label for="alamat">Alamat Lengkap :</label>
 													<textarea rows="2" cols="2" class="form-control" name="alamat" id="alamat" placeholder="Massukan Alamat Anda"></textarea>
 												</div>
 
@@ -456,45 +482,75 @@
 	</div>
 
 			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-			<script>
-				$(document).ready(function () {
-					$("#form-pendaftar").submit(function (e) {
-						e.preventDefault(); // Mencegah form submit default
+	<script>
+		$(document).ready(function () {
+			$("#form-pendaftar").submit(function (e) {
+				e.preventDefault();
 
-						let formData = new FormData(this); // Ambil data form
+				let formData = new FormData(this);
+				let submitBtn = $('#submit-btn');
+				let submitText = $('#submit-text');
 
-						$.ajax({
-							url: "{{ route('pendaftarandata') }}", 
-							type: "POST",
-							data: formData,
-							processData: false,
-							contentType: false,
-							success: function (response) {
-								if (response.success) {
-									Swal.fire({
-										title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
-										html: "<span style='color: #ffffff; font-weight: bold;'>" + response.message + "</span>",
-										iconHtml: "🎉",
-										// icon: "success",
-										confirmButtonText: "OKE"
-									}).then(() => {
-										// Reload halaman setelah klik OK
-										location.reload();
-									});
-								}
-							},
-							error: function (xhr) {
-								Swal.fire({
-									title: "<span style='color: #ff4444;'>Gagal!</span>",
-									html: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
-									icon: "error",
-									confirmButtonText: "OKE"
-								});
+				// Disable button dan tampilkan loading
+				submitBtn.prop('disabled', true);
+				submitText.text('Mendaftarkan...');
+
+				$.ajax({
+					url: $(this).attr('action'),
+					type: "POST",
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (response) {
+						if (response.success) {
+							let message = response.message;
+							if (response.coin_message) {
+								message += '<br><strong>' + response.coin_message + '</strong>';
 							}
+
+							Swal.fire({
+								title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
+								html: "<span style='color: #333;'>" + message + "</span>",
+								icon: "success",
+								confirmButtonText: "OKE",
+								confirmButtonColor: "#00a65a"
+							}).then(() => {
+								// Redirect atau reload halaman
+								window.location.href = "{{ route('landing') }}";
+							});
+						}
+					},
+					error: function (xhr) {
+						let errorMessage = "Terjadi kesalahan, coba lagi!";
+						
+						if (xhr.responseJSON && xhr.responseJSON.message) {
+							errorMessage = xhr.responseJSON.message;
+						}
+
+						if (xhr.responseJSON && xhr.responseJSON.errors) {
+							let errors = xhr.responseJSON.errors;
+							errorMessage = "";
+							for (let field in errors) {
+								errorMessage += errors[field][0] + "<br>";
+							}
+						}
+
+						Swal.fire({
+							title: "<span style='color: #ff4444;'>Gagal!</span>",
+							html: "<span style='color: #333;'>" + errorMessage + "</span>",
+							icon: "error",
+							confirmButtonText: "OKE",
+							confirmButtonColor: "#d33"
 						});
-					});
+
+						// Enable button kembali
+						submitBtn.prop('disabled', false);
+						submitText.text('Daftarkan');
+					}
 				});
-			</script>
+			});
+		});
+	</script>
 	<!-- /page content -->
 </body>
 </html>

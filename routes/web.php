@@ -100,6 +100,8 @@ Route::get('/landing', [UserController::class, 'index'])->name('landing');
         Route::delete('/pendaftaran-delete/{id}', [EventController::class, 'delete'])->name('pendaftarandelete');
     });
     
+    Route::get('/article-game', [EventController::class, 'articlegame'])->name('article.game');
+    Route::get('/leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
     Route::middleware('auth')->group(function () {
         Route::resource('status-user', StatusController::class);
         Route::resource('article', ArticleController::class);
@@ -107,8 +109,6 @@ Route::get('/landing', [UserController::class, 'index'])->name('landing');
         Route::resource('contact', ContactController::class);
         Route::get('index-article', [ArticleController::class, 'indexarticle'])->name('index.article');
         Route::resource('event-community', GameEventFollowerController::class);    
-        Route::get('/article-game', [EventController::class, 'articlegame'])->name('article.game');
-        Route::get('/leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
     });
 
     Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.send');

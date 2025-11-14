@@ -21,7 +21,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+	
 	<!-- /global stylesheets -->
 
 	<!-- Core JS files -->
@@ -147,14 +149,14 @@
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
 					<i class="icon-tree5"></i>
 				</button>
-
 		</div>
 
-		<div class="collapse navbar-collapse" id="navbarmobile">
+		<div class="collapse navbar-collapse" id="navbar-mobile">
 			<ul class="navbar-nav">
 				@guest
 					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link active">Home</a></li>
 					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>
+					<li class="nav-item"><a href="{{route('leaderboard')}}" class="navbar-nav-link">leaderboard</a></li>
 				@endguest
 				@if (auth()->check() && auth()->user()->status == 'pending')
 					<li class="nav-item"><a href="{{route('landing')}}" class="navbar-nav-link active">Home</a></li>
@@ -178,6 +180,13 @@
 					  <span class="badge bg-success">{{ auth()->user()->name }} Sedang Online</span>
 				@endif
 			</span>
+			
+			@auth
+				<div class="user-coins bg-yellow-100 border border-yellow-300 rounded-full px-3 py-1 text-sm font-semibold text-yellow-800">
+					<i class="fas fa-coins mr-1"></i>
+					{{ auth()->user()->coins }} Koin
+				</div>
+			@endauth
 
 			<ul class="navbar-nav ml-xl-auto">
 
@@ -240,14 +249,16 @@
 								</h1>
 							</div>
 								{{-- @elseif (auth()->check() && auth()->user()->status == 'approved') --}}
-									<div class="card fade-in">
-										<div class="card-header header-elements-inline">
-											<h1 class="card-title">Event Game Turnamen</h1>
+									<div class="card">
+											<div class="card-header header-elements-inline">
+												<h1 class="card-title">Event Game Turnamen</h1>
 												<div class="header-elements">
 													<div class="list-icons">
 														<a class="list-icons-item" data-action="collapse"></a>
 														<a class="list-icons-item" data-action="reload"></a>
 														<a class="list-icons-item" data-action="remove"></a>
+													</div>
+													<div class="col-md-3 col-sm-4">
 													</div>
 												</div>
 											</div>
@@ -267,8 +278,15 @@
 													<div class="d-flex gap-3 flex-wrap">
 														@foreach ($game_events as $game_event)
 														@if ($game_event)
-
-																<div class="event-card mr-4" onclick="window.location.href='{{ route('game-event.show', $game_event->id) }}'" style="cursor: pointer;">
+														
+																<div class="event-card mr-4"    
+																	@if ($game_event->slot_filled >= $game_event->slot_limit)
+																		onclick="showFullSlotAlert()"
+																		style="cursor: not-allowed; opacity: 0.6;"
+																	@else
+																		onclick="window.location.href='{{ route('game-event.show', $game_event->id) }}'"
+																		style="cursor: pointer;"
+																	@endif>
 																	<img src="{{ asset($game_event->thumbnail ?? 'default-thumbnail.png') }}" 
 																		alt="" height="125px" width="100px">
 
@@ -290,6 +308,7 @@
 											</div>
 										</div>
 									</div>
+									
 
 									@if (auth()->check() && auth()->user()->status == 'approved')
 									<div class="card fade-in">
@@ -380,6 +399,7 @@
 									</div>
 
 									<div class="card fade-in">
+										<div class="table-responsive">
 										<div class="card-header header-elements-inline">
 											<h1 class="card-title">Data Peserta </h1>
 												<div class="header-elements">
@@ -410,6 +430,7 @@
 												</table>
 											</div>
 									</div>
+								</div>
 								@endif
 			<!-- Footer -->
 							<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
@@ -429,7 +450,7 @@
 
 					</div>
 	<!-- /page content -->
-
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 			<script>
 				document.addEventListener("DOMContentLoaded", function () {
 					const likeButtons = document.querySelectorAll(".like-btn");
@@ -577,5 +598,19 @@
 				});
 			</script>
 
+			<script>
+				function showFullSlotAlert() {
+					Swal.fire({
+						title: 'Slot Sudah Penuh!',
+						text: 'Mohon maaf, silahkan mengikuti event lainnya.',
+						icon: 'warning',
+						confirmButtonText: 'OK',
+						confirmButtonColor: '#007bff',   
+						background: '#1e1e2f',   
+						color: '#ffffff',         
+						iconColor: '#3498db',      
+					});
+				}
+			</script>
 	</body>
 </html>

@@ -182,7 +182,7 @@
 			</button>
 		</div>
 
-		<div class="collapse navbar-collapse" id="navbarmobile">
+		<div class="collapse navbar-collapse" id="navbar-demo1-mobile">
 			<ul class="navbar-nav">
 				@if (auth()->check() && auth()->user()->status == 'pending')
 					<li class="nav-item"><a href="{{route('article.game')}}" class="navbar-nav-link">Artikel</a></li>

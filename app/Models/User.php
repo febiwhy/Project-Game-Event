@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'status',
         'payment_proof',
+        'coins',
     ];
 
 
@@ -51,6 +52,32 @@ class User extends Authenticatable
      *
      * @return bool
      */
+    
+    public function addCoins($amount)
+    {
+        $this->coins += $amount;
+        $this->save();
+
+        // Optional: Log penambahan koin
+        \Log::info("User {$this->name} mendapatkan {$amount} koin. Total: {$this->coins}");
+    }
+
+    public function deductCoins($amount)
+    {
+        $this->coins -= $amount;
+        $this->save();
+    }
+
+    // RELASI BARU
+    public function pendaftaran()
+    {
+        return $this->hasMany(Pendaftaran::class, 'pendaftar_id');
+    }
+
+    public function eventParticipations()
+    {
+        return $this->hasMany(UserEventParticipation::class);
+    }
     public function isonline()
     {
         return Cache::has('user-is-online-' . $this->id);
