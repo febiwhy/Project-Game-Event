@@ -177,14 +177,15 @@
 
 			<span class="navbar-text ml-xl-3">
 				@if (auth()->check())
-					  <span class="badge bg-success">{{ auth()->user()->name }} Sedang Online</span>
+					<span class="badge bg-success mr-3">{{ auth()->user()->name }} Sedang Online</span>
 				@endif
 			</span>
-			
+
 			@auth
-				<div class="user-coins bg-yellow-100 border border-yellow-300 rounded-full px-3 py-1 text-sm font-semibold text-yellow-800">
-					<i class="fas fa-coins mr-1"></i>
-					{{ auth()->user()->coins }} Koin
+				<div class="user-coins d-flex align-items-center bg-light rounded-pill px-3 py-2 mx-3 border">
+					<i class="fas fa-coins text-warning mr-2" style="font-size: 1rem;"></i>
+					<strong class="text-dark mr-1">{{ number_format(auth()->user()->coins) }}</strong>
+					<small class="text-muted">Koin</small>
 				</div>
 			@endauth
 
@@ -203,6 +204,9 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-right">
 						@if (auth()->check())
+							<a href="" class="dropdown-item" data-toggle="modal" data-target="#coinHistoryModal">
+								<i class="fas fa-coins"></i> History Koin
+							</a>
 							<a href="{{ route('logout') }}" class="dropdown-item">
 								<i class="icon-switch2"></i> Logout
 							</a>
@@ -449,6 +453,85 @@
 						<!-- /main content -->
 
 					</div>
+
+			<!-- Modal Coin History -->
+			<div class="modal fade" id="coinHistoryModal" tabindex="-1" role="dialog" aria-labelledby="coinHistoryModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+					<div class="modal-content">
+						<div class="modal-header bg-primary text-white">
+							<h5 class="modal-title" id="coinHistoryModalLabel">
+								<i class="fas fa-coins mr-2"></i>History Koin & Event
+							</h5>
+							<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body p-0">
+							<!-- Loading Spinner -->
+							<div id="coinHistoryLoading" class="text-center py-5">
+								<div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+									<span class="sr-only">Loading...</span>
+								</div>
+								<p class="text-muted mb-1">Memuat data history...</p>
+								<small class="text-muted">Harap tunggu sebentar</small>
+							</div>
+
+							<!-- Content -->
+							<div id="coinHistoryContent" style="display: none;">
+								<!-- Statistik -->
+								<div class="bg-gradient-primary text-white p-4">
+									<div class="row text-center">
+										<div class="col-4">
+											<div class="h2 font-weight-bold mb-1" id="totalCoins">0</div>
+											<small class="opacity-8">
+												<i class="fas fa-coins mr-1"></i>Total Koin
+											</small>
+										</div>
+										<div class="col-4">
+											<div class="h2 font-weight-bold mb-1" id="totalEvents">0</div>
+											<small class="opacity-8">
+												<i class="fas fa-calendar-alt mr-1"></i>Total Event
+											</small>
+										</div>
+										<div class="col-4">
+											<div class="h2 font-weight-bold mb-1" id="totalParticipations">0</div>
+											<small class="opacity-8">
+												<i class="fas fa-repeat mr-1"></i>Total Partisipasi
+											</small>
+										</div>
+									</div>
+								</div>
+
+								<!-- Riwayat Event -->
+								<div class="p-4">
+									<div class="d-flex justify-content-between align-items-center mb-3">
+										<h6 class="font-weight-semibold mb-0 text-dark">
+											<i class="fas fa-history mr-2"></i>Riwayat Event yang Diikuti
+										</h6>
+										<span class="badge badge-primary" id="eventCountBadge">0 event</span>
+									</div>
+									<div id="eventHistoryList" class="space-y-3" style="max-height: 400px; overflow-y: auto;">
+										<!-- Data akan diisi via AJAX -->
+									</div>
+								</div>
+							</div>
+
+							<!-- Error Message -->
+							<div id="coinHistoryError" class="text-center py-5" style="display: none;">
+								<!-- Error content akan diisi via JavaScript -->
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">
+								<i class="fas fa-times mr-1"></i>Tutup
+							</button>
+							<button type="button" class="btn btn-outline-primary" onclick="loadCoinHistory()">
+								<i class="fas fa-redo mr-1"></i>Refresh
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>		
 	<!-- /page content -->
 			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 			<script>
@@ -611,6 +694,192 @@
 						iconColor: '#3498db',      
 					});
 				}
+			</script>
+
+			<script>
+				// Function untuk load coin history
+				function loadCoinHistory() {
+					console.log('Memulai load coin history...');
+					
+					// Show loading, hide content and error
+					$('#coinHistoryLoading').show();
+					$('#coinHistoryContent').hide();
+					$('#coinHistoryError').hide();
+
+					$.ajax({
+						url: '{{ route("coins.history.data") }}',
+						type: 'GET',
+						dataType: 'json',
+						timeout: 3000, // 10 detik timeout
+						success: function(response) {
+							console.log('Response berhasil:', response);
+							
+							if (response.success) {
+								// Update statistics
+								$('#totalCoins').text(response.totalCoins.toLocaleString());
+								$('#totalEvents').text(response.totalEvents.toLocaleString());
+								$('#totalParticipations').text(response.totalParticipations.toLocaleString());
+
+								const eventCount = response.totalEvents;
+        						$('#eventCountBadge').text(eventCount + ' event' + (eventCount !== 1 ? 's' : ''));
+
+								// Update event history list
+								let eventList = $('#eventHistoryList');
+								eventList.empty();
+
+								if (response.pendaftaranHistory && response.pendaftaranHistory.length > 0) {
+									response.pendaftaranHistory.forEach(function(event, index) {
+										let statusClass = '';
+										let statusIcon = '';
+										
+										if (event.status === 'Diterima') {
+											statusClass = 'text-success';
+											statusIcon = 'fa-check-circle';
+										} else if (event.status === 'Menunggu') {
+											statusClass = 'text-warning';
+											statusIcon = 'fa-clock';
+										} else {
+											statusClass = 'text-secondary';
+											statusIcon = 'fa-question-circle';
+										}
+
+										// Hitung koin dari partisipasi event ini
+										let eventParticipations = response.participations?.find(p => 
+											p.event_name === event.game_event.name
+										);
+										let coinsFromEvent = eventParticipations ? (eventParticipations.participation_count * 10) : 10;
+
+										let eventHtml = `
+											<div class="border rounded p-3 mb-3">
+												<div class="d-flex justify-content-between align-items-start">
+													<div class="flex-grow-1">
+														<h6 class="font-weight-semibold mb-1 text-primary">
+															<i class="fas fa-gamepad mr-2"></i>${event.game_event.name}
+														</h6>
+														<div class="row">
+															<div class="col-md-6">
+																<p class="text-muted mb-1 small">
+																	<i class="far fa-calendar mr-1"></i>
+																	${event.tanggal_daftar}
+																</p>
+																<p class="mb-1 small">
+																	<span class="${statusClass}">
+																		<i class="fas ${statusIcon} mr-1"></i>${event.status}
+																	</span>
+																</p>
+															</div>
+															<div class="col-md-6">
+																<p class="mb-1 small">
+																	<i class="fas fa-envelope mr-1"></i>${event.email}
+																</p>
+																${eventParticipations ? `
+																<p class="mb-0 small text-info">
+																	<i class="fas fa-repeat mr-1"></i>
+																	Diikuti ${eventParticipations.participation_count} kali
+																</p>
+																` : ''}
+															</div>
+														</div>
+													</div>
+													<div class="text-right ml-3">
+														<div class="text-success font-weight-bold h5">
+															+${coinsFromEvent} 
+															<i class="fas fa-coins"></i>
+														</div>
+														<small class="text-muted">Total koin</small>
+													</div>
+												</div>
+											</div>
+										`;
+										eventList.append(eventHtml);
+									});
+								} else {
+									eventList.html(`
+										<div class="text-center py-5 text-muted">
+											<i class="fas fa-calendar-times fa-3x mb-3"></i>
+											<h6 class="font-weight-semibold">Belum Ada Riwayat Event</h6>
+											<p class="small">Anda belum mendaftar event apapun.</p>
+											<a href="{{ route('landing') }}" class="btn btn-primary btn-sm">
+												<i class="fas fa-plus mr-1"></i>Daftar Event
+											</a>
+										</div>
+									`);
+								}
+
+								// Show content, hide loading
+								$('#coinHistoryLoading').hide();
+								$('#coinHistoryContent').show();
+								
+							} else {
+								// Response success: false
+								showCoinHistoryError(response.message || 'Terjadi kesalahan tidak diketahui');
+							}
+						},
+						error: function(xhr, status, error) {
+							console.error('Error loading coin history:', {
+								xhr: xhr,
+								status: status,
+								error: error
+							});
+							
+							let errorMessage = 'Gagal memuat data history.';
+							
+							if (xhr.status === 401) {
+								errorMessage = 'Sesi telah berakhir. Silakan login kembali.';
+							} else if (xhr.status === 500) {
+								errorMessage = 'Terjadi kesalahan server. Silakan coba lagi.';
+							} else if (xhr.status === 404) {
+								errorMessage = 'Endpoint tidak ditemukan.';
+							} else if (status === 'timeout') {
+								errorMessage = 'Timeout. Periksa koneksi internet Anda.';
+							}
+							
+							showCoinHistoryError(errorMessage);
+						}
+					});
+				}
+
+				// Function untuk menampilkan error
+				function showCoinHistoryError(message) {
+					$('#coinHistoryLoading').hide();
+					$('#coinHistoryContent').hide();
+					
+					let errorHtml = `
+						<i class="fas fa-exclamation-circle text-danger fa-3x mb-3"></i>
+						<h6 class="font-weight-semibold text-danger">Gagal Memuat Data</h6>
+						<p class="text-muted mb-3">${message}</p>
+						<button class="btn btn-primary btn-sm" onclick="loadCoinHistory()">
+							<i class="fas fa-redo mr-1"></i>Coba Lagi
+						</button>
+					`;
+					
+					$('#coinHistoryError').html(errorHtml).show();
+				}
+
+				// Load data ketika modal dibuka
+				$('#coinHistoryModal').on('show.bs.modal', function() {
+					console.log('Modal coin history dibuka');
+					loadCoinHistory();
+				});
+
+				// Reset modal ketika ditutup
+				$('#coinHistoryModal').on('hidden.bs.modal', function() {
+					console.log('Modal coin history ditutup');
+					$('#coinHistoryLoading').show();
+					$('#coinHistoryContent').hide();
+					$('#coinHistoryError').hide();
+					
+					// Reset konten
+					$('#totalCoins').text('0');
+					$('#totalEvents').text('0');
+					$('#totalParticipations').text('0');
+					$('#eventHistoryList').empty();
+				});
+
+				// Handle modal show event untuk prevent default
+				$(document).on('click', '[data-target="#coinHistoryModal"]', function(e) {
+					e.preventDefault();
+				});
 			</script>
 	</body>
 </html>

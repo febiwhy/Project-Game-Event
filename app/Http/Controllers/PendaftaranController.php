@@ -195,4 +195,71 @@ class PendaftaranController extends Controller
 
         return view('coins.history', compact('participations', 'totalCoins', 'totalEvents', 'totalParticipations'));
     }
+
+    public function getCoinHistoryData()
+    {
+        try {
+            $user = auth()->user();
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User tidak terautentikasi'
+                ], 401);
+            }
+
+            // Data riwayat pendaftaran event dengan error handling
+            $pendaftaranHistory = Pendaftaran::with(['gameEvent' => function ($query) {
+                $query->select('id', 'name'); // Hanya ambil field yang diperlukan
+            }])
+                ->where('pendaftar_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'game_event' => [
+                            'name' => $item->gameEvent->name ?? 'Event Tidak Ditemukan',
+                            'id' => $item->gameEvent->id ?? 0
+                        ],
+                        'status' => $item->status ?? 'Menunggu',
+                        'tanggal_daftar' => $item->created_at->format('d M Y H:i'),
+                        'email' => $item->email
+                    ];
+                });
+
+            // Data untuk statistik
+            $participations = UserEventParticipation::with(['gameEvent' => function ($query) {
+                $query->select('id', 'name');
+            }])
+                ->where('user_id', $user->id)
+                ->get();
+
+            // Hitung koin dari partisipasi
+            $totalParticipations = $participations->sum('participation_count');
+            $calculatedCoins = ($totalParticipations * 10) + (floor($totalParticipations / 5) * 50);
+
+            return response()->json([
+                'success' => true,
+                'totalCoins' => $user->coins ?? $calculatedCoins,
+                'totalEvents' => $pendaftaranHistory->count(),
+                'totalParticipations' => $totalParticipations,
+                'pendaftaranHistory' => $pendaftaranHistory,
+                'participations' => $participations->map(function ($participation) {
+                    return [
+                        'event_name' => $participation->gameEvent->name ?? 'Event ID: ' . $participation->game_event_id,
+                        'participation_count' => $participation->participation_count,
+                        'last_updated' => $participation->updated_at->format('d M Y H:i')
+                    ];
+                })
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error getting coin history data for user ' . auth()->id() . ': ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

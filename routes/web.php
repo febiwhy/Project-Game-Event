@@ -108,7 +108,8 @@ Route::get('/landing', [UserController::class, 'index'])->name('landing');
         Route::resource('game-event', EventGameController::class);
         Route::resource('contact', ContactController::class);
         Route::get('index-article', [ArticleController::class, 'indexarticle'])->name('index.article');
-        Route::resource('event-community', GameEventFollowerController::class);    
+        Route::resource('event-community', GameEventFollowerController::class);
+        Route::get('/coin-history/data', [PendaftaranController::class, 'getCoinHistoryData'])->name('coins.history.data')->middleware('auth');
     });
 
     Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.send');

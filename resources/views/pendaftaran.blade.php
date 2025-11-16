@@ -161,9 +161,9 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-right">
 						@if (auth()->check())
-							<a href="{{ route('coins.history') }}" class="dropdown-item">
+							{{-- <a href="{{ route('coins.history') }}" class="dropdown-item">
 									<i class="fas fa-coins"></i> History Koin
-							</a>
+							</a> --}}
 							<a href="{{ route('logout') }}" class="dropdown-item">
 								<i class="icon-switch2"></i> Logout
 							</a>
