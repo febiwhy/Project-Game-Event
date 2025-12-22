@@ -25,10 +25,20 @@ class ContactModelRequest extends FormRequest
     public function rules()
     {
         return [
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto' => 'nullable',
             'location' => 'required',
             'telepon' => 'required',
             'email' => 'required'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'foto.nullable' => 'foto wajib diisi',
+            'location.required' => 'Lokasi wajib diisi',
+            'telepon.required' => 'Nomor telepon wajib diisi',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid'
         ];
     }
 }

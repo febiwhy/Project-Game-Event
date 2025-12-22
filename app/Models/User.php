@@ -78,8 +78,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserEventParticipation::class);
     }
+    
     public function isonline()
     {
         return Cache::has('user-is-online-' . $this->id);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }

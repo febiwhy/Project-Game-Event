@@ -1,13 +1,17 @@
 <?php
 
 use App\Models\User;
+use App\Models\Article;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\Auth\PreRegistration;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Email\EmailController;
 use App\Http\Controllers\PendaftaranController;
@@ -18,13 +22,10 @@ use App\Http\Controllers\Admin\EventGameController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Admin\GameEventFollowerController;
-use App\Http\Controllers\Auth\PreRegistration;
 use App\Http\Controllers\Auth\PreRegistrationController;
+use App\Http\Controllers\Admin\GameEventFollowerController;
 use App\Http\Controllers\Email\AdminNotificationController;
 use App\Http\Controllers\Email\TurnamentReportMailController;
-use App\Http\Controllers\StatusController;
-use App\Models\Article;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,14 +103,18 @@ Route::get('/landing', [UserController::class, 'index'])->name('landing');
     
     Route::get('/article-game', [EventController::class, 'articlegame'])->name('article.game');
     Route::get('/leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
+    Route::resource('contact', ContactController::class);
     Route::middleware('auth')->group(function () {
         Route::resource('status-user', StatusController::class);
         Route::resource('article', ArticleController::class);
         Route::resource('game-event', EventGameController::class);
-        Route::resource('contact', ContactController::class);
         Route::get('index-article', [ArticleController::class, 'indexarticle'])->name('index.article');
         Route::resource('event-community', GameEventFollowerController::class);
         Route::get('/coin-history/data', [PendaftaranController::class, 'getCoinHistoryData'])->name('coins.history.data')->middleware('auth');
+
+        Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+        Route::get('/chat/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+        Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
     });
 
     Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.send');

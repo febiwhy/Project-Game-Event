@@ -112,7 +112,7 @@ class LoginController extends Controller
                 // lanjut aja, biar user tetap terdaftar
             }
 
-            return back()->with('success', 'Akun berhasil dibuat. Silakan menunggu persetujuan dari admin. Jika tidak disetujui dalam waktu 7 hari, akun akan dihapus.');
+            return back()->with('success', 'Akun berhasil dibuat. silahkan login Kembali.');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return back()->with('error', 'Terjadi kesalahan saat pendaftaran. Silakan coba lagi.');

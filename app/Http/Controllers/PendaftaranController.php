@@ -82,19 +82,19 @@ class PendaftaranController extends Controller
             }
 
             // Cek apakah user sudah mendaftar event ini sebelumnya
-            $existingRegistration = Pendaftaran::where('pendaftar_id', auth()->id())
-                ->where('event_pendaftaran_id', $request->event_pendaftaran_id)
-                ->first();
+            // $existingRegistration = Pendaftaran::where('pendaftar_id', auth()->id())
+            //     ->where('event_pendaftaran_id', $request->event_pendaftaran_id)
+            //     ->first();
 
-            if ($existingRegistration) {
-                if ($request->ajax()) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Anda sudah terdaftar di event ini!'
-                    ], 400);
-                }
-                return redirect()->back()->with('error', 'Anda sudah terdaftar di event ini!');
-            }
+            // if ($existingRegistration) {
+            //     if ($request->ajax()) {
+            //         return response()->json([
+            //             'success' => false,
+            //             'message' => 'Anda sudah terdaftar di event ini!'
+            //         ], 400);
+            //     }
+            //     return redirect()->back()->with('error', 'Anda sudah terdaftar di event ini!');
+            // }
 
             // Simpan foto
             $foto_path = null;
@@ -106,6 +106,7 @@ class PendaftaranController extends Controller
 
             // Simpan data pendaftaran
             $pendaftaran = Pendaftaran::create([
+                'user_id' => auth()->id(),
                 'event_pendaftaran_id' => $request->event_pendaftaran_id,
                 'game_pendaftar_id' => $request->game_pendaftar_id,
                 'pendaftar_id' => auth()->id(),
@@ -123,21 +124,20 @@ class PendaftaranController extends Controller
             $coinReward = $this->coinService->rewardParticipation($user, $pendaftar_event);
 
             // Prepare response message
-            $successMessage = 'Pendaftaran berhasil!';
-            $coinMessage = "🎉 Anda mendapatkan {$coinReward['base_coins']} koin!";
+            $successMessage = '🎉';
+            $coinMessage = "Pendaftaran berhasil!";
 
             if ($coinReward['bonus_coins'] > 0) {
-                $coinMessage .= " 🎊 Bonus {$coinReward['bonus_coins']} koin untuk partisipasi ke-{$coinReward['participation_count']}!";
+                $coinMessage .= " 🎊";
             }
 
-            $coinMessage .= " Total koin Anda: {$coinReward['total_coins']}";
+            $coinMessage .= " ";
 
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
                     'message' => $successMessage,
                     'coin_message' => $coinMessage,
-                    'total_coins' => $coinReward['total_coins'],
                     'id' => $pendaftaran->id
                 ]);
             }

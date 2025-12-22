@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Admin</title>
+		<title>Article - {{$article->title}} | Loop Tourney</title>
 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -16,13 +15,433 @@
 	<link href="{{asset('assets/css/layout.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/components.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    
     <style>
-        h1 {
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #1e1e2f;
+            --darker: #151521;
+            --light: #f8f9fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e84393;
+            --info: #0984e3;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: rgba(30, 30, 47, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-brand span {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.5rem;
+        }
+        
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+            color: white !important;
+            background: rgba(108, 92, 231, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-user {
+            background: linear-gradient(135deg, rgba(40, 40, 60, 0.9), rgba(60, 60, 80, 0.7)) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar-user .card-body {
+            background: transparent !important;
+            padding: 1.5rem;
+        }
+
+        .sidebar-user .media-title {
+            color: white !important;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-user .font-size-xs {
+            color: var(--secondary) !important;
+            font-weight: 500;
+        }
+
+        .nav-sidebar > .nav-item > .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            border-radius: 10px;
+            margin: 4px 12px;
+            padding: 0.875rem 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+
+        .nav-sidebar > .nav-item > .nav-link:hover,
+        .nav-sidebar > .nav-item > .nav-link.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+            color: white !important;
+            transform: translateX(8px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-sidebar > .nav-item > .nav-link i {
+            color: var(--secondary) !important;
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+            margin-right: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-sidebar > .nav-item > .nav-link:hover i,
+        .nav-sidebar > .nav-item > .nav-link.active i {
+            color: white !important;
+            transform: scale(1.1);
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            position: relative;
+            height: 40vh;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, 
+                rgba(108, 92, 231, 0.3) 0%, 
+                rgba(253, 121, 168, 0.2) 50%, 
+                rgba(30, 30, 47, 0.9) 100%);
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(108, 92, 231, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(253, 121, 168, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 184, 148, 0.2) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 30px rgba(108, 92, 231, 0.6);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-logo img {
+            width: 60px;
+            height: 60px;
+            filter: brightness(0) invert(1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--warning));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        /* Article Styles */
+        .article-card {
+            background: rgba(30, 30, 47, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .article-header {
+            background: linear-gradient(135deg, rgba(40, 40, 60, 0.9), rgba(60, 60, 80, 0.7));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+        }
+
+        .article-title {
             font-family: 'Bungee', sans-serif;
             color: #ffffff;
             text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: var(--secondary);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .article-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .article-image:hover {
+            transform: scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(108, 92, 231, 0.3);
+        }
+
+        .article-content {
+            padding: 2rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .article-content strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        .sidebar-articles {
+            background: rgba(30, 30, 47, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: white;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .related-article {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(40, 40, 60, 0.5);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .related-article:hover {
+            background: rgba(50, 50, 70, 0.7);
+            transform: translateX(8px);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .related-article img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .related-article-content h6 {
+            font-family: 'Bungee', sans-serif;
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            line-height: 1.3;
+        }
+
+        .related-article-content .read-more {
+            color: var(--secondary);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .search-input {
+            background: rgba(40, 40, 60, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(50, 50, 70, 0.8);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.3);
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Alert Styles */
+        .alert-custom {
+            background: linear-gradient(135deg, rgba(9, 132, 227, 0.2), rgba(9, 132, 227, 0.1));
+            border: 1px solid rgba(9, 132, 227, 0.3);
+            border-radius: 15px;
+            color: white;
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--info);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: rgba(30, 30, 47, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .article-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-logo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .hero-logo img {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .related-article {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .related-article img {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -34,7 +453,7 @@
 		<div class="navbar navbar-expand-md navbar-light navbar-static">
 			<div class="navbar-brand" style="display: flex; align-items: center;">
 				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
-					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
+					{{-- <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> --}}
 					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney </span>
 				</a>
 			</div>
@@ -171,7 +590,6 @@
                 </div>
                 <!-- /sidebar mobile toggler -->
 
-
                 <!-- Sidebar content -->
                 <div class="sidebar-content">
 
@@ -180,65 +598,65 @@
                         <div class="card-body">
                             <div class="media">
                                 <div class="mr-3">
-                                    <a href="#"><img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="38" height="38" class="rounded-circle" alt=""></a>
+                                    <a href="#"><img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" width="44" height="44" class="rounded-circle" alt="Admin Avatar"></a>
                                 </div>
 
                                 <div class="media-body">
-                                    <div class="media-title font-weight-semibold">Admin</div>
-                                    <div class="font-size-xs opacity-50">
+                                    <div class="media-title font-weight-semibold">
+                                        @if (auth()->check())
+                                            {{ auth()->user()->name }}
+                                        @else
+                                            Admin
+                                        @endif
                                     </div>
+                                    <div class="font-size-xs opacity-50">
+                                        <i class="icon-user-check mr-1"></i> Administrator
+                                    </div>
+                                </div>
+
+                                <div class="ml-3 align-self-center">
+                                    <span class="badge badge-success badge-pill">Online</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- /user menu -->
 
-
                     <!-- Main navigation -->
                     <div class="card card-sidebar-mobile">
-                        <ul class="nav nav-sidebar" data-nav-type="accordion">
+                    <ul class="nav nav-sidebar" data-nav-type="accordion">
 
-                            <!-- Main -->
-                            <li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
-                            <li class="nav-item">
-                                <a href="{{route('admin.index')}}" class="nav-link">
-                                    <i class="icon-home4"></i>
-                                    <span>
-                                        Dashboard Admin
-                                        <span class="d-block font-weight-normal opacity-50"></span>
-                                    </span>
-                                </a>
-                            <p></p>
-                                <hr>
-                            </li>
-                            <li class="nav-item nav-item-submenu">
-                                <a href="#" class="nav-link"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
-                                <ul class="nav nav-group-sub" data-submenu-title="Sidebars">
-                                    <li class="nav-item nav-item-submenu">
-                                        <a href="#" class="nav-link"> Admin </a>
-                                        <ul class="nav nav-group-sub">
-                                            <li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
-                                            <li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item nav-item-submenu">
-                                <a href="#" class="nav-link active"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
+                        <!-- Main -->
+                        <li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.index')}}" class="nav-link">
+                                <i class="icon-home4"></i>
+                                <span>
+                                    Dashboard Admin
+                                </span>
+                            </a>
+                        </li>
 
-                                <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                                    <li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
-                                    <li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link "> Game Turnamaent </a></li>
-                                    <li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
-                                    <li class="nav-item"><a href="{{route('article.index')}}" class="nav-link active"> Article </a></li>
-                                    <li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
-                                </ul>
-                            </li>
-                            <!-- /main -->
-                        </ul>
+                        <li class="nav-item nav-item-submenu">
+                            <a href="#" class="nav-link"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
+                            <ul class="nav nav-group-sub" data-submenu-title="Sidebars">
+                                <li class="nav-item">
+                                    <a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item nav-item-submenu">
+                            <a href="#" class="nav-link active"><i class="icon-earth"></i> <span>User Page</span></a>
+                            <ul class="nav nav-group-sub" data-submenu-title="User Page">
+                                <li class="nav-item"><a href="{{route('landing')}}" class="nav-link">Home</a></li>
+                                <li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link">Game Tournament</a></li>
+                                {{-- <li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link">Komunitas</a></li> --}}
+                                <li class="nav-item"><a href="{{route('article.index')}}" class="nav-link active">Article</a></li>
+                                <li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link">Hubungi Kami</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                     </div>
                     <!-- /main navigation -->
 
@@ -249,130 +667,130 @@
         @endif
 		<!-- /main sidebar -->
 
-
 		<!-- Main content -->
 		<div class="content-wrapper">
 
-			<!-- Page header -->
-			<div class="page-header border-bottom-0">
-				<div class="page-header-content header-elements-md-inline">
-					<div class="page-title d-flex">
-						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Halaman</span> - Article</h4>
-						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-					</div>
-				</div>
-			</div>
-			<!-- /page header -->
-
+            <!-- Hero Banner -->
+            <div class="hero-banner">
+                <div class="hero-background"></div>
+                <div class="hero-content">
+                    <div class="hero-logo">
+                        <img src="{{ asset('global_assets/images/logo.png') }}" alt="Loop Tourney Logo">
+                    </div>
+                    <h1 class="hero-title">Article Details</h1>
+                    <p class="hero-subtitle">Discover the latest gaming insights and updates</p>
+                </div>
+            </div>
 
 			<!-- Content area -->
 			<div class="content pt-0">
 
 				<!-- Info alert -->
-				<div class="alert alert-info bg-light text-default alert-styled-left alert-arrow-left alert-dismissible">
+				<div class="alert alert-custom alert-styled-left alert-arrow-left alert-dismissible">
 					<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-					<h6>
+					<h4 class="alert-heading font-weight-semibold mb-2">
+						<i class="icon-info3 mr-2"></i>
 						@if (auth()->check())
-							Selamat Datang , {{ auth()->user()->name }}
+							Selamat Datang, {{ auth()->user()->name }}
 						@else
 							Guest
 						@endif
-					</h6>
-			    </div>
-			    <!-- /info alert -->
-
-				<!-- Navbar classes -->
-				<div class="card" >
-					<div class="card-header header-elements-inline">
-						<h1 class="card-title">Artikel Tentang {{$article->title}}</h1>
-						<div class="header-elements">
-							<div class="list-icons">
-								<a class="list-icons-item" data-action="collapse"></a>
-								<a class="list-icons-item" data-action="reload"></a>
-								<a class="list-icons-item" data-action="remove"></a>
-								<div class="col-md-3 col-sm-4">
-								</div>
-							</div>
+					</h4>
+					<hr style="border-color: rgba(255,255,255,0.2);">
+					<div class="d-flex align-items-center">
+						<i class="icon-book mr-3" style="font-size: 1.5rem;"></i>
+						<div>
+							<strong>Article Details:</strong> Explore in-depth gaming content and stay updated with the latest news
 						</div>
 					</div>
-                                        <!-- Search Bar Full Width -->
-                        <div class="input-group my-4 w-100">
-                            <span type="text" id="articleSearchInput" class="form-control" placeholder="Cari article..."></span>
-                        </div>
-                        <div class="row m-3">
+				</div>
+				<!-- /info alert -->
+
+				<!-- Article Content -->
+				<div class="article-card">
+					<div class="article-header">
+						<h1 class="article-title">{{$article->title}}</h1>
+						<div class="article-meta">
+							<i class="icon-calendar3 mr-2"></i>
+							{{ \Carbon\Carbon::parse($article->created_at)->locale('id')->translatedFormat('d F Y H:i') }} WIB
+						</div>
+					</div>
+
+					<div class="card-body">
+                        <!-- Search Bar -->
+                        {{-- <div class="search-container">
+                            <input type="text" id="articleSearchInput" class="search-input" placeholder="Cari artikel lainnya...">
+                        </div> --}}
+
+                        <div class="row">
                             <div class="col-lg-8">
-                                <p class="text-muted">{{ \Carbon\Carbon::parse($article->created_at)->locale('id')->translatedFormat('d F Y H:i') }} WIB</p>
-                                <div class="row g-4">
-                                    <div class="col-md-6">
-                                        <img src="{{ asset($article->image ?? 'default-image.png') }}" class="img-fluid mb-2 rounded">
-                                        {{-- <p class="text-muted small">Presiden AS Donald Trump (kanan) saat menghadiri UFC 244 di Madison Square Garden, New York.</p> --}}
-                                    </div>
-                                    <div class="col-md-6 d-flex align-items-center">
-                                    </div>
+                                @if($article->image)
+                                <img src="{{ asset($article->image) }}" alt="{{$article->title}}" class="article-image">
+                                @endif
+                                
+                                <div class="article-content">
+                                    <p><strong>{{$article->title}}</strong> - {!! nl2br(e($article->content ?? 'Tidak ada content')) !!}</p>
                                 </div>
-                                <hr>
-                                <p><strong>{{$article->title}}</strong> - {!! nl2br(e($article->content ?? 'Tidak ada content')) !!}</p>
                             </div>
 
                             <div class="col-lg-4">
-                                <h5 class="border-bottom pb-2">Article Lainnya</h5>
-
-                                <!-- Setiap item terpopuler -->
-                                @foreach ($populerArticle as $article)
-                                <div class="d-flex mb-3">
-                                    <a href="{{ route('article.show', $article->id) }}" class="flex items-center">
-                                        <img src="{{ asset($article->image ?? 'default-image.png') }}" width="100px" height="70px" class="mr-2 rounded" alt="thumbnail">
-                                        <div class="text-white font-semibold text-sm"><h1>{{ Str::limit($article->title,50) }}</h1>
-                                            <div class="text-blue-400 text-xs">Baca Selengkapnya</div>
+                                <div class="sidebar-articles">
+                                    <h5 class="sidebar-title">Article Lainnya</h5>
+                                    
+                                    @foreach ($populerArticle as $article)
+                                    <a href="{{ route('article.show', $article->id) }}" class="related-article">
+                                        <img src="{{ asset($article->image ?? 'default-image.png') }}" alt="{{ Str::limit($article->title, 50) }}">
+                                        <div class="related-article-content">
+                                            <h6>{{ Str::limit($article->title, 50) }}</h6>
+                                            <div class="read-more">Baca Selengkapnya <i class="icon-arrow-right8 ml-1"></i></div>
                                         </div>
                                     </a>
+                                    @endforeach
                                 </div>
-                                @endforeach
                             </div>
                         </div>
+					</div>
 				</div>
 			</div>
 			<!-- /content area -->
 
-
 			{{-- Footer User --}}
 		@if (optional(auth()->user())->hasAnyRole(['user']))
-			<div class="navbar navbar-expand-xl navbar-dark rounded-bottom">
-				<div class="navbar-collapse collapse">
-					<span class="navbar-text">
-						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
-					</span>
-					<ul class="navbar-nav ml-xl-auto">
-						<li class="nav-item"><a href="{{route('contact.index')}}" class="navbar-nav-link">Pusat Bantuan</a></li>
-					</ul>
-				</div>
-			</div>
+        <div class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 30px;">
+                        <span>Loop Tourney</span>
+                    </div>
+                    <div class="footer-links">
+                        <a href="{{route('contact.index')}}" class="text-white-50">Pusat Bantuan</a>
+                    </div>
+                    <div class="footer-copyright text-white-50">
+                        &copy; 2015 - 2025. Loop Tourney
+                    </div>
+                </div>
+            </div>
+        </div>
 		@endif
 			{{-- Footer User --}}
 			
 			<!-- Footer admin-->
 			
 		@if (optional(auth()->user())->hasAnyRole(['admin']))
-			<div class="navbar navbar-expand-lg navbar-light">
-				<div class="text-center d-lg-none w-100">
-					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
-						<i class="icon-unfold mr-2"></i>
-						Footer
-					</button>
-				</div>
-
-				<div class="navbar-collapse collapse" id="navbar-footer">
-					<span class="navbar-text">
-						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
-					</span>
-
-					<ul class="navbar-nav ml-lg-auto">
-						<li class="nav-item"><i class="icon-lifebuoy mr-2"></i> </a></li>
-						<li class="nav-item"><i class="icon-file-text2 mr-2"></i> </a></li>
-						<li class="nav-item"><i class="icon-cart2 mr-2"></i> </span></a></li>
-					</ul>
-				</div>
-			</div>
+        <div class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 30px;">
+                        <span>Loop Tourney</span>
+                    </div>
+                    <div class="footer-copyright text-white-50">
+                        &copy; 2015 - 2025. Loop Tourney - Admin Panel
+                    </div>
+                </div>
+            </div>
+        </div>
 		@endif
 			<!-- /footer admin -->
 
@@ -380,6 +798,7 @@
 		<!-- /main content -->
 
 	</div>
+
     <script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
     <script src="{{asset('global_assets/js/main/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
@@ -389,93 +808,50 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const searchInput = document.getElementById('articleSearchInput');
-            const timeFilter = document.getElementById('timeFilter');
-            const filterButtons = document.querySelectorAll('.filter-btn, .event-tag[data-filter="all"]');
-            const articleCards = document.querySelectorAll('.event-card');
-            const articleContainer = document.getElementById('articleContainer');
+            const relatedArticles = document.querySelectorAll('.related-article');
 
-            // Initialize all cards as visible
-            articleCards.forEach(card => card.style.display = 'block');
-
-            // Search Functionality
+            // Search Functionality for Related Articles
             searchInput.addEventListener('input', function (e) {
-                filterArticles();
-            });
-
-            // Time Filter Functionality
-            timeFilter.addEventListener('change', function () {
-                filterArticles();
-            });
-
-            // Filter Button Functionality
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    // Remove active class from all buttons
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    // Add active class to clicked button
-                    this.classList.add('active');
-                    filterArticles();
-                });
-            });
-
-            // Combined Filter Function
-            function filterArticles() {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                const timeRange = timeFilter.value;
-                const activeFilter = document.querySelector('.event-tag.active').getAttribute('data-filter');
+                const searchTerm = e.target.value.toLowerCase().trim();
                 
-                let hasVisibleCards = false;
+                let hasVisibleArticles = false;
 
-                articleCards.forEach(card => {
-                    const title = card.querySelector('.event-title').textContent.toLowerCase();
-                    const description = card.querySelectorAll('.event-info')[1]?.textContent.toLowerCase() || '';
-                    const date = card.getAttribute('data-date');
-                    const articleId = card.getAttribute('data-article-id');
-                    const cardElement = card.closest('.col-md-3');
+                relatedArticles.forEach(article => {
+                    const title = article.querySelector('h6').textContent.toLowerCase();
+                    const articleElement = article.closest('.related-article');
 
-                    // Search Filter
-                    const matchesSearch = searchTerm === '' || 
-                        title.includes(searchTerm) || 
-                        description.includes(searchTerm);
-
-                    // Time Filter
-                    let matchesTime = true;
-                    if (timeRange !== 'all' && date) {
-                        const today = new Date();
-                        const articleDate = new Date(date);
-
-                        if (timeRange === 'week') {
-                            const oneWeekAgo = new Date();
-                            oneWeekAgo.setDate(today.getDate() - 7);
-                            matchesTime = articleDate >= oneWeekAgo;
-                        } else if (timeRange === 'month') {
-                            const oneMonthAgo = new Date();
-                            oneMonthAgo.setMonth(today.getMonth() - 1);
-                            matchesTime = articleDate >= oneMonthAgo;
-                        }
-                    }
-
-                    // Category Filter
-                    const matchesFilter = activeFilter === 'all' || articleId === activeFilter;
-
-                    // Show or hide card based on all filters
-                    if (matchesSearch && matchesTime && matchesFilter) {
-                        cardElement.style.display = 'block';
-                        hasVisibleCards = true;
+                    if (searchTerm === '' || title.includes(searchTerm)) {
+                        articleElement.style.display = 'flex';
+                        hasVisibleArticles = true;
                     } else {
-                        cardElement.style.display = 'none';
+                        articleElement.style.display = 'none';
                     }
                 });
 
-                // Show "not found" message if no cards match filters
-                const notFoundDiv = document.querySelector('.container.text-center.mt-5');
-                if (notFoundDiv) {
-                    notFoundDiv.style.display = hasVisibleCards ? 'none' : 'block';
+                // Show message if no articles match
+                const sidebar = document.querySelector('.sidebar-articles');
+                let notFoundMessage = sidebar.querySelector('.no-results');
+                
+                if (!hasVisibleArticles && !notFoundMessage) {
+                    notFoundMessage = document.createElement('div');
+                    notFoundMessage.className = 'no-results text-center text-muted py-3';
+                    notFoundMessage.innerHTML = '<i class="icon-search4 mr-2"></i>Tidak ada artikel yang ditemukan';
+                    sidebar.appendChild(notFoundMessage);
+                } else if (hasVisibleArticles && notFoundMessage) {
+                    notFoundMessage.remove();
                 }
-            }
+            });
 
-            // Initial filter
-            filterArticles();
+            // Add hover effects to related articles
+            relatedArticles.forEach(article => {
+                article.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(8px)';
+                });
+                
+                article.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                });
+            });
         });
     </script>
 

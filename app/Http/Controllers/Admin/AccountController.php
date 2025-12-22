@@ -85,13 +85,13 @@ class AccountController extends Controller
                         return '<span class="badge bg-secondary">Offline</span>';
                     }
                 })
-                ->addColumn('payment_proof', function ($row) {
-                    if ($row->payment_proof) {
-                        return '<img src="' . asset($row->payment_proof) . '" width="50" style="cursor:pointer" onclick="showImageModal(\'' . asset($row->payment_proof) . '\')" />';
-                    } else {
-                        return '-';
-                    }
-                })
+                // ->addColumn('payment_proof', function ($row) {
+                //     if ($row->payment_proof) {
+                //         return '<img src="' . asset($row->payment_proof) . '" width="50" style="cursor:pointer" onclick="showImageModal(\'' . asset($row->payment_proof) . '\')" />';
+                //     } else {
+                //         return '-';
+                //     }
+                // })
                 ->addColumn('status', function ($row) {
                     if ($row->status === 'pending') {
                         return '
@@ -124,7 +124,7 @@ class AccountController extends Controller
                                 </div>
                             </div>';
                 })
-                ->rawColumns(['payment_proof', 'status', 'action', 'role', 'activity'])
+                ->rawColumns(['status', 'action', 'role', 'activity'])
                 ->make(true);
         }
 

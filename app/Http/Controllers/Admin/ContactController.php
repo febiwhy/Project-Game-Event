@@ -33,9 +33,9 @@ class ContactController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->editColumn('foto', function ($row) {
-                    return '<img src="' . asset($row->foto) . '" alt="Thumbnail" width="50" height="50">';
-                })
+                // ->editColumn('foto', function ($row) {
+                //     return '<img src="' . asset($row->foto) . '" alt="Thumbnail" width="50" height="50">';
+                // })
                 ->addColumn('action', function ($row) {
                     return '<div class="list-icons">
                                 <div class="dropdown">
@@ -53,7 +53,7 @@ class ContactController extends Controller
                                 </div>
                             </div>';
                 })
-                ->rawColumns(['action', 'foto'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
         $contact = ContactModel::first();      
@@ -79,11 +79,12 @@ class ContactController extends Controller
     public function store(ContactModelRequest $request)
     {
         $data = $request->validated();
-        if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store('contact', 'public');
-            $data['foto'] = "/storage/" . $path;
-        }
+
+        // Hapus field foto dari data atau set ke null
+        $data['foto'] = null;
+
         $contact = ContactModel::create($data);
+
         return response()->json([
             'success' => true,
             'message' => 'Data Berhasil disimpan!',
@@ -128,14 +129,12 @@ class ContactController extends Controller
     {
         $contact = ContactModel::findOrFail($id);
         $data = $request->validated();
-        if ($request->hasFile('foto')) {
-            // Simpan file ke "storage/app/public/game-event"
-            $path = $request->file('foto')->store('contact', 'public');
 
-            // Simpan path yang benar untuk ditampilkan di frontend
-            $data['foto'] = "/storage/" . $path;
-        }
+        // Hapus field foto dari data
+        $data['foto'] = $contact->foto;
+
         $contact->update($data);
+
         return response()->json([
             'success' => true,
             'message' => 'Data Berhasil Diperbarui',

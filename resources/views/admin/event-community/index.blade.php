@@ -174,13 +174,13 @@
 						<li class="nav-item nav-item-submenu">
 							<a href="#" class="nav-link"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Sidebars">
-								<li class="nav-item nav-item-submenu">
+								{{-- <li class="nav-item nav-item-submenu">
 									<a href="#" class="nav-link"> Admin </a>
 									<ul class="nav nav-group-sub">
 										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
 										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
 									</ul>
-								</li>
+								</li> --}}
 								<li class="nav-item">
 									<a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
 								</li>

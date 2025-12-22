@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Dashboard Admin</title>
+	<title>{{ isset($article) ? 'Edit Article' : 'Tambah Article' }} - Loop Tourney</title>
 
 	<!-- Global stylesheets -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -17,40 +17,364 @@
 	<link href="{{asset('assets/css/layout.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/components.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/css/colors.min.css')}}" rel="stylesheet" type="text/css">
-	
+	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-	<!-- /global stylesheets -->
+	<style>
+		:root {
+			--primary: #6c5ce7;
+			--secondary: #a29bfe;
+			--accent: #fd79a8;
+			--dark: #1e1e2f;
+			--darker: #151521;
+			--light: #f8f9fa;
+			--success: #00b894;
+			--warning: #fdcb6e;
+			--danger: #e84393;
+			--info: #0984e3;
+		}
+		
+		body {
+			background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+			color: var(--light);
+			font-family: 'Poppins', sans-serif;
+			min-height: 100vh;
+		}
+		
+		.navbar {
+			background: rgba(30, 30, 47, 0.95) !important;
+			backdrop-filter: blur(10px);
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+		}
+		
+		.navbar-brand span {
+			font-family: 'Orbitron', sans-serif;
+			font-weight: 700;
+			background: linear-gradient(90deg, var(--primary), var(--accent));
+			-webkit-background-clip: text;
+			background-clip: text;
+			color: transparent;
+			font-size: 1.5rem;
+		}
+		
+		.navbar-nav .nav-link {
+			color: rgba(255, 255, 255, 0.8) !important;
+			font-weight: 500;
+			padding: 0.5rem 1rem;
+			margin: 0 0.2rem;
+			border-radius: 6px;
+			transition: all 0.3s ease;
+		}
+		
+		.navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+			color: white !important;
+			background: rgba(108, 92, 231, 0.2);
+			transform: translateY(-2px);
+		}
 
-	<!-- Core JS files -->
-	<script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/main/bootstrap.bundle.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/velocity/velocity.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/velocity/velocity.ui.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_examples.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/animations_velocity_ui.js')}}"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-	<script src="{{asset('global_assets/js/plugins/notifications/bootbox.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/forms/selects/select2.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/components_modals.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/ui/prism.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/animations_css3.js')}}"></script>
-	<script src="{{asset('global_assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
-	<script src="{{asset('global_assets/js/demo_pages/form_layouts.js')}}"></script>
-	<script src="{{asset('assets/js/app.js')}}"></script>
-	<!-- /theme JS files -->
+		/* Sidebar Styles */
+		.sidebar {
+			background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%) !important;
+			border-right: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+		}
 
-	</head>
-	<body>
+		.sidebar-user {
+			background: linear-gradient(135deg, rgba(40, 40, 60, 0.9), rgba(60, 60, 80, 0.7)) !important;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			backdrop-filter: blur(10px);
+		}
+
+		.sidebar-user .card-body {
+			background: transparent !important;
+			padding: 1.5rem;
+		}
+
+		.sidebar-user .media-title {
+			color: white !important;
+			font-weight: 600;
+			font-size: 1.1rem;
+		}
+
+		.sidebar-user .font-size-xs {
+			color: var(--secondary) !important;
+			font-weight: 500;
+		}
+
+		.sidebar-user img {
+			border: 2px solid var(--primary);
+			box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+		}
+
+		.nav-sidebar > .nav-item > .nav-link {
+			color: rgba(255, 255, 255, 0.8) !important;
+			border-radius: 10px;
+			margin: 4px 12px;
+			padding: 0.875rem 1rem;
+			transition: all 0.3s ease;
+			border: 1px solid transparent;
+			font-weight: 500;
+		}
+
+		.nav-sidebar > .nav-item > .nav-link:hover,
+		.nav-sidebar > .nav-item > .nav-link.active {
+			background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+			color: white !important;
+			transform: translateX(8px);
+			box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+			border-color: rgba(255, 255, 255, 0.2);
+		}
+
+		.nav-sidebar > .nav-item > .nav-link i {
+			color: var(--secondary) !important;
+			font-size: 1.1rem;
+			width: 24px;
+			text-align: center;
+			margin-right: 0.75rem;
+			transition: all 0.3s ease;
+		}
+
+		.nav-sidebar > .nav-item > .nav-link:hover i,
+		.nav-sidebar > .nav-item > .nav-link.active i {
+			color: white !important;
+			transform: scale(1.1);
+		}
+
+		/* Form Card Styles */
+		.form-card {
+			background: rgba(30, 30, 47, 0.7);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			border-radius: 20px;
+			box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+			overflow: hidden;
+			transition: all 0.3s ease;
+			margin-bottom: 2rem;
+		}
+
+		.form-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+		}
+
+		.card-header {
+			background: linear-gradient(135deg, rgba(40, 40, 60, 0.9), rgba(60, 60, 80, 0.7));
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			padding: 1.5rem 2rem;
+		}
+
+		.card-title {
+			font-family: 'Orbitron', sans-serif;
+			font-weight: 700;
+			color: white;
+			margin: 0;
+			font-size: 1.8rem;
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+		}
+
+		.card-title i {
+			background: linear-gradient(135deg, var(--primary), var(--accent));
+			-webkit-background-clip: text;
+			background-clip: text;
+			color: transparent;
+		}
+
+		/* Form Styles */
+		.form-control, .form-select {
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			border-radius: 12px;
+			color: white;
+			padding: 0.875rem 1rem;
+			transition: all 0.3s ease;
+			font-size: 1rem;
+		}
+
+		.form-control:focus, .form-select:focus {
+			background: rgba(255, 255, 255, 0.15);
+			border-color: var(--primary);
+			box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+			color: white;
+			outline: none;
+		}
+
+		.form-control::placeholder {
+			color: rgba(255, 255, 255, 0.5);
+		}
+
+		.form-label {
+			color: white;
+			font-weight: 600;
+			margin-bottom: 0.75rem;
+			font-size: 1rem;
+		}
+
+		.form-text {
+			color: var(--secondary) !important;
+			font-size: 0.875rem;
+			margin-top: 0.5rem;
+		}
+
+		/* Button Styles */
+		.btn-primary {
+			background: linear-gradient(135deg, var(--primary), var(--accent));
+			border: none;
+			border-radius: 12px;
+			color: white;
+			font-weight: 600;
+			padding: 0.875rem 2rem;
+			transition: all 0.3s ease;
+			font-size: 1rem;
+		}
+
+		.btn-primary:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+			color: white;
+		}
+
+		/* Alert Styles */
+		.alert-custom {
+			background: linear-gradient(135deg, rgba(9, 132, 227, 0.2), rgba(9, 132, 227, 0.1));
+			border: 1px solid rgba(9, 132, 227, 0.3);
+			border-radius: 15px;
+			color: white;
+			backdrop-filter: blur(10px);
+			border-left: 4px solid var(--info);
+		}
+
+		.alert-danger {
+			background: linear-gradient(135deg, rgba(232, 67, 147, 0.2), rgba(232, 67, 147, 0.1));
+			border: 1px solid rgba(232, 67, 147, 0.3);
+			border-radius: 15px;
+			color: white;
+			backdrop-filter: blur(10px);
+			border-left: 4px solid var(--danger);
+		}
+
+		.alert-success {
+			background: linear-gradient(135deg, rgba(0, 184, 148, 0.2), rgba(0, 184, 148, 0.1));
+			border: 1px solid rgba(0, 184, 148, 0.3);
+			border-radius: 15px;
+			color: white;
+			backdrop-filter: blur(10px);
+			border-left: 4px solid var(--success);
+		}
+
+		/* File Input Styles */
+		.file-input-wrapper {
+			position: relative;
+			overflow: hidden;
+			display: inline-block;
+			width: 100%;
+		}
+
+		.file-input-wrapper input[type=file] {
+			position: absolute;
+			left: 0;
+			top: 0;
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+		}
+
+		.file-input-label {
+			background: rgba(255, 255, 255, 0.1);
+			border: 2px dashed rgba(255, 255, 255, 0.3);
+			border-radius: 12px;
+			padding: 2rem;
+			text-align: center;
+			color: rgba(255, 255, 255, 0.7);
+			transition: all 0.3s ease;
+			cursor: pointer;
+			width: 100%;
+		}
+
+		.file-input-label:hover {
+			background: rgba(255, 255, 255, 0.15);
+			border-color: var(--primary);
+			color: white;
+		}
+
+		.file-input-label i {
+			font-size: 2rem;
+			margin-bottom: 1rem;
+			display: block;
+			color: var(--secondary);
+		}
+
+		/* Footer Styles */
+		.footer {
+			background: rgba(30, 30, 47, 0.9);
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+			padding: 2rem 0;
+			margin-top: 3rem;
+		}
+		
+		.footer-content {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		
+		.footer-logo {
+			display: flex;
+			align-items: center;
+			gap: 0.8rem;
+			font-family: 'Orbitron', sans-serif;
+			font-weight: 700;
+			font-size: 1.2rem;
+			background: linear-gradient(90deg, var(--primary), var(--accent));
+			-webkit-background-clip: text;
+			background-clip: text;
+			color: transparent;
+		}
+
+		/* Animation */
+		.fade-in {
+			animation: fadeIn 0.8s ease-in-out;
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(30px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+
+		/* Responsive adjustments */
+		@media (max-width: 768px) {
+			.card-title {
+				font-size: 1.5rem;
+			}
+			
+			.form-control, .form-select {
+				padding: 0.75rem 1rem;
+			}
+			
+			.btn-primary {
+				padding: 0.75rem 1.5rem;
+				width: 100%;
+			}
+			
+			.footer-content {
+				flex-direction: column;
+				gap: 1rem;
+				text-align: center;
+			}
+		}
+	</style>
+</head>
+
+<body>
 	<!-- Main navbar -->
 	@if (optional(auth()->user())->hasAnyRole(['admin']))
 		<div class="navbar navbar-expand-md navbar-light navbar-static">
 			<div class="navbar-brand" style="display: flex; align-items: center;">
-				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
-					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
-					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney </span>
+				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none;">
+					{{-- <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> --}}
+					<span>Loop Tourney</span>
 				</a>
 			</div>
 
@@ -72,124 +396,39 @@
 					</li>
 				</ul>
 
-				<span class="badge bg-success my-3 my-md-0 ml-md-3 mr-md-auto">Online</span>
+				<span class="badge bg-success my-3 my-md-0 ml-md-3 mr-md-auto">
+					<i class="icon-circle2 mr-1"></i> Online
+				</span>
 
 				<ul class="navbar-nav ml-xl-auto">
-						<li class="nav-item dropdown dropdown-user">
-							<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-								<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
-								<span class="navbar-text">
-									@if (auth()->check())
-										Halo, {{ auth()->user()->name }}
-									@else
-										Guest
-									@endif
-								</span>
-							</a>
-							<div class="dropdown-menu dropdown-menu-right">
+					<li class="nav-item dropdown dropdown-user">
+						<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+							<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
+							<span class="navbar-text">
 								@if (auth()->check())
-									<a href="{{ route('logout') }}" class="dropdown-item">
-										<i class="icon-switch2"></i> Logout
-									</a>
+									Halo, {{ auth()->user()->name }}
 								@else
-									<a href="{{ route('login') }}" class="dropdown-item">
-										<i class="icon-switch2"></i> Login
-									</a>
+									Guest
 								@endif
-							</div>
-						</li>
+							</span>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right">
+							@if (auth()->check())
+								<a href="{{ route('logout') }}" class="dropdown-item">
+									<i class="icon-switch2"></i> Logout
+								</a>
+							@else
+								<a href="{{ route('login') }}" class="dropdown-item">
+									<i class="icon-switch2"></i> Login
+								</a>
+							@endif
+						</div>
+					</li>
 				</ul>
 			</div>
 		</div>
 	@endif
 	<!-- /main navbar -->
-
-	{{-- Main Navbar Role User --}}
-	@if (optional(auth()->user())->hasAnyRole(['user']))
-		<div class="navbar navbar-expand-md navbar-light navbar-static">
-			<div class="navbar-brand" style="display: flex; align-items: center;">
-				<a href="#" class="d-inline-block" style="display: flex; align-items: center; text-decoration: none; color: #fff;">
-					<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">
-					<span style="font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle;"> Loop Tourney</span>
-				</a>
-			</div>
-
-
-			<div class="d-md-none">
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-demo1-mobile">
-					<i class="icon-tree5"></i>
-				</button>
-			</div>
-
-			<div class="collapse navbar-collapse" id="navbarmobile">
-				<ul class="navbar-nav">
-					<li class="nav-item"><a href="" class="navbar-nav-link">Home</a></li>
-					@if (optional(auth()->user())->hasAnyRole(['admin']))
-						<li class="nav-item"><a href="{{ route('admin.index') }}" class="navbar-nav-link">Admin</a></li>
-					@endif
-					<li class="nav-item dropdown ">
-						<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-paragraph-justify3"></i></a>
-						<div class="dropdown-menu dropdown-menu-right ">
-							<a href="#" class="dropdown-item">
-								<i class="mi-games fa-sm mr-2"></i>Event</a>
-							<a href="{{route('article')}}" class="dropdown-item">
-								<i class="mi-web fa-sm mr-2"></i>Artikel</a>
-								<a href="{{route('contact.index')}}" class="dropdown-item"><i class="icon-android"></i> Hubungi Kami </a>
-							<a href="#" class="dropdown-item disabled">
-								<i class="icon-alarm fa-sm mr-2 "></i>Akan Datang</a>
-						</div>
-					</li>
-				</ul>
-
-				<span class="navbar-text ml-xl-3">
-					<span class="badge bg-success">Online</span>
-				</span>
-
-				<ul class="navbar-nav ml-xl-auto">
-					<li class="nav-item">
-						<a href="#" class="navbar-nav-link">
-							<i class="icon-bell2"></i>
-							<span class="d-xl-none ml-2">Notifications</span>
-							<span class="badge badge-pill bg-warning-400 ml-auto ml-xl-0">2</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="#" class="navbar-nav-link">
-							<i class="icon-bubbles4"></i>
-							<span class="d-xl-none ml-2">Messages</span>
-						</a>
-					</li>
-
-				<li class="nav-item dropdown dropdown-user">
-					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-						<img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" class="rounded-circle mr-2" height="34" alt="User Avatar">
-						<span class="navbar-text">
-							@if (auth()->check())
-								Halo, {{ auth()->user()->name }}
-							@else
-								Guest
-							@endif
-						</span>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right">
-						@if (auth()->check())
-							<a href="{{ route('logout') }}" class="dropdown-item">
-								<i class="icon-switch2"></i> Logout
-							</a>
-						@else
-							<a href="{{ route('login') }}" class="dropdown-item">
-								<i class="icon-switch2"></i> Login
-							</a>
-						@endif
-					</div>
-				</li>
-
-				</ul>
-			</div>
-		</div>
-	@endif
-	{{-- Main Navbar Role User --}}
-
 
 	<!-- Page content -->
 	<div class="page-content">
@@ -202,14 +441,13 @@
 				<a href="#" class="sidebar-mobile-main-toggle">
 					<i class="icon-arrow-left8"></i>
 				</a>
-				Navigation
+				<span class="font-weight-semibold">Navigation</span>
 				<a href="#" class="sidebar-mobile-expand">
 					<i class="icon-screen-full"></i>
 					<i class="icon-screen-normal"></i>
 				</a>
 			</div>
 			<!-- /sidebar mobile toggler -->
-
 
 			<!-- Sidebar content -->
 			<div class="sidebar-content">
@@ -219,64 +457,94 @@
 					<div class="card-body">
 						<div class="media">
 							<div class="mr-3">
-								<a href="#"><img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="38" height="38" class="rounded-circle" alt=""></a>
+								<a href="#"><img src="{{ asset('global_assets/images/placeholders/placeholder.jpg') }}" width="44" height="44" class="rounded-circle" alt="Admin Avatar"></a>
 							</div>
 
 							<div class="media-body">
-								<div class="media-title font-weight-semibold">Admin</div>
-								<div class="font-size-xs opacity-50">
+								<div class="media-title font-weight-semibold">
+									@if (auth()->check())
+										{{ auth()->user()->name }}
+									@else
+										Admin
+									@endif
 								</div>
+								<div class="font-size-xs opacity-50">
+									<i class="icon-user-check mr-1"></i> Administrator
+								</div>
+							</div>
+
+							<div class="ml-3 align-self-center">
+								<span class="badge badge-success badge-pill">Online</span>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- /user menu -->
 
-
 				<!-- Main navigation -->
 				<div class="card card-sidebar-mobile">
 					<ul class="nav nav-sidebar" data-nav-type="accordion">
 
 						<!-- Main -->
-						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
+						<li class="nav-item-header">
+							<div class="text-uppercase font-size-xs line-height-xs">Main Navigation</div> 
+							<i class="icon-menu" title="Main"></i>
+						</li>
+						
 						<li class="nav-item">
 							<a href="{{route('admin.index')}}" class="nav-link">
 								<i class="icon-home4"></i>
-								<span>
-									Dashboard Admin
-									<span class="d-block font-weight-normal opacity-50"></span>
-								</span>
+								<span>Dashboard Admin</span>
 							</a>
-						<p></p>
-							<hr>
 						</li>
+
 						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-indent-decrease2"></i> <span>Data Akun</span></a>
-							<ul class="nav nav-group-sub" data-submenu-title="Sidebars">
-								<li class="nav-item nav-item-submenu">
-									<a href="#" class="nav-link"> Admin </a>
-									<ul class="nav nav-group-sub">
-										<li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link">Data Role</a></li>
-										<li class="nav-item"><a href="{{route('permissions.index')}}" class="nav-link">Data Permission</a></li>
-									</ul>
+							<a href="#" class="nav-link">
+								<i class="icon-users"></i>
+								<span>Data Akun</span>
+							</a>
+							<ul class="nav nav-group-sub">
+								<li class="nav-item">
+									<a href="{{route('account.index')}}" class="nav-link">
+										<i class="icon-list-unordered"></i> Daftar Akun
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link active">
+								<i class="icon-earth"></i>
+								<span>User Page</span>
+							</a>
+							<ul class="nav nav-group-sub">
+								<li class="nav-item">
+									<a href="{{route('landing')}}" class="nav-link">
+										<i class="icon-home"></i> Home
+									</a>
 								</li>
 								<li class="nav-item">
-									<a href="{{route('account.index')}}" class="nav-link"> Daftar Akun </a>
+									<a href="{{route('game-event.index')}}" class="nav-link">
+										<i class="icon-trophy"></i> Game Tournament
+									</a>
+								</li>
+								{{-- <li class="nav-item">
+									<a href="{{route('event-community.index')}}" class="nav-link">
+										<i class="icon-users4"></i> Komunitas
+									</a>
+								</li> --}}
+								<li class="nav-item">
+									<a href="{{route('article.index')}}" class="nav-link active">
+										<i class="icon-file-text"></i> Article
+									</a>
+								</li>
+								<li class="nav-item">
+									<a href="{{route('contact.index')}}" class="nav-link">
+										<i class="icon-bubbles4"></i> Hubungi Kami
+									</a>
 								</li>
 							</ul>
 						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link active"><i class="icon-users4 mr-3"></i> <span>User Page</span></a>
-
-							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="{{route('landing')}}" class="nav-link"> Home </a></li>
-								<li class="nav-item"><a href="{{route('game-event.index')}}" class="nav-link"> Game Turnamaent </a></li>
-								<li class="nav-item"><a href="{{route('event-community.index')}}" class="nav-link"> Komunitas </a></li>
-								<li class="nav-item"><a href="{{route('article.index')}}" class="nav-link active"> Article </a></li>
-								<li class="nav-item"><a href="{{route('contact.index')}}" class="nav-link"> Hubungi Kami </a></li>
-							</ul>
-						</li>
-						<!-- /main -->
 					</ul>
 				</div>
 				<!-- /main navigation -->
@@ -285,141 +553,150 @@
 			<!-- /sidebar content -->
 			
 		</div>
-
-		
 		<!-- /main sidebar -->
-
 
 		<!-- Main content -->
 		<div class="content-wrapper">
-
-			<!-- Page header -->
-			<div class="page-header border-bottom-0">
-				<div class="page-header-content header-elements-md-inline">
-					<div class="page-title d-flex">
-						<h4> <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;"> 
-							<span class="font-weight-semibold">Halaman</span> {{ isset($article) ? 'Edit Article' : 'Tambah Article' }}
-						</h4>
-						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-					</div>
-
-					
-				</div>
-			</div>
-			<!-- /page header -->
-
 
 			<!-- Content area -->
 			<div class="content pt-0">
 
 				<!-- Info alert -->
-				<div class="alert alert-info bg-light text-default alert-styled-left alert-arrow-left alert-dismissible">
+				<div class="alert alert-custom alert-styled-left alert-arrow-left alert-dismissible">
 					<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-					<h6 class="alert-heading font-weight-semibold mb-1"> 
+					<h4 class="alert-heading font-weight-semibold mb-2">
+						<i class="icon-info3 mr-2"></i>
 						@if (auth()->check())
-							Selamat Datang , {{ auth()->user()->name }}
+							Selamat Datang, {{ auth()->user()->name }}
 						@else
 							Guest
-						@endif</h6>
-			    </div>
-			    <!-- /info alert -->
-
-						<div class="card fade-in">
-							<div class="card-header header-elements-inline">
-								<h2 class="card-title">  </h2>
-									<div class="header-elements">
-										<div class="list-icons">
-											<a class="list-icons-item" data-action="collapse"></a>
-											<a class="list-icons-item" data-action="reload"></a>
-											<a class="list-icons-item" data-action="remove"></a>
-										</div>
-									</div>
-								</div>
-								
-								<div class="card-body">
-									<div class="row">
-										<div class="col-md-10 offset-md-1">
-											@if ($errors->any())
-											<div class="alert alert-danger">
-												<ul>
-													@foreach ($errors->all() as $error)
-													<li>{{ $error }}</li>
-													@endforeach
-												</ul>
-											</div>
-											@endif
-
-											<!-- Notifikasi Sukses -->
-											@if (session('success'))
-											<div class="alert alert-success">{{ session('success') }}</div>
-											@endif
-
-										<form action="{{ isset($article) ? route('article.update', $article->id) : route('article.store') }}" method="POST" enctype="multipart/form-data" id="form-contact">
-                                            @csrf
-                                            @if (isset($article))
-                                                @method('PUT')
-                                            @endif
-
-												<div class="form-group">
-													<label for="title">Judul :</label>
-													<input type="text" class="form-control" name="title" id="title" value="{{ old('title', $article->title ?? '') }}" placeholder="Massukan Judulnya" required>
-													@error('title') <p style="color: red;">{{ $message }}</p> @enderror
-												</div>
-												
-												<div class="form-group">
-													<label for="image">Unggah Foto Article :</label>
-													<input type="file" name="image" class="form-control" {{ isset($article) ? '' : '' }} accept=".jpg,.jpeg,.png" required>
-													<span class="form-text text-muted">Format yang DI Terima: jpeg, png, jpg. Max file size 2Mb</span>
-														@error('image') <p style="color: red;">{{ $message }}</p> @enderror
-												</div>
-											
-												<div class="form-group">
-													<label for="content">Deskripsi Content :</label>
-													<textarea rows="15" class="form-control @error('content') is-invalid @enderror" 
-															name="content" id="content" 
-															placeholder="Masukkan Descripsinya" required>{{ old('content', $article->content ?? '') }}</textarea>
-													@error('content')
-														<div class="invalid-feedback">{{ $message }}</div>
-													@enderror
-												</div>
-
-												{{-- <div class="form-group">
-													<label for="content">Keterangan :</label>
-													<textarea rows="5" cols="5" class="form-control" name="content" id="content" value="{{ old('content', $article->content ?? '') }}" placeholder="Massukan  " required></textarea>
-													@error('content') <p style="color: red;">{{ $message }}</p> @enderror
-												</div> --}}
-
-												<div class="text-right">
-													<button type="submit" class="btn btn-primary">{{ isset($article) ? 'Perbarui' : 'Simpan' }} <i class="icon-paperplane ml-2"></i></button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
+						@endif
+					</h4>
+					<hr style="border-color: rgba(255,255,255,0.2);">
+					<div class="d-flex align-items-center">
+						<i class="icon-pen mr-3" style="font-size: 1.5rem;"></i>
+						<div>
+							<strong>Article Form:</strong> {{ isset($article) ? 'Edit artikel yang sudah ada' : 'Buat artikel baru untuk platform' }}
 						</div>
+					</div>
+				</div>
+				<!-- /info alert -->
+
+				<!-- Form Card -->
+				<div class="form-card fade-in">
+					<div class="card-header">
+						<h2 class="card-title">
+							<i class="icon-file-text"></i>
+							{{ isset($article) ? 'Edit Article' : 'Tambah Article Baru' }}
+						</h2>
+						<div class="header-elements">
+							<div class="list-icons">
+								<a class="list-icons-item" data-action="collapse"></a>
+								<a class="list-icons-item" data-action="reload" onclick="location.reload()"></a>
+							</div>
+						</div>
+					</div>
+					
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-10 offset-md-1">
+								@if ($errors->any())
+								<div class="alert alert-danger">
+									<h6 class="alert-heading font-weight-semibold mb-2">
+										<i class="icon-warning mr-2"></i>Terjadi Kesalahan
+									</h6>
+									<ul class="mb-0">
+										@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+										@endforeach
+									</ul>
+								</div>
+								@endif
+
+								<!-- Notifikasi Sukses -->
+								@if (session('success'))
+								<div class="alert alert-success">
+									<i class="icon-checkmark3 mr-2"></i>{{ session('success') }}
+								</div>
+								@endif
+
+								<form action="{{ isset($article) ? route('article.update', $article->id) : route('article.store') }}" method="POST" enctype="multipart/form-data" id="form-contact">
+									@csrf
+									@if (isset($article))
+										@method('PUT')
+									@endif
+
+									<div class="form-group">
+										<label for="title" class="form-label">Judul Article</label>
+										<input type="text" class="form-control" name="title" id="title" 
+											   value="{{ old('title', $article->title ?? '') }}" 
+											   placeholder="Masukkan judul artikel yang menarik" required>
+										@error('title') 
+											<small class="text-danger mt-1">{{ $message }}</small>
+										@enderror
+									</div>
+									
+									<div class="form-group">
+										<label for="image" class="form-label">Gambar Article</label>
+										<div class="file-input-wrapper">
+											<input type="file" name="image" id="image" 
+												   {{ isset($article) ? '' : 'required' }} 
+												   accept=".jpg,.jpeg,.png">
+											<label for="image" class="file-input-label">
+												<i class="icon-image2"></i>
+												<span id="file-name">
+													{{ isset($article) && $article->image ? 'Ganti gambar artikel' : 'Pilih gambar artikel' }}
+												</span>
+												<small class="d-block mt-2">Format: JPEG, PNG, JPG | Maksimal: 2MB</small>
+											</label>
+										</div>
+										@error('image') 
+											<small class="text-danger mt-1">{{ $message }}</small>
+										@enderror
+									</div>
+								
+									<div class="form-group">
+										<label for="content" class="form-label">Konten Article</label>
+										<textarea rows="15" class="form-control @error('content') is-invalid @enderror" 
+												name="content" id="content" 
+												placeholder="Tulis konten artikel yang informatif dan menarik..." required>{{ old('content', $article->content ?? '') }}</textarea>
+										@error('content')
+											<small class="text-danger mt-1">{{ $message }}</small>
+										@enderror
+									</div>
+
+									<div class="text-right mt-4">
+										<a href="{{ route('article.index') }}" class="btn btn-light mr-2">
+											<i class="icon-arrow-left13 mr-2"></i>Kembali
+										</a>
+										<button type="submit" class="btn btn-primary">
+											{{ isset($article) ? 'Perbarui Article' : 'Simpan Article' }} 
+											<i class="icon-paperplane ml-2"></i>
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<!-- /content area -->
 
-
 			<!-- Footer -->
-			<div class="navbar navbar-expand-lg navbar-light">
-				<div class="text-center d-lg-none w-100">
-					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
-						<i class="icon-unfold mr-2"></i>
-						Footer
-					</button>
-				</div>
-
-				<div class="navbar-collapse collapse" id="navbar-footer">
-					<span class="navbar-text">
-						&copy; 2015 - 2025. <img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 35px; width: auto; display: inline-block; vertical-align: middle;">Loop Tourney</a>
-					</span>
-
-					<ul class="navbar-nav ml-lg-auto">
-						<li class="nav-item"><i class="icon-lifebuoy mr-2"></i> </a></li>
-						<li class="nav-item"><i class="icon-file-text2 mr-2"></i> </a></li>
-						<li class="nav-item"><i class="icon-cart2 mr-2"></i> </span></a></li>
-					</ul>
+			<div class="footer">
+				<div class="container">
+					<div class="footer-content">
+						<div class="footer-logo">
+							<img src="{{ asset('global_assets/images/logo.png') }}" alt="Logo" style="height: 30px;">
+							<span>Loop Tourney</span>
+						</div>
+						<div class="footer-links">
+							<a href="{{route('contact.index')}}">Pusat Bantuan</a>
+						</div>
+						<div class="footer-copyright text-white-50">
+							&copy; 2015 - 2025. Loop Tourney
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- /footer -->
@@ -428,13 +705,40 @@
 		<!-- /main content -->
 
 	</div>
+	<!-- /page content -->
+
+	<!-- Core JS files -->
+	<script src="{{asset('global_assets/js/main/jquery.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/main/bootstrap.bundle.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/loaders/blockui.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/velocity/velocity.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/velocity/velocity.ui.min.js')}}"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="{{asset('global_assets/js/plugins/notifications/bootbox.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/forms/selects/select2.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/ui/prism.min.js')}}"></script>
+	<script src="{{asset('assets/js/app.js')}}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 	<script>
+		// File input handler
+		document.getElementById('image').addEventListener('change', function(e) {
+			const fileName = e.target.files[0] ? e.target.files[0].name : 'Pilih gambar artikel';
+			document.getElementById('file-name').textContent = fileName;
+		});
+
+		// Form submission with SweetAlert
 		$(document).ready(function () {
 			$("#form-contact").submit(function (e) {
-				e.preventDefault(); // Mencegah form submit default
+				e.preventDefault();
 
-				let formData = new FormData(this); // Ambil data form
+				let formData = new FormData(this);
+				let submitBtn = $(this).find('button[type="submit"]');
+				let originalText = submitBtn.html();
+
+				// Show loading state
+				submitBtn.html('<i class="icon-spinner4 spinner mr-2"></i>Memproses...');
+				submitBtn.prop('disabled', true);
 
 				$.ajax({
 					url: "{{ isset($article) ? route('article.update', $article->id) : route('article.store') }}", 
@@ -446,21 +750,29 @@
 						if (response.success) {
 							Swal.fire({
 								title: "<span style='color: #00ff99; font-weight: bold;'>Berhasil!</span>",
-								html: "<span style='color: #ffffff; font-weight: bold;'>" + response.message + "</span>",
-								iconHtml: "🎉",
-								// icon: "success",
+								html: "<span style='color: #ffffff;'>" + response.message + "</span>",
+								icon: "success",
+								background: "#1e1e2f",
+								color: "#ffffff",
+								confirmButtonColor: "#00c853",
 								confirmButtonText: "OKE"
 							}).then(() => {
-								// Reload halaman setelah klik OK
-								location.reload();
+								window.location.href = "{{ route('article.index') }}";
 							});
 						}
 					},
 					error: function (xhr) {
+						// Reset button state
+						submitBtn.html(originalText);
+						submitBtn.prop('disabled', false);
+
 						Swal.fire({
 							title: "<span style='color: #ff4444;'>Gagal!</span>",
-							html: "<span style='color: #ffffff; font-weight: bold;'>Terjadi kesalahan, coba lagi!</span>",
+							html: "<span style='color: #ffffff;'>Terjadi kesalahan, silakan coba lagi!</span>",
 							icon: "error",
+							background: "#1e1e2f",
+							color: "#ffffff",
+							confirmButtonColor: "#ff4444",
 							confirmButtonText: "OKE"
 						});
 					}
@@ -469,6 +781,5 @@
 		});
 	</script>
 
-	<!-- /page content -->
 </body>
 </html>

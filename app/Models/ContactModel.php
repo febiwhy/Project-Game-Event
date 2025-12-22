@@ -14,4 +14,5 @@ class ContactModel extends Model
     'telepon',
     'email'
     ];
+    
 }

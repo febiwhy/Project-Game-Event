@@ -60,11 +60,11 @@
         <p><span class="info">Pesan:</span></p>
         <p>"{{ $data['message'] }}"</p>
 
-        {{-- <div class="reply-section">
+        <div class="reply-section">
             <h3>✉️ Balas Pesan:</h3>
             <p>Klik tombol di bawah untuk membalas langsung ke email pengirim.</p>
             <a href="mailto:{{ $data['email'] }}?subject=Re: {{ urlencode($data['subject']) }}" class="button">Balas Sekarang</a>
-        </div> --}}
+        </div>
     </div>
 </body>
 </html>                                                  
